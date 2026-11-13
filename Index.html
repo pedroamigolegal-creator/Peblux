@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Peblux - A classic online gaming platform.">
+    <title>Peblux</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Source Sans Pro', Arial, sans-serif;
+            color: #393b3d;
+            background: #fff;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1170px;
+            height: 100%;
+            margin: auto;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .brand {
+            color: #00a2ff;
+            font-size: 29px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .nav-links a:hover {
+            color: #00a2ff;
+        }
+
+        .hero {
+            min-height: 650px;
+            padding: 100px 20px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background:
+                linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.55)),
+                url('https://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg')
+                center / cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero h1 {
+            font-size: 76px;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -3px;
+        }
+
+        .hero h2 {
+            font-size: 27px;
+            font-weight: 400;
+            margin: 5px 0 25px;
+        }
+
+        .hero p {
+            font-size: 20px;
+        }
+
+        .main-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 45px;
+            background: #00a2ff;
+            color: white;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .main-button:hover {
+            background: #008bdc;
+        }
+
+        .section {
+            padding: 85px 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 34px;
+            margin-top: 0;
+            color: #333;
+        }
+
+        .section p {
+            max-width: 850px;
+            margin: 15px auto;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
+        .about {
+            background: #f2f2f2;
+        }
+
+        .game-images {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            max-width: 1000px;
+            margin: 35px auto 0;
+        }
+
+        .game-image {
+            width: 33.333%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 3px;
+        }
+
+        .game-image:nth-child(1) {
+            background-image: url('https://images.rbxcdn.com/42268b6264d89827401ef912f174f288.jpg');
+        }
+
+        .game-image:nth-child(2) {
+            background-image: url('https://images.rbxcdn.com/04baeb33ef66ef1395cd5464309fece6.jpg');
+        }
+
+        .game-image:nth-child(3) {
+            background-image: url('https://images.rbxcdn.com/e8b89d14690203420d64b5b2fda0b461.jpg');
+        }
+
+        .platforms {
+            background: white;
+        }
+
+        .platform-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .platform {
+            padding: 15px 25px;
+            min-width: 130px;
+            background: #eee;
+            border-radius: 3px;
+            font-size: 18px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 7px 15px;
+            background: #fff2cc;
+            color: #856404;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #191919;
+            color: #aaa;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer p {
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+            .nav-content {
+                gap: 15px;
+            }
+
+            .brand {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            .hero h1 {
+                font-size: 53px;
+            }
+
+            .hero h2 {
+                font-size: 22px;
+            }
+
+            .game-images {
+                flex-direction: column;
+            }
+
+            .game-image {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="brand">PEBLUX</a>
+
+            <div class="nav-links">
+                <a href="#home">Play</a>
+                <a href="#about">About</a>
+                <a href="#platforms">Platforms</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>PEBLUX</h1>
+                <h2>Powering Imagination</h2>
+
+                <p>
+                    A world of creativity, games and adventures.
+                    Discover a classic online gaming experience.
+                </p>
+
+                <a href="#about" class="main-button">Explore Peblux</a>
+            </div>
+        </section>
+
+        <section class="section about" id="about">
+            <h2>WHAT IS PEBLUX?</h2>
+
+            <p>
+                Peblux is a platform inspired by the classic era
+                of online gaming. Explore experiences, meet new
+                people and discover a world created by players.
+            </p>
+
+            <p>
+                Our goal is to bring back the feeling of classic
+                virtual worlds while building something new.
+            </p>
+
+            <div class="game-images">
+                <div class="game-image"></div>
+                <div class="game-image"></div>
+                <div class="game-image"></div>
+            </div>
+
+            <span class="status">Peblux is under development</span>
+        </section>
+
+        <section class="section platforms" id="platforms">
+            <h2>PEBLUX ON YOUR DEVICE</h2>
+
+            <p>
+                Peblux is being developed with the goal of
+                supporting a classic desktop experience.
+            </p>
+
+            <div class="platform-list">
+                <div class="platform">PC</div>
+                <div class="platform">Mac</div>
+                <div class="platform">Web Browser</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#platforms">Platforms</a>
+        </div>
+
+        <p>
+            Peblux is an independent project.
+            Not affiliated with or endorsed by Roblox Corporation.
+        </p>
+
+        <p>© 2026 Peblux. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
