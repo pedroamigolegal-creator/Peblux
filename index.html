@@ -25,6 +25,10 @@
             background: #fff;
         }
 
+        button, input, select {
+            font: inherit;
+        }
+
         .navbar {
             position: fixed;
             top: 0;
@@ -56,7 +60,9 @@
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            align-items: center;
+            gap: 22px;
+            margin-left: auto;
         }
 
         .nav-links a {
@@ -67,6 +73,25 @@
 
         .nav-links a:hover {
             color: #00a2ff;
+        }
+
+        .account-button {
+            border: 1px solid #00a2ff;
+            background: white;
+            color: #008bdc;
+            padding: 7px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .account-button.primary {
+            background: #00a2ff;
+            color: white;
+        }
+
+        .account-button:hover {
+            opacity: .85;
         }
 
         .hero {
@@ -218,21 +243,168 @@
             font-size: 14px;
         }
 
+        /* Account modal */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.65);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .auth-modal {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 8px 35px rgba(0,0,0,.25);
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            border: none;
+            background: none;
+            font-size: 27px;
+            color: #777;
+            cursor: pointer;
+        }
+
+        .auth-modal h2 {
+            margin: 0 0 20px;
+            text-align: center;
+            color: #333;
+            font-size: 29px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 22px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: white;
+            color: #777;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .auth-tab.active {
+            color: #00a2ff;
+            border-bottom-color: #00a2ff;
+        }
+
+        .auth-field {
+            margin-bottom: 15px;
+        }
+
+        .auth-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .auth-field input,
+        .auth-field select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            outline: none;
+            background: white;
+        }
+
+        .auth-field input:focus,
+        .auth-field select:focus {
+            border-color: #00a2ff;
+        }
+
+        .auth-submit {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 3px;
+            background: #00a2ff;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .auth-submit:hover {
+            background: #008bdc;
+        }
+
+        .auth-submit:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .auth-message {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .auth-message.error {
+            display: block;
+            color: #a12626;
+            background: #ffeaea;
+        }
+
+        .auth-message.success {
+            display: block;
+            color: #216b38;
+            background: #e8f7ed;
+        }
+
+        .account-name {
+            color: #333;
+            font-weight: 600;
+        }
+
         @media (max-width: 650px) {
             .nav-content {
-                gap: 15px;
+                gap: 10px;
+                padding: 0 10px;
             }
 
             .brand {
-                font-size: 24px;
+                font-size: 23px;
             }
 
             .nav-links {
-                gap: 12px;
+                gap: 9px;
             }
 
             .nav-links a {
-                font-size: 14px;
+                font-size: 13px;
+            }
+
+            .account-button {
+                padding: 6px 9px;
+                font-size: 12px;
             }
 
             .hero h1 {
@@ -250,6 +422,10 @@
             .game-image {
                 width: 100%;
             }
+
+            .auth-modal {
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
@@ -264,6 +440,16 @@
                 <a href="#home">Play</a>
                 <a href="#about">About</a>
                 <a href="#platforms">Platforms</a>
+
+                <div id="loggedOutButtons">
+                    <button class="account-button" id="loginButton">Login</button>
+                    <button class="account-button primary" id="signupButton">Sign Up</button>
+                </div>
+
+                <div id="loggedInButtons" style="display:none;">
+                    <span class="account-name" id="accountName"></span>
+                    <button class="account-button" id="logoutButton">Logout</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -336,6 +522,313 @@
 
         <p>© 2026 Peblux. All rights reserved.</p>
     </footer>
+
+    <!-- Authentication modal -->
+
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+
+            <h2 id="modalTitle">Welcome to Peblux</h2>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab">Login</button>
+                <button class="auth-tab" id="signupTab">Sign Up</button>
+            </div>
+
+            <form id="authForm">
+                <div class="auth-field">
+                    <label for="username">Username</label>
+                    <input
+                        id="username"
+                        type="text"
+                        minlength="3"
+                        maxlength="20"
+                        pattern="[A-Za-z0-9_]+"
+                        autocomplete="username"
+                        placeholder="Enter your username"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field" id="genderField" style="display:none;">
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                        <option value="Prefer not to say">Prefer not to say</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="auth-field">
+                    <label for="password">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        minlength="8"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field" id="confirmField" style="display:none;">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        placeholder="Confirm your password"
+                    >
+                </div>
+
+                <button class="auth-submit" id="submitButton" type="submit">
+                    Login
+                </button>
+
+                <div class="auth-message" id="authMessage" role="status"></div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from
+            'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+
+        const supabase = createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const modal = document.getElementById('authModal');
+        const authForm = document.getElementById('authForm');
+        const message = document.getElementById('authMessage');
+
+        const loginButton = document.getElementById('loginButton');
+        const signupButton = document.getElementById('signupButton');
+        const logoutButton = document.getElementById('logoutButton');
+
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirmPassword');
+        const genderInput = document.getElementById('gender');
+
+        const genderField = document.getElementById('genderField');
+        const confirmField = document.getElementById('confirmField');
+
+        const submitButton = document.getElementById('submitButton');
+        const modalTitle = document.getElementById('modalTitle');
+
+        let currentMode = 'login';
+
+        function getInternalEmail(username) {
+            return username.trim().toLowerCase() + '@users.peblux.invalid';
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = 'auth-message ' + type;
+        }
+
+        function clearMessage() {
+            message.textContent = '';
+            message.className = 'auth-message';
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            clearMessage();
+            authForm.reset();
+
+            const isSignup = mode === 'signup';
+
+            loginTab.classList.toggle('active', !isSignup);
+            signupTab.classList.toggle('active', isSignup);
+
+            genderField.style.display = isSignup ? 'block' : 'none';
+            confirmField.style.display = isSignup ? 'block' : 'none';
+
+            confirmInput.required = isSignup;
+            passwordInput.autocomplete = isSignup
+                ? 'new-password'
+                : 'current-password';
+
+            modalTitle.textContent = isSignup
+                ? 'Create Your Account'
+                : 'Welcome to Peblux';
+
+            submitButton.textContent = isSignup
+                ? 'Create Account'
+                : 'Login';
+        }
+
+        function openModal(mode) {
+            setMode(mode);
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        loginButton.addEventListener('click', () => openModal('login'));
+        signupButton.addEventListener('click', () => openModal('signup'));
+
+        loginTab.addEventListener('click', () => setMode('login'));
+        signupTab.addEventListener('click', () => setMode('signup'));
+
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+
+        function updateAccountInterface(user) {
+            const loggedOut = document.getElementById('loggedOutButtons');
+            const loggedIn = document.getElementById('loggedInButtons');
+            const accountName = document.getElementById('accountName');
+
+            if (user) {
+                const username =
+                    user.user_metadata?.username || 'Player';
+
+                loggedOut.style.display = 'none';
+                loggedIn.style.display = 'flex';
+                loggedIn.style.alignItems = 'center';
+                loggedIn.style.gap = '10px';
+
+                accountName.textContent = username;
+            } else {
+                loggedOut.style.display = 'flex';
+                loggedOut.style.alignItems = 'center';
+                loggedOut.style.gap = '8px';
+
+                loggedIn.style.display = 'none';
+                accountName.textContent = '';
+            }
+        }
+
+        authForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearMessage();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmInput.value;
+
+            if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
+                showMessage(
+                    'Username must contain 3–20 letters, numbers or underscores.',
+                    'error'
+                );
+                return;
+            }
+
+            if (password.length < 8) {
+                showMessage(
+                    'Your password must have at least 8 characters.',
+                    'error'
+                );
+                return;
+            }
+
+            if (currentMode === 'signup' && password !== confirmPassword) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Please wait...';
+
+            try {
+                const internalEmail = getInternalEmail(username);
+
+                if (currentMode === 'signup') {
+                    const { data, error } = await supabase.auth.signUp({
+                        email: internalEmail,
+                        password: password,
+                        options: {
+                            data: {
+                                username: username,
+                                gender: genderInput.value
+                            }
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    if (data.session) {
+                        showMessage(
+                            'Your Peblux account has been created successfully.',
+                            'success'
+                        );
+                    } else {
+                        showMessage(
+                            'Account created. If email confirmation is enabled in Supabase, check your authentication settings.',
+                            'success'
+                        );
+                    }
+                } else {
+                    const { error } = await supabase.auth.signInWithPassword({
+                        email: internalEmail,
+                        password: password
+                    });
+
+                    if (error) throw error;
+
+                    showMessage('Login successful.', 'success');
+
+                    setTimeout(closeModal, 700);
+                }
+            } catch (error) {
+                let errorText = error.message || 'Something went wrong.';
+
+                if (
+                    errorText.toLowerCase().includes('already registered') ||
+                    errorText.toLowerCase().includes('already exists')
+                ) {
+                    errorText = 'This username is already registered.';
+                }
+
+                if (
+                    errorText.toLowerCase().includes('invalid login credentials')
+                ) {
+                    errorText = 'Incorrect username or password.';
+                }
+
+                showMessage(errorText, 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent =
+                    currentMode === 'signup' ? 'Create Account' : 'Login';
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            const { error } = await supabase.auth.signOut();
+
+            if (error) {
+                alert('Could not log out: ' + error.message);
+            }
+        });
+
+        supabase.auth.onAuthStateChange((_event, session) => {
+            updateAccountInterface(session?.user || null);
+        });
+
+        const { data: { session } } = await supabase.auth.getSession();
+        updateAccountInterface(session?.user || null);
+    </script>
 
 </body>
 </html>
