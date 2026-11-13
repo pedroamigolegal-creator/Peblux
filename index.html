@@ -1,1505 +1,408 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curth</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Peblux - A classic online gaming platform.">
+<title>Peblux</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --blue: #0877c9;
-  --blue-dark: #075b9b;
-  --background: #e9edf1;
-  --surface: #ffffff;
-  --text: #333333;
-  --muted: #777777;
-  --border: #c8d8e5;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--background);
-  color: var(--text);
-}
-
-button, input, select { font-family: inherit; }
-button { cursor: pointer; }
-
-[hidden] { display: none !important; }
-
-/* LOGIN E CADASTRO */
-
-#authScreen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background:
-    linear-gradient(90deg, #052c50dd, #075b9bcc),
-    url("https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=1800&q=85")
-    center/cover;
-}
-
-.auth-box {
-  width: 100%;
-  max-width: 410px;
-  padding: 28px;
-  background: var(--surface);
-  border-radius: 7px;
-  box-shadow: 0 10px 40px #0005;
-}
-
-.logo {
-  text-align: center;
-  color: var(--blue);
-  font-size: 38px;
-  font-weight: 900;
-  letter-spacing: -2px;
-}
-
-.auth-subtitle {
-  text-align: center;
-  color: var(--muted);
-  margin: 5px 0 25px;
-}
-
-.auth-box h2 { font-size: 21px; }
-
-.auth-box input {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #b9c5ce;
-  border-radius: 4px;
-  font-size: 15px;
-}
-
-.primary-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 4px;
-  color: white;
-  background: var(--blue);
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.primary-btn:hover, .avatar-save:hover {
-  background: var(--blue-dark);
-}
-
-.auth-switch {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 18px;
-}
-
-.auth-switch button, .text-button {
-  border: 0;
-  background: none;
-  color: var(--blue);
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.forgot-row {
-  text-align: right;
-  margin: 10px 0;
-}
-
-#authMessage {
-  font-size: 13px;
-  margin-top: 13px;
-  overflow-wrap: anywhere;
-  text-align: center;
-}
-
-/* TOPO */
-
-#app { display: none; }
-
-.topbar {
-  min-height: 54px;
-  background: var(--blue);
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 7px 18px;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
-.top-logo {
-  color: white;
-  font-size: 27px;
-  font-weight: 900;
-  text-decoration: none;
-  letter-spacing: -1px;
-}
-
-.top-links {
-  display: flex;
-  gap: 17px;
-}
-
-.top-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.search { flex: 1; max-width: 360px; }
-
-.search input {
-  width: 100%;
-  padding: 9px 11px;
-  border: 0;
-  border-radius: 4px;
-}
-
-.account-area {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.account-area select {
-  padding: 7px;
-  border-radius: 4px;
-  border: 0;
-}
-
-.account-area button {
-  padding: 8px 11px;
-  color: white;
-  background: transparent;
-  border: 1px solid #ffffff88;
-  border-radius: 4px;
-}
-
-/* LAYOUT */
-
-.layout {
-  display: flex;
-  max-width: 1400px;
-  min-height: calc(100vh - 54px);
-  margin: auto;
-}
-
-.sidebar {
-  width: 190px;
-  flex-shrink: 0;
-  padding: 17px 10px;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-}
-
-.sidebar-title {
-  padding: 12px 10px 8px;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.nav-item {
-  display: block;
-  padding: 11px 12px;
-  margin-bottom: 3px;
-  color: var(--text);
-  text-decoration: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.nav-item:hover, .nav-item.active {
-  background: #e5f2fc;
-  color: var(--blue);
-  font-weight: bold;
-}
-
-.content {
-  flex: 1;
-  min-width: 0;
-  padding: 24px;
-}
-
-.page { display: none; }
-.page.active { display: block; }
-
-.page-title {
-  margin: 0 0 18px;
-  font-size: 24px;
-}
-
-.panel {
-  padding: 18px;
-  margin-bottom: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-}
-
-.panel h2 { margin: 0 0 14px; font-size: 18px; }
-
-/* INÍCIO */
-
-.welcome {
-  padding: 23px;
-  margin-bottom: 22px;
-  color: white;
-  border-radius: 6px;
-  background:
-    linear-gradient(100deg, #075b9beF, #0877c9bb),
-    url("https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=1400&q=85")
-    center/cover;
-}
-
-.welcome-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.welcome h1 { margin: 0 0 8px; font-size: 28px; }
-.welcome p { margin: 0; }
-
-.home-avatar {
-  width: 115px;
-  height: 150px;
-  overflow: hidden;
-  border-radius: 6px;
-  background: #ffffff33;
-}
-
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: 14px;
-}
-
-.game-card {
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-}
-
-.game-thumb {
-  height: 115px;
-  background: linear-gradient(135deg, #2778b9, #65b5e8);
-}
-
-.game-info { padding: 10px; }
-.game-info strong { display: block; font-size: 14px; }
-.game-info small { color: var(--muted); }
-
-/* AVATAR */
-
-.curth-avatar {
-  width: 140px;
-  height: 180px;
-  position: relative;
-  margin: 10px auto;
-  --skin: #F5CD30;
-  --shirt: #1769AA;
-  --pants: #287A42;
-}
-
-.curth-avatar div {
-  position: absolute;
-  border: 2px solid #0002;
-  border-radius: 2px;
-}
-
-.avatar-head {
-  width: 52px;
-  height: 48px;
-  top: 0;
-  left: 44px;
-  background: var(--skin);
-}
-
-.avatar-torso {
-  width: 76px;
-  height: 65px;
-  top: 52px;
-  left: 32px;
-  background: var(--shirt);
-}
-
-.avatar-arm {
-  width: 19px;
-  height: 63px;
-  top: 54px;
-  background: var(--skin);
-}
-
-.avatar-arm.left { left: 10px; }
-.avatar-arm.right { right: 10px; }
-
-.avatar-leg {
-  width: 32px;
-  height: 55px;
-  top: 119px;
-  background: var(--pants);
-}
-
-.avatar-leg.left { left: 34px; }
-.avatar-leg.right { right: 34px; }
-
-.avatar-editor {
-  padding: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-}
-
-.avatar-editor label {
-  display: block;
-  margin-top: 14px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.avatar-editor input[type="color"] {
-  display: block;
-  width: 100%;
-  max-width: 250px;
-  height: 42px;
-  margin-top: 5px;
-  cursor: pointer;
-}
-
-.avatar-save {
-  padding: 12px 20px;
-  margin-top: 18px;
-  color: white;
-  background: var(--blue);
-  border: 0;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.profile-details h2 { margin: 0 0 8px; }
-.profile-details p { margin: 5px 0; color: var(--muted); font-size: 14px; }
-
-/* JOGADORES */
-
-.user-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 12px;
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-}
-
-.user-avatar-wrap {
-  width: 55px;
-  height: 70px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.user-avatar-wrap .curth-avatar {
-  margin: 0;
-  transform: scale(.38);
-  transform-origin: top left;
-}
-
-.user-card strong { display: block; font-size: 14px; }
-.user-card small { color: var(--muted); }
-
-/* CONFIGURAÇÕES */
-
-.setting-option {
-  display: block;
-  margin: 13px 0;
-}
-
-.setting-option input { margin-right: 7px; }
-
-#themeColor {
-  display: block;
-  width: 100%;
-  max-width: 200px;
-  height: 42px;
-  margin-top: 8px;
-  cursor: pointer;
-}
-
-#settingsLanguage {
-  width: 100%;
-  max-width: 280px;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-}
-
-.footer {
-  padding: 25px 10px;
-  margin-top: 30px;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  text-align: center;
-  font-size: 12px;
-}
-
-/* TEMA ESCURO */
-
-body.dark {
-  --background: #17191e;
-  --surface: #252a32;
-  --text: #eeeeee;
-  --muted: #b2b9c2;
-  --border: #3b424d;
-}
-
-body.dark .nav-item { color: #ddd; }
-body.dark .nav-item:hover,
-body.dark .nav-item.active {
-  background: #343e4b;
-  color: #65baff;
-}
-
-body.dark .game-card,
-body.dark .user-card,
-body.dark .panel,
-body.dark .avatar-editor {
-  color: var(--text);
-}
-
-body.dark .auth-box {
-  background: #252a32;
-  color: white;
-}
-
-body.dark .auth-box input {
-  background: #17191e;
-  color: white;
-  border-color: #555;
-}
-
-body.dark .search input,
-body.dark select {
-  background: #252a32;
-  color: white;
-}
-
-/* RESPONSIVO */
-
-@media(max-width: 750px) {
-  .topbar { gap: 9px; padding: 8px 10px; }
-  .top-links { display: none; }
-  .search { max-width: none; }
-  .account-area { gap: 5px; }
-  .account-area select { max-width: 105px; }
-  .layout { display: block; }
-  .sidebar {
-    display: flex;
-    width: 100%;
-    overflow-x: auto;
-    padding: 7px;
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .sidebar-title { display: none; }
-  .nav-item { white-space: nowrap; margin: 0 2px; }
-  .content { padding: 14px; }
-  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Source Sans Pro',Arial,sans-serif;color:#393b3d;background:#fff}
+button,input,select{font:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:root{--red:#c8202b;--red-dark:#a81721;--line:#ddd;--light:#f4f4f4}
+.navbar{height:60px;position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
+.nav-content{max-width:1200px;height:100%;margin:auto;padding:0 16px;display:flex;align-items:center;gap:28px}
+.brand{font-family:Arial Black,Arial,sans-serif;font-size:27px;font-weight:900;letter-spacing:-1.5px;color:white;-webkit-text-stroke:1.8px var(--red);paint-order:stroke fill;text-shadow:1px 1px 0 var(--red);text-decoration:none;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:23px;margin-left:auto}
+.nav-links a{color:#333;text-decoration:none;font-size:16px}
+.nav-links a:hover{color:var(--red)}
+.account-actions{display:flex;gap:8px;align-items:center}
+.account-button{border:1px solid var(--red);background:#fff;color:var(--red);padding:7px 15px;border-radius:3px;font-weight:700}
+.account-button.primary,.main-button,.blue-button{background:var(--red);color:#fff;border-color:var(--red)}
+.account-button:hover,.main-button:hover,.blue-button:hover{background:var(--red-dark);color:#fff}
+.account-name{font-weight:700;color:#333}
+.hero{min-height:590px;padding:90px 20px 60px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('https://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg') center/cover no-repeat}
+.hero-content{max-width:700px}
+.hero h1{font-size:76px;margin:0;font-weight:900;letter-spacing:-3px}
+.hero h2{font-size:27px;font-weight:400;margin:5px 0 25px}
+.hero p{font-size:20px}
+.main-button{display:inline-block;margin-top:20px;padding:12px 45px;border-radius:3px;text-decoration:none;font-size:21px;font-weight:700}
+.section{padding:80px 20px;text-align:center}
+.section h2{font-size:34px;margin-top:0;color:#333}
+.section p{max-width:850px;margin:15px auto;font-size:20px;line-height:1.5}
+.about{background:#f2f2f2}
+.game-images{display:flex;justify-content:center;gap:15px;max-width:1000px;margin:35px auto 0}
+.game-image{width:33.333%;height:180px;background-size:cover;background-position:center;border-radius:3px}
+.game-image:nth-child(1){background-image:url('https://images.rbxcdn.com/42268b6264d89827401ef912f174f288.jpg')}
+.game-image:nth-child(2){background-image:url('https://images.rbxcdn.com/04baeb33ef66ef1395cd5464309fece6.jpg')}
+.game-image:nth-child(3){background-image:url('https://images.rbxcdn.com/e8b89d14690203420d64b5b2fda0b461.jpg')}
+.platforms{background:#fff}
+.platform-list{display:flex;justify-content:center;flex-wrap:wrap;gap:15px;margin-top:30px}
+.platform{padding:15px 25px;min-width:130px;background:#eee;border-radius:3px;font-size:18px}
+.status{display:inline-block;margin-top:20px;padding:7px 15px;background:#fff2cc;color:#856404;border-radius:3px;font-weight:600}
+footer{background:#191919;color:#aaa;padding:35px 20px;text-align:center}
+footer a{color:#ddd;text-decoration:none;margin:0 10px}
+footer p{margin-top:25px;font-size:14px}
+
+/* Authentication modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;align-items:center;justify-content:center;padding:15px}
+.modal-overlay.active{display:flex}
+.auth-modal{position:relative;width:100%;max-width:420px;background:#fff;border-radius:5px;padding:30px;box-shadow:0 8px 35px #0004}
+.modal-close{position:absolute;right:15px;top:10px;border:0;background:none;font-size:27px;color:#777}
+.auth-modal h2{text-align:center;color:#333;margin:0 0 20px;font-size:28px}
+.auth-tabs{display:flex;border-bottom:1px solid #ddd;margin-bottom:22px}
+.auth-tab{flex:1;padding:12px;border:0;background:#fff;color:#777;font-weight:700;border-bottom:3px solid transparent}
+.auth-tab.active{color:var(--red);border-bottom-color:var(--red)}
+.auth-field{margin-bottom:15px}
+.auth-field label{display:block;margin-bottom:6px;font-weight:700;color:#444}
+.auth-field input,.auth-field select{width:100%;padding:11px;border:1px solid #ccc;border-radius:3px;background:#fff}
+.auth-submit{width:100%;padding:12px;margin-top:8px;border:0;border-radius:3px;background:var(--red);color:#fff;font-size:18px;font-weight:700}
+.auth-submit:disabled{opacity:.6;cursor:wait}
+.auth-message{display:none;margin-top:15px;padding:10px;border-radius:3px;font-size:14px}
+.auth-message.error{display:block;color:#a12626;background:#ffeaea}
+.auth-message.success{display:block;color:#216b38;background:#e8f7ed}
+
+/* Signed-in classic white/red interface */
+.app{display:none;min-height:calc(100vh - 60px);background:#fff}
+.app.visible{display:flex}
+.sidebar{width:205px;flex:0 0 205px;background:#f7f7f7;border-right:1px solid #ddd;padding:15px 10px;min-height:calc(100vh - 60px)}
+.sidebar-user{font-weight:700;padding:10px 9px;border-bottom:1px solid #ddd;margin-bottom:8px;color:#333}
+.side-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px;border:0;background:transparent;color:#444;text-align:left;border-radius:3px;font-size:15px}
+.side-item:hover,.side-item.active{background:#e9e9e9;color:var(--red);font-weight:700}
+.side-icon{width:20px;text-align:center;font-size:18px;color:var(--red)}
+.app-content{flex:1;min-width:0;max-width:1250px;padding:24px 25px 60px;margin:0 auto}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:25px;margin:0 0 18px;color:#333}
+.home-profile{display:flex;align-items:center;gap:16px;padding:8px 5px 24px}
+.home-avatar{width:80px;height:80px;border-radius:50%;background:#eee;overflow:hidden;display:grid;place-items:center}
+.home-avatar canvas{width:100%;height:100%;display:block}
+.home-profile h1{font-size:27px;margin:0;color:#333}
+.home-profile small{color:#888}
+.section-heading{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}
+.section-heading h2{font-size:19px;margin:0;color:#333}
+.muted{color:#999}
+.friend-list{display:flex;gap:20px;overflow-x:auto;padding:5px 2px 18px;border-bottom:1px solid #ddd}
+.friend{width:75px;flex-shrink:0;text-align:center}
+.friend-avatar{width:62px;height:62px;margin:auto auto 5px;border-radius:50%;background:#eee;display:grid;place-items:center;font-size:22px;border:1px solid #ddd;color:#777}
+.friend span{font-size:12px;display:block;white-space:nowrap}
+.empty-panel{background:#fafafa;border:1px solid #ddd;border-radius:3px;padding:25px;margin:12px 0 25px;color:#888;text-align:center}
+.empty-panel strong{display:block;color:#444;font-size:17px;margin-bottom:5px}
+.profile-banner{height:110px;background:linear-gradient(110deg,#ddd,#f1f1f1);border:1px solid #ddd}
+.profile-card{display:flex;align-items:center;gap:15px;background:#f7f7f7;padding:14px;border:1px solid #ddd;border-top:0}
+.profile-avatar{width:92px;height:92px;border-radius:50%;background:#eee;overflow:hidden;flex-shrink:0;border:1px solid #ddd}
+.profile-avatar canvas{width:100%;height:100%;display:block}
+.profile-info h1{margin:0;font-size:27px;color:#333}
+.profile-info p{margin:3px 0;color:#888}
+.profile-stats{font-size:13px;color:#777;margin-top:8px}
+.profile-tabs{display:flex;background:#f7f7f7;margin-top:12px;border-bottom:1px solid #ddd}
+.profile-tab{flex:1;background:none;border:0;color:#555;padding:12px;border-bottom:3px solid transparent}
+.profile-tab.active{border-bottom-color:var(--red);color:var(--red);font-weight:700}
+.profile-section{padding:18px 10px}
+.profile-section h3{margin:0 0 5px;color:#333}
+.profile-section p{color:#777;margin:5px 0 22px}
+.avatar-preview{height:360px;max-width:550px;margin:10px auto;background:#f1f1f1;border:1px solid #ddd;overflow:hidden;position:relative}
+.avatar-preview canvas{width:100%;height:100%;display:block}
+.preview-label{position:absolute;top:10px;left:12px;color:#555;background:#fff;padding:5px 9px;border:1px solid #ddd;border-radius:3px;font-size:13px;pointer-events:none}
+.profile-actions{text-align:center;margin:12px}
+.blue-button{border:0;border-radius:3px;padding:10px 18px;font-weight:700}
+.editor-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:18px}
+.editor-view{height:460px;background:#f1f1f1;border:1px solid #ddd;overflow:hidden}
+.editor-view canvas{width:100%;height:100%;display:block}
+.editor-controls{background:#f7f7f7;border:1px solid #ddd;padding:18px;border-radius:3px}
+.editor-controls h3{margin:0 0 15px;color:#333}
+.control-group{margin:14px 0}
+.control-group label{display:block;margin-bottom:7px;color:#444}
+.control-group input,.control-group select{width:100%}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-row input{height:38px;max-width:65px;border:0;background:none}
+.save-status{font-size:13px;color:#777;margin-top:12px;min-height:20px}
+.logout-button{border:1px solid #ccc;background:#fff;color:#555;padding:6px 12px;border-radius:3px}
+.app-top-user{margin-left:auto;display:flex;align-items:center;gap:10px;font-weight:700;color:#444}
+.app-top-user .logout-button{margin-left:6px}
+@media(max-width:760px){
+ .nav-content{gap:12px;padding:0 10px}.nav-links{gap:10px}.nav-links a{font-size:13px}
+ .brand{font-size:22px}.account-button{padding:6px 9px;font-size:12px}
+ .hero h1{font-size:53px}.hero h2{font-size:22px}.game-images{flex-direction:column}.game-image{width:100%}
+ .app{display:none!important}.app.visible{display:block!important}
+ .sidebar{width:100%;min-height:0;border-right:0;border-bottom:1px solid #ddd;display:flex;overflow-x:auto;padding:5px}
+ .sidebar-user{display:none}.side-item{width:auto;flex:0 0 auto;white-space:nowrap}
+ .app-content{padding:18px 12px 45px}
+ .editor-layout{grid-template-columns:1fr}.editor-view{height:390px}
 }
 </style>
 </head>
-
 <body>
 
-<!-- AUTENTICAÇÃO -->
-
-<div id="authScreen">
-  <div class="auth-box">
-    <div class="logo">CURTH</div>
-    <div class="auth-subtitle">Play. Create. Connect.</div>
-
-    <div id="loginForm">
-      <h2 data-i18n="login">Entrar</h2>
-      <input id="loginEmail" type="email" placeholder="Email" autocomplete="email">
-      <input id="loginPassword" type="password" placeholder="Senha" autocomplete="current-password">
-
-      <div class="forgot-row">
-        <button class="text-button" id="forgotPassword" type="button"
-          data-i18n="forgot">Esqueceu a senha?</button>
-      </div>
-
-      <button class="primary-btn" id="loginButton" data-i18n="login">Entrar</button>
-
-      <div class="auth-switch">
-        <span data-i18n="noAccount">Não tem uma conta?</span>
-        <button id="showRegister" data-i18n="register">Cadastre-se</button>
-      </div>
-    </div>
-
-    <div id="registerForm" hidden>
-      <h2 data-i18n="createAccount">Criar conta</h2>
-      <input id="registerUsername" maxlength="20" placeholder="Nome de usuário" autocomplete="username">
-      <input id="registerEmail" type="email" placeholder="Email" autocomplete="email">
-      <input id="registerPassword" type="password" placeholder="Senha" autocomplete="new-password">
-
-      <button class="primary-btn" id="registerButton" data-i18n="register">Criar conta</button>
-
-      <div class="auth-switch">
-        <span data-i18n="hasAccount">Já tem uma conta?</span>
-        <button id="showLogin" data-i18n="login">Entrar</button>
-      </div>
-    </div>
-
-    <div id="authMessage" role="status"></div>
+<!-- Public landing page: shown before login -->
+<div id="publicSite">
+<nav class="navbar">
+ <div class="nav-content">
+  <a href="#" class="brand">PEBLUX</a>
+  <div class="nav-links">
+   <a href="#home">Play</a><a href="#about">About</a><a href="#platforms">Platforms</a>
   </div>
-</div>
-
-<!-- APLICAÇÃO -->
-
-<div id="app">
-
-<header class="topbar">
-  <a class="top-logo" href="#" data-page="home">CURTH</a>
-
-  <div class="top-links">
-    <a data-page="home" data-i18n="home">Início</a>
-    <a data-page="games" data-i18n="games">Jogos</a>
-    <a data-page="catalog" data-i18n="catalog">Catálogo</a>
-    <a data-page="users" data-i18n="players">Jogadores</a>
+  <div class="account-actions" id="loggedOutButtons">
+   <button class="account-button" id="loginButton">Login</button>
+   <button class="account-button primary" id="signupButton">Sign Up</button>
   </div>
-
-  <div class="search">
-    <input id="searchInput" placeholder="Pesquisar...">
-  </div>
-
-  <div class="account-area">
-    <select id="languageSelect" aria-label="Language">
-      <option value="pt-BR">Português</option>
-      <option value="en">English</option>
-    </select>
-    <span id="topUsername">Player</span>
-    <button id="logoutButton" data-i18n="logout">Sair</button>
-  </div>
-</header>
-
-<div class="layout">
-
-<aside class="sidebar">
-  <div class="sidebar-title" data-i18n="navigation">Navegação</div>
-  <a class="nav-item active" data-page="home" data-i18n="home">Início</a>
-  <a class="nav-item" data-page="games" data-i18n="games">Jogos</a>
-  <a class="nav-item" data-page="catalog" data-i18n="catalog">Catálogo</a>
-  <a class="nav-item" data-page="users" data-i18n="players">Jogadores</a>
-
-  <div class="sidebar-title" data-i18n="myAccount">Minha conta</div>
-  <a class="nav-item" data-page="profile" data-i18n="profile">Meu Perfil</a>
-  <a class="nav-item" data-page="settings" data-i18n="settings">Configurações</a>
-</aside>
-
-<main class="content">
-
-<!-- INÍCIO -->
-
-<section id="home" class="page active">
-  <div class="welcome">
-    <div class="welcome-content">
-      <div class="home-avatar" id="homeAvatar"></div>
-      <div>
-        <h1 id="helloTitle">Olá!</h1>
-        <p id="helloSubtitle">Bem-vindo de volta ao Curth!</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2 data-i18n="featuredGames">Jogos em destaque</h2>
-    <div class="game-grid">
-      <div class="game-card">
-        <div class="game-thumb"></div>
-        <div class="game-info">
-          <strong>Curth Obby</strong>
-          <small data-i18n="comingSoon">Em breve</small>
-        </div>
-      </div>
-      <div class="game-card">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#318b53,#9bd66d)"></div>
-        <div class="game-info">
-          <strong>Nature Simulator</strong>
-          <small data-i18n="comingSoon">Em breve</small>
-        </div>
-      </div>
-      <div class="game-card">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#7850a8,#c18bdf)"></div>
-        <div class="game-info">
-          <strong>Block Adventure</strong>
-          <small data-i18n="comingSoon">Em breve</small>
-        </div>
-      </div>
-      <div class="game-card">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#bd7031,#f0c36a)"></div>
-        <div class="game-info">
-          <strong>Speed World</strong>
-          <small data-i18n="comingSoon">Em breve</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2 data-i18n="aboutCurth">Sobre o Curth</h2>
-    <p data-i18n="aboutText">Uma plataforma para descobrir experiências, criar sua identidade e conhecer jogadores.</p>
-  </div>
-</section>
-
-<!-- JOGOS -->
-
-<section id="games" class="page">
-  <h1 class="page-title" data-i18n="games">Jogos</h1>
-  <div class="panel">
-    <p data-i18n="gamesText">Explore os jogos disponíveis no Curth.</p>
-    <div class="game-grid">
-      <div class="game-card">
-        <div class="game-thumb"></div>
-        <div class="game-info">
-          <strong>Curth Obby</strong>
-          <small data-i18n="comingSoon">Em breve</small>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CATÁLOGO -->
-
-<section id="catalog" class="page">
-  <h1 class="page-title" data-i18n="catalog">Catálogo</h1>
-  <div class="panel">
-    <h2 data-i18n="catalogTitle">Catálogo do Curth</h2>
-    <p data-i18n="catalogText">Roupas, acessórios e itens estarão disponíveis aqui em breve.</p>
-  </div>
-</section>
-
-<!-- JOGADORES -->
-
-<section id="users" class="page">
-  <h1 class="page-title" data-i18n="players">Jogadores</h1>
-  <div class="panel">
-    <h2 data-i18n="community">Comunidade Curth</h2>
-    <div id="userList" class="user-list">Carregando...</div>
-  </div>
-</section>
-
-<!-- PERFIL -->
-
-<section id="profile" class="page">
-  <h1 class="page-title" data-i18n="profile">Meu Perfil</h1>
-
-  <div class="panel">
-    <div class="profile-header">
-      <div id="profileAvatar"></div>
-      <div class="profile-details">
-        <h2 id="profileDisplayName">Player</h2>
-        <p id="profileUsername">@player</p>
-        <p id="profileUserNumber">Curth ID: #...</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="avatar-editor">
-    <h2 data-i18n="avatarEditor">Editor de Avatar</h2>
-    <p data-i18n="avatarDescription">Personalize seu personagem no Curth.</p>
-
-    <div id="avatarEditorPreview"></div>
-
-    <label for="avatarSkin" data-i18n="skinColor">Cor da pele</label>
-    <input type="color" id="avatarSkin" value="#F5CD30">
-
-    <label for="avatarShirt" data-i18n="shirtColor">Cor da camiseta</label>
-    <input type="color" id="avatarShirt" value="#1769AA">
-
-    <label for="avatarPants" data-i18n="pantsColor">Cor da calça</label>
-    <input type="color" id="avatarPants" value="#287A42">
-
-    <button class="avatar-save" id="saveAvatar" data-i18n="saveAvatar">
-      Salvar Avatar
-    </button>
-
-    <p id="avatarStatus" role="status"></p>
-  </div>
-</section>
-
-<!-- CONFIGURAÇÕES -->
-
-<section id="settings" class="page">
-  <h1 class="page-title" data-i18n="settings">Configurações</h1>
-
-  <div class="panel">
-    <h2 data-i18n="language">Idioma</h2>
-    <select id="settingsLanguage">
-      <option value="pt-BR">Português</option>
-      <option value="en">English</option>
-    </select>
-  </div>
-
-  <div class="panel">
-    <h2 data-i18n="appearance">Aparência</h2>
-
-    <label class="setting-option">
-      <input type="radio" name="theme" value="light">
-      <span data-i18n="light">Claro</span>
-    </label>
-
-    <label class="setting-option">
-      <input type="radio" name="theme" value="dark">
-      <span data-i18n="dark">Escuro</span>
-    </label>
-
-    <label class="setting-option">
-      <input type="radio" name="theme" value="custom">
-      <span data-i18n="custom">Personalizado</span>
-    </label>
-
-    <label for="themeColor" data-i18n="themeColor">Cor principal</label>
-    <input type="color" id="themeColor" value="#0877c9">
-
-    <button class="avatar-save" id="saveSettings" data-i18n="saveSettings">
-      Salvar configurações
-    </button>
-
-    <p id="settingsStatus" role="status"></p>
-  </div>
-</section>
-
-<div class="footer">
-  Curth © 2026 — All rights reserved.
-</div>
-
+ </div>
+</nav>
+<main>
+ <section class="hero" id="home"><div class="hero-content">
+  <h1>PEBLUX</h1><h2>Powering Imagination</h2>
+  <p>A world of creativity, games and adventures. Discover a classic online gaming experience.</p>
+  <a href="#about" class="main-button">Explore Peblux</a>
+ </div></section>
+ <section class="section about" id="about">
+  <h2>WHAT IS PEBLUX?</h2>
+  <p>Peblux is a platform inspired by the classic era of online gaming. Explore experiences, meet new people and discover a world created by players.</p>
+  <p>Our goal is to bring back the feeling of classic virtual worlds while building something new.</p>
+  <div class="game-images"><div class="game-image"></div><div class="game-image"></div><div class="game-image"></div></div>
+  <span class="status">Peblux is under development</span>
+ </section>
+ <section class="section platforms" id="platforms">
+  <h2>PEBLUX ON YOUR DEVICE</h2><p>Peblux is being developed with the goal of supporting a classic desktop experience.</p>
+  <div class="platform-list"><div class="platform">PC</div><div class="platform">Mac</div><div class="platform">Web Browser</div></div>
+ </section>
 </main>
+<footer><div><a href="#home">Home</a><a href="#about">About</a><a href="#platforms">Platforms</a></div>
+ <p>Peblux is an independent project. Not affiliated with or endorsed by Roblox Corporation.</p><p>© 2026 Peblux. All rights reserved.</p>
+</footer>
+</div>
+
+<!-- Signed-in app -->
+<div id="signedInSite" hidden>
+<header class="navbar">
+ <div class="nav-content">
+  <button class="account-button" id="menuToggle" aria-label="Toggle menu">☰</button>
+  <a class="brand" href="#" id="brandHome">PEBLUX</a>
+  <div class="app-top-user"><span id="topUsername">Player</span><button class="logout-button" id="logoutButton">Logout</button></div>
+ </div>
+</header>
+<div class="app visible">
+ <aside class="sidebar" id="sidebar">
+  <div class="sidebar-user" id="sidebarUsername">Player</div>
+  <button class="side-item active" data-page="home"><span class="side-icon">⌂</span>Home</button>
+  <button class="side-item" data-page="profile"><span class="side-icon">♙</span>Profile</button>
+  <button class="side-item" data-page="messages"><span class="side-icon">▤</span>Messages</button>
+  <button class="side-item" data-page="friends"><span class="side-icon">♧</span>Friends</button>
+  <button class="side-item" data-page="avatar"><span class="side-icon">♟</span>Avatar</button>
+  <button class="side-item" data-page="inventory"><span class="side-icon">▣</span>Inventory</button>
+ </aside>
+ <main class="app-content">
+  <section class="page active" id="page-home">
+   <div class="home-profile"><div class="home-avatar" id="homeAvatar"></div><div><h1 id="homeUsername">Player</h1><small id="homeHandle">@player</small></div></div>
+   <div class="section-heading"><h2>Friends <span class="muted">(0)</span></h2><span class="muted">See All</span></div>
+   <div class="friend-list"><div class="friend"><div class="friend-avatar">?</div><span>No friends yet</span></div></div>
+   <div class="section-heading" style="margin-top:24px"><h2>Recent</h2></div>
+   <div class="empty-panel"><strong>Your recent activity will appear here</strong>Peblux is still under development.</div>
+   <div class="section-heading"><h2>Popular</h2></div>
+   <div class="empty-panel"><strong>Discover Peblux</strong>There is no content to display yet.</div>
+  </section>
+  <section class="page" id="page-profile">
+   <div class="profile-banner"></div>
+   <div class="profile-card"><div class="profile-avatar" id="profileAvatar"></div><div class="profile-info"><h1 id="profileUsername">Player</h1><p id="profileHandle">@player</p><div class="profile-stats">0 Friends &nbsp; 0 Followers &nbsp; 0 Following</div></div></div>
+   <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="about">About</button><button class="profile-tab" data-profile-tab="creations">Creations</button></div>
+   <div class="profile-section" id="profileAbout"><h3>About</h3><p>Welcome to my Peblux profile!</p><h3>Currently Wearing</h3>
+    <div class="avatar-preview" id="profile3D"><span class="preview-label">3D Avatar</span></div>
+    <div class="profile-actions"><button class="blue-button" data-page="avatar">Edit Avatar</button></div>
+   </div>
+   <div class="profile-section" id="profileCreations" hidden><h3>Creations</h3><div class="empty-panel">This player has not created anything yet.</div></div>
+  </section>
+  <section class="page" id="page-avatar"><h1 class="page-title">Avatar Editor</h1>
+   <div class="editor-layout"><div class="editor-view" id="avatarEditorView"></div><div class="editor-controls">
+    <h3>Customize your character</h3>
+    <div class="control-group"><label for="skinColor">Skin Color</label><div class="color-row"><input type="color" id="skinColor" value="#F2C18D"><span>Body color</span></div></div>
+    <div class="control-group"><label for="shirtColor">Shirt Color</label><div class="color-row"><input type="color" id="shirtColor" value="#c8202b"><span>Torso color</span></div></div>
+    <div class="control-group"><label for="pantsColor">Pants Color</label><div class="color-row"><input type="color" id="pantsColor" value="#444444"><span>Leg color</span></div></div>
+    <div class="control-group"><label for="faceStyle">Face</label><select id="faceStyle"><option value="classic">Classic Smile</option><option value="happy">Happy</option><option value="serious">Serious</option></select></div>
+    <div class="control-group"><label for="hairStyle">Hair</label><select id="hairStyle"><option value="none">No Hair</option><option value="brown">Brown Hair</option><option value="black">Black Hair</option><option value="blond">Blond Hair</option></select></div>
+    <button class="blue-button" id="saveAvatar">Save Avatar</button><div class="save-status" id="avatarStatus"></div>
+   </div></div>
+  </section>
+  <section class="page" id="page-messages"><h1 class="page-title">Messages</h1><div class="empty-panel"><strong>No messages</strong>Your messages will appear here.</div></section>
+  <section class="page" id="page-friends"><h1 class="page-title">Friends</h1><div class="empty-panel"><strong>No friends yet</strong>Your friends will appear here.</div></section>
+  <section class="page" id="page-inventory"><h1 class="page-title">Inventory</h1><div class="empty-panel"><strong>Your inventory is empty</strong>Your items will appear here.</div></section>
+ </main>
 </div>
 </div>
 
-<!-- JAVASCRIPT -->
+<!-- Login / signup dialog -->
+<div class="modal-overlay" id="authModal">
+ <div class="auth-modal">
+  <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+  <h2 id="modalTitle">Welcome to Peblux</h2>
+  <div class="auth-tabs"><button class="auth-tab active" id="loginTab">Login</button><button class="auth-tab" id="signupTab">Sign Up</button></div>
+  <form id="authForm">
+   <div class="auth-field"><label for="username">Username</label><input id="username" type="text" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]+" autocomplete="username" placeholder="Enter your username" required></div>
+   <div class="auth-field" id="genderField" hidden><label for="gender">Gender</label><select id="gender"><option value="Prefer not to say">Prefer not to say</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
+   <div class="auth-field"><label for="password">Password</label><input id="password" type="password" minlength="8" autocomplete="current-password" placeholder="Enter your password" required></div>
+   <div class="auth-field" id="confirmField" hidden><label for="confirmPassword">Confirm Password</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Confirm your password"></div>
+   <button class="auth-submit" id="submitButton" type="submit">Login</button><div class="auth-message" id="authMessage" role="status"></div>
+  </form>
+ </div>
+</div>
 
 <script type="module">
-import { supabase } from './supabase.js';
-
-const $ = id => document.getElementById(id);
-
-const defaultAvatar = {
-  skin: '#F5CD30',
-  shirt: '#1769AA',
-  pants: '#287A42'
-};
-
-let currentUser = null;
-let currentProfile = null;
-let currentLanguage = 'pt-BR';
-let recoveryMode = false;
-
-/* TRADUÇÕES */
-
-const translations = {
-  'pt-BR': {
-    login: 'Entrar',
-    forgot: 'Esqueceu a senha?',
-    noAccount: 'Não tem uma conta?',
-    register: 'Cadastre-se',
-    createAccount: 'Criar conta',
-    hasAccount: 'Já tem uma conta?',
-    home: 'Início',
-    games: 'Jogos',
-    catalog: 'Catálogo',
-    players: 'Jogadores',
-    profile: 'Meu Perfil',
-    settings: 'Configurações',
-    logout: 'Sair',
-    navigation: 'Navegação',
-    myAccount: 'Minha conta',
-    featuredGames: 'Jogos em destaque',
-    comingSoon: 'Em breve',
-    aboutCurth: 'Sobre o Curth',
-    aboutText: 'Uma plataforma para descobrir experiências, criar sua identidade e conhecer jogadores.',
-    gamesText: 'Explore os jogos disponíveis no Curth.',
-    catalogTitle: 'Catálogo do Curth',
-    catalogText: 'Roupas, acessórios e itens estarão disponíveis aqui em breve.',
-    community: 'Comunidade Curth',
-    avatarEditor: 'Editor de Avatar',
-    avatarDescription: 'Personalize seu personagem no Curth.',
-    skinColor: 'Cor da pele',
-    shirtColor: 'Cor da camiseta',
-    pantsColor: 'Cor da calça',
-    saveAvatar: 'Salvar Avatar',
-    language: 'Idioma',
-    appearance: 'Aparência',
-    light: 'Claro',
-    dark: 'Escuro',
-    custom: 'Personalizado',
-    themeColor: 'Cor principal',
-    saveSettings: 'Salvar configurações',
-    hello: 'Olá, ',
-    welcome: 'Bem-vindo de volta ao Curth!',
-    search: 'Pesquisar...',
-    emailPlaceholder: 'Email',
-    passwordPlaceholder: 'Senha',
-    usernamePlaceholder: 'Nome de usuário'
-  },
-
-  en: {
-    login: 'Log in',
-    forgot: 'Forgot password?',
-    noAccount: "Don't have an account?",
-    register: 'Sign up',
-    createAccount: 'Create account',
-    hasAccount: 'Already have an account?',
-    home: 'Home',
-    games: 'Games',
-    catalog: 'Catalog',
-    players: 'Players',
-    profile: 'My Profile',
-    settings: 'Settings',
-    logout: 'Log out',
-    navigation: 'Navigation',
-    myAccount: 'My account',
-    featuredGames: 'Featured games',
-    comingSoon: 'Coming soon',
-    aboutCurth: 'About Curth',
-    aboutText: 'A platform to discover experiences, create your identity and meet players.',
-    gamesText: 'Explore the games available on Curth.',
-    catalogTitle: 'Curth Catalog',
-    catalogText: 'Clothes, accessories and items will be available here soon.',
-    community: 'Curth Community',
-    avatarEditor: 'Avatar Editor',
-    avatarDescription: 'Customize your character on Curth.',
-    skinColor: 'Skin color',
-    shirtColor: 'Shirt color',
-    pantsColor: 'Pants color',
-    saveAvatar: 'Save Avatar',
-    language: 'Language',
-    appearance: 'Appearance',
-    light: 'Light',
-    dark: 'Dark',
-    custom: 'Custom',
-    themeColor: 'Main color',
-    saveSettings: 'Save settings',
-    hello: 'Hello, ',
-    welcome: 'Welcome back to Curth!',
-    search: 'Search...',
-    emailPlaceholder: 'Email',
-    passwordPlaceholder: 'Password',
-    usernamePlaceholder: 'Username'
-  }
-};
-
-function t(key) {
-  return translations[currentLanguage]?.[key] ||
-    translations['pt-BR'][key] || key;
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const SUPABASE_URL='https://rdsezvmtrnfgjithodjc.supabase.co';
+const SUPABASE_KEY='sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+let currentUser=null,authMode='login';
+const defaultAvatar={skinColor:'#F2C18D',shirtColor:'#c8202b',pantsColor:'#444444',face:'classic',hair:'none'};
+let avatarConfig={...defaultAvatar};
+let activeViewer=null;
+function internalEmail(username){return username.trim().toLowerCase()+'@users.peblux.invalid'}
+function showAuthMessage(text,type='error'){$('authMessage').textContent=text;$('authMessage').className='auth-message '+type}
+function setMode(mode){
+ authMode=mode;$('loginTab').classList.toggle('active',mode==='login');$('signupTab').classList.toggle('active',mode==='signup');
+ $('genderField').hidden=mode!=='signup';$('confirmField').hidden=mode!=='signup';$('confirmPassword').required=mode==='signup';
+ $('password').autocomplete=mode==='signup'?'new-password':'current-password';
+ $('modalTitle').textContent=mode==='signup'?'Create Your Account':'Welcome to Peblux';
+ $('submitButton').textContent=mode==='signup'?'Create Account':'Login';
+ $('authMessage').className='auth-message';$('authMessage').textContent='';
 }
-
-function translatePage() {
-  document.documentElement.lang = currentLanguage;
-
-  document.querySelectorAll('[data-i18n]').forEach(element => {
-    element.textContent = t(element.dataset.i18n);
-  });
-
-  $('loginEmail').placeholder = t('emailPlaceholder');
-  $('registerEmail').placeholder = t('emailPlaceholder');
-  $('loginPassword').placeholder = t('passwordPlaceholder');
-  $('registerPassword').placeholder = t('passwordPlaceholder');
-  $('registerUsername').placeholder = t('usernamePlaceholder');
-  $('searchInput').placeholder = t('search');
-
-  if (currentProfile) {
-    const name = currentProfile.display_name ||
-      currentProfile.username || 'Player';
-
-    $('helloTitle').textContent = t('hello') + name + '!';
-    $('helloSubtitle').textContent = t('welcome');
+function openModal(mode){setMode(mode);$('authModal').classList.add('active')}
+$('loginButton').addEventListener('click',()=>openModal('login'));
+$('signupButton').addEventListener('click',()=>openModal('signup'));
+$('loginTab').addEventListener('click',()=>setMode('login'));
+$('signupTab').addEventListener('click',()=>setMode('signup'));
+$('closeModal').addEventListener('click',()=>$('authModal').classList.remove('active'));
+$('authModal').addEventListener('click',e=>{if(e.target===$('authModal'))$('authModal').classList.remove('active')});
+$('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();const username=$('username').value.trim(),password=$('password').value;
+ if(!/^[A-Za-z0-9_]{3,20}$/.test(username))return showAuthMessage('Username must contain 3–20 letters, numbers or underscores.');
+ if(password.length<8)return showAuthMessage('Password must have at least 8 characters.');
+ if(authMode==='signup'&&password!==$('confirmPassword').value)return showAuthMessage('Passwords do not match.');
+ $('submitButton').disabled=true;$('submitButton').textContent='Please wait...';
+ try{
+  if(authMode==='signup'){
+   const {data,error}=await supabase.auth.signUp({email:internalEmail(username),password,options:{data:{username,gender:$('gender').value}}});
+   if(error)throw error;
+   if(data.session)showAuthMessage('Your Peblux account has been created successfully.','success');
+   else showAuthMessage('Account created. Check Supabase Auth confirmation settings.','success');
+  }else{
+   const {error}=await supabase.auth.signInWithPassword({email:internalEmail(username),password});
+   if(error)throw error;
+   $('authModal').classList.remove('active');
   }
-}
-
-/* MENSAGENS */
-
-function showAuthMessage(message, success = false) {
-  $('authMessage').textContent = message;
-  $('authMessage').style.color = success ? '#178b45' : '#d33';
-}
-
-/* TROCAR FORMULÁRIOS */
-
-$('showRegister').onclick = () => {
-  $('loginForm').hidden = true;
-  $('registerForm').hidden = false;
-  $('authMessage').textContent = '';
-};
-
-$('showLogin').onclick = () => {
-  $('registerForm').hidden = true;
-  $('loginForm').hidden = false;
-  $('authMessage').textContent = '';
-};
-
-/* CADASTRO */
-
-$('registerButton').onclick = async () => {
-  const username = $('registerUsername').value.trim();
-  const email = $('registerEmail').value.trim();
-  const password = $('registerPassword').value;
-
-  if (!username || !email || !password) {
-    return showAuthMessage('Preencha todos os campos.');
-  }
-
-  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-    return showAuthMessage('Use de 3 a 20 caracteres: letras, números ou _.');
-  }
-
-  if (password.length < 6) {
-    return showAuthMessage('A senha precisa ter pelo menos 6 caracteres.');
-  }
-
-  $('registerButton').disabled = true;
-  showAuthMessage('Criando sua conta...', true);
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { username: username.toLowerCase() },
-      emailRedirectTo: location.origin
-    }
-  });
-
-  $('registerButton').disabled = false;
-
-  if (error) return showAuthMessage(error.message);
-
-  if (data.session && data.user) {
-    await startApp(data.user);
-  } else {
-    showAuthMessage(
-      currentLanguage === 'en'
-        ? 'Account created! Check your email to confirm your account.'
-        : 'Conta criada! Confira seu email para confirmar o cadastro.',
-      true
-    );
-  }
-};
-
-/* LOGIN */
-
-$('loginButton').onclick = async () => {
-  const email = $('loginEmail').value.trim();
-  const password = $('loginPassword').value;
-
-  if (!email || !password) {
-    return showAuthMessage('Preencha email e senha.');
-  }
-
-  $('loginButton').disabled = true;
-  showAuthMessage('Entrando...', true);
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  $('loginButton').disabled = false;
-
-  if (error) return showAuthMessage(error.message);
-
-  await startApp(data.user);
-};
-
-/* RECUPERAÇÃO DE SENHA */
-
-$('forgotPassword').onclick = async () => {
-  const email = prompt(
-    currentLanguage === 'en'
-      ? 'Enter the email used to create your account:'
-      : 'Digite o email usado para criar sua conta:'
-  );
-
-  if (!email || !email.trim()) return;
-
-  const { error } = await supabase.auth.resetPasswordForEmail(
-    email.trim(),
-    { redirectTo: location.origin }
-  );
-
-  showAuthMessage(
-    error
-      ? error.message
-      : currentLanguage === 'en'
-        ? 'If the account exists, a recovery email will be sent.'
-        : 'Se a conta existir, um email de recuperação será enviado.',
-    !error
-  );
-};
-
-/* NOVA SENHA */
-
-function showRecoveryForm() {
-  recoveryMode = true;
-  $('loginForm').hidden = true;
-  $('registerForm').hidden = true;
-
-  let form = $('recoveryForm');
-
-  if (!form) {
-    form = document.createElement('div');
-    form.id = 'recoveryForm';
-    form.innerHTML = `
-      <h2 data-i18n="newPasswordTitle">Nova senha</h2>
-      <input id="newPassword" type="password" autocomplete="new-password">
-      <button class="primary-btn" id="updatePasswordButton">Salvar nova senha</button>
-      <div class="auth-switch">
-        <button id="cancelRecovery">Voltar</button>
-      </div>
-    `;
-    $('loginForm').parentNode.appendChild(form);
-
-    $('cancelRecovery').onclick = () => {
-      recoveryMode = false;
-      form.hidden = true;
-      $('loginForm').hidden = false;
-    };
-
-    $('updatePasswordButton').onclick = async () => {
-      const password = $('newPassword').value;
-
-      if (password.length < 6) {
-        return showAuthMessage('A senha precisa ter pelo menos 6 caracteres.');
-      }
-
-      const { error } = await supabase.auth.updateUser({ password });
-
-      if (error) return showAuthMessage(error.message);
-
-      showAuthMessage(
-        currentLanguage === 'en'
-          ? 'Password updated. You can now log in.'
-          : 'Senha atualizada. Você já pode entrar.',
-        true
-      );
-
-      recoveryMode = false;
-      form.hidden = true;
-      $('loginForm').hidden = false;
-    };
-  }
-
-  form.hidden = false;
-  $('authMessage').textContent = '';
-}
-
-/* NAVEGAÇÃO */
-
-function navigate(page) {
-  const target = $(page);
-  if (!target) return;
-
-  document.querySelectorAll('.page').forEach(section => {
-    section.classList.remove('active');
-  });
-
-  target.classList.add('active');
-
-  document.querySelectorAll('.nav-item').forEach(link => {
-    link.classList.toggle('active', link.dataset.page === page);
-  });
-
-  if (page === 'users') loadUsers();
-  if (page === 'profile') loadProfile();
-  if (page === 'settings') loadProfile();
-}
-
-document.querySelectorAll('[data-page]').forEach(link => {
-  link.addEventListener('click', event => {
-    event.preventDefault();
-    navigate(link.dataset.page);
-  });
+ }catch(error){
+  let msg=error.message||'Something went wrong.';
+  if(msg.toLowerCase().includes('already registered')||msg.toLowerCase().includes('already exists'))msg='This username is already registered.';
+  if(msg.toLowerCase().includes('invalid login credentials'))msg='Incorrect username or password.';
+  showAuthMessage(msg);
+ }finally{$('submitButton').disabled=false;$('submitButton').textContent=authMode==='signup'?'Create Account':'Login'}
 });
-
-/* AVATAR */
-
-function validColor(value, fallback) {
-  return typeof value === 'string' &&
-    /^#[0-9a-fA-F]{6}$/.test(value)
-    ? value : fallback;
+$('logoutButton').addEventListener('click',async()=>{await supabase.auth.signOut()});
+function showPublic(){ $('publicSite').hidden=false;$('signedInSite').hidden=true;$('authModal').classList.remove('active');if(activeViewer){activeViewer.dispose();activeViewer=null} }
+function showApp(){ $('publicSite').hidden=true;$('signedInSite').hidden=false; }
+function navigate(page){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ $('page-'+page)?.classList.add('active');
+ document.querySelectorAll('.side-item').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ if(page==='profile')renderAvatar('profile3D',avatarConfig,{cameraZ:8.2,cameraY:2.1,lookY:2.0});
+ if(page==='avatar')renderAvatar('avatarEditorView',avatarConfig,{cameraZ:9.3,cameraY:2.0,lookY:1.55});
 }
-
-function normalizeAvatar(avatar) {
-  return {
-    skin: validColor(avatar?.skin, defaultAvatar.skin),
-    shirt: validColor(avatar?.shirt, defaultAvatar.shirt),
-    pants: validColor(avatar?.pants, defaultAvatar.pants)
-  };
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
+$('menuToggle').addEventListener('click',()=>{$('sidebar').hidden=!$('sidebar').hidden});
+$('brandHome').addEventListener('click',e=>{e.preventDefault();navigate('home')});
+document.querySelectorAll('.profile-tab').forEach(tab=>tab.addEventListener('click',()=>{
+ document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');
+ const about=tab.dataset.profileTab==='about';$('profileAbout').hidden=!about;$('profileCreations').hidden=about;
+}));
+async function loadProfile(user){
+ currentUser=user;let profile=null;
+ const {data,error}=await supabase.from('profiles').select('username,avatar_config').eq('id',user.id).single();
+ if(error)console.warn('Profile read:',error.message);
+ profile=data||{};
+ const username=profile.username||user.user_metadata?.username||'Player';
+ avatarConfig={...defaultAvatar,...(profile.avatar_config||{})};
+ $('topUsername').textContent=username;$('sidebarUsername').textContent=username;
+ $('homeUsername').textContent=username;$('homeHandle').textContent='@'+username;
+ $('profileUsername').textContent=username;$('profileHandle').textContent='@'+username;
+ $('skinColor').value=avatarConfig.skinColor;$('shirtColor').value=avatarConfig.shirtColor;$('pantsColor').value=avatarConfig.pantsColor;
+ $('faceStyle').value=avatarConfig.face;$('hairStyle').value=avatarConfig.hair;
+ showApp();navigate('home');
 }
+supabase.auth.onAuthStateChange((_event,session)=>{if(session?.user)loadProfile(session.user);else{currentUser=null;showPublic()}});
+const {data:{session}}=await supabase.auth.getSession();
+if(session?.user)await loadProfile(session.user);else showPublic();
 
-function renderAvatar(element, avatar = defaultAvatar) {
-  if (!element) return;
-
-  const colors = normalizeAvatar(avatar);
-
-  element.innerHTML = `
-    <div class="curth-avatar">
-      <div class="avatar-head"></div>
-      <div class="avatar-arm left"></div>
-      <div class="avatar-arm right"></div>
-      <div class="avatar-torso"></div>
-      <div class="avatar-leg left"></div>
-      <div class="avatar-leg right"></div>
-    </div>
-  `;
-
-  const character = element.querySelector('.curth-avatar');
-
-  character.style.setProperty('--skin', colors.skin);
-  character.style.setProperty('--shirt', colors.shirt);
-  character.style.setProperty('--pants', colors.pants);
+/* Rounded R6-inspired character built from softened 3D shapes */
+function mat(color){return new THREE.MeshStandardMaterial({color,roughness:.78})}
+function roundedBox(w,h,d,r,material){
+ const shape=new THREE.Shape();const x=-w/2,y=-h/2;
+ shape.moveTo(x+r,y);shape.lineTo(x+w-r,y);shape.quadraticCurveTo(x+w,y,x+w,y+r);
+ shape.lineTo(x+w,y+h-r);shape.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+ shape.lineTo(x+r,y+h);shape.quadraticCurveTo(x,y+h,x,y+h-r);
+ shape.lineTo(x,y+r);shape.quadraticCurveTo(x,y,x+r,y);
+ const geo=new THREE.ExtrudeGeometry(shape,{depth:d-2*r,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:r,bevelThickness:r,curveSegments:5});
+ geo.translate(0,0,-(d-2*r)/2);
+ const mesh=new THREE.Mesh(geo,material);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;
 }
-
-/* PERFIL */
-
-async function loadProfile() {
-  if (!currentUser) return;
-
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('username, display_name, user_number, avatar_data, preferred_language, theme_mode, theme_color')
-    .eq('id', currentUser.id)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Erro ao carregar perfil:', error);
-    return;
-  }
-
-  if (!data) return;
-
-  currentProfile = data;
-
-  const name = data.display_name || data.username || 'Player';
-  const avatar = normalizeAvatar(data.avatar_data);
-
-  $('profileDisplayName').textContent = name;
-  $('profileUsername').textContent = '@' + (data.username || 'player');
-  $('profileUserNumber').textContent =
-    'Curth ID: #' + (data.user_number ?? '...');
-
-  $('topUsername').textContent = name;
-  $('helloTitle').textContent = t('hello') + name + '!';
-
-  currentLanguage = data.preferred_language || 'pt-BR';
-  $('languageSelect').value = currentLanguage;
-  $('settingsLanguage').value = currentLanguage;
-
-  const theme = data.theme_mode || 'light';
-  const color = data.theme_color || '#0877c9';
-
-  document.querySelectorAll('input[name="theme"]').forEach(input => {
-    input.checked = input.value === theme;
-  });
-
-  $('themeColor').value = color;
-  applyTheme(theme, color);
-  translatePage();
-
-  $('avatarSkin').value = avatar.skin;
-  $('avatarShirt').value = avatar.shirt;
-  $('avatarPants').value = avatar.pants;
-
-  renderAvatar($('profileAvatar'), avatar);
-  renderAvatar($('avatarEditorPreview'), avatar);
-  renderAvatar($('homeAvatar'), avatar);
+function buildAvatar(c){
+ const g=new THREE.Group(),skin=mat(c.skinColor),shirt=mat(c.shirtColor),pants=mat(c.pantsColor),dark=mat('#292929'),white=mat('#fff');
+ function part(w,h,d,r,m,x,y,z){const o=roundedBox(w,h,d,r,m);o.position.set(x,y,z);g.add(o);return o}
+ // Legs, torso and arms retain classic R6 proportions but use rounded bevels.
+ part(.46,.92,.46,.065,pants,-.245,.47,0);part(.46,.92,.46,.065,pants,.245,.47,0);
+ part(.98,1.02,.48,.075,shirt,0,1.48,0);
+ part(.38,1.02,.40,.09,skin,-.69,1.48,0);part(.38,1.02,.40,.09,skin,.69,1.48,0);
+ // Head is softly rounded, not a sharp cube.
+ part(.78,.78,.76,.13,skin,0,2.43,0);
+ // Front-facing simple classic face
+ function facePart(w,h,d,m,x,y,z){part(w,h,d,.012,m,x,y,z)}
+ facePart(.075,.09,.018,dark,-.16,2.49,.386);facePart(.075,.09,.018,dark,.16,2.49,.386);
+ if(c.face==='classic'){
+  facePart(.27,.035,.018,dark,0,2.25,.386);
+  facePart(.035,.04,.02,white,-.08,2.25,.399);facePart(.035,.04,.02,white,0,2.25,.399);facePart(.035,.04,.02,white,.08,2.25,.399);
+ }else if(c.face==='happy'){facePart(.23,.065,.018,dark,0,2.26,.386)}
+ else{facePart(.22,.025,.018,dark,0,2.23,.386)}
+ if(c.hair!=='none'){
+  const hc={brown:'#68452d',black:'#202020',blond:'#d6b35d'}[c.hair],hair=mat(hc);
+  part(.82,.17,.80,.07,hair,0,2.84,-.015);
+  part(.16,.22,.78,.05,hair,-.32,2.72,-.015);
+  part(.16,.22,.78,.05,hair,.32,2.72,-.015);
+ }
+ return g;
 }
-
-/* PRÉVIA DO AVATAR */
-
-function updateAvatarPreview() {
-  renderAvatar($('avatarEditorPreview'), {
-    skin: $('avatarSkin').value,
-    shirt: $('avatarShirt').value,
-    pants: $('avatarPants').value
-  });
+function renderAvatar(containerId,config,opts={}){
+ const container=$(containerId);if(!container)return;
+ if(activeViewer){activeViewer.dispose();activeViewer=null}
+ container.innerHTML='';
+ const scene=new THREE.Scene();scene.background=new THREE.Color('#f1f1f1');
+ const camera=new THREE.PerspectiveCamera(34,1,.1,100);
+ camera.position.set(0,opts.cameraY||2,opts.cameraZ||9);camera.lookAt(0,opts.lookY||1.55,0);
+ const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ container.appendChild(renderer.domElement);
+ scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2));
+ const key=new THREE.DirectionalLight(0xffffff,2.1);key.position.set(-3,6,5);key.castShadow=true;scene.add(key);
+ const avatar=buildAvatar(config);scene.add(avatar);
+ const floor=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat('#e5e5e5'));floor.rotation.x=-Math.PI/2;floor.position.y=-.02;floor.receiveShadow=true;scene.add(floor);
+ let drag=false,last=0;renderer.domElement.addEventListener('pointerdown',e=>{drag=true;last=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
+ renderer.domElement.addEventListener('pointermove',e=>{if(drag){avatar.rotation.y+=(e.clientX-last)*.012;last=e.clientX}});
+ renderer.domElement.addEventListener('pointerup',()=>drag=false);renderer.domElement.addEventListener('pointercancel',()=>drag=false);
+ const resize=()=>{const w=container.clientWidth||300,h=container.clientHeight||300;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};resize();
+ const observer=new ResizeObserver(resize);observer.observe(container);
+ let alive=true;function animate(){if(!alive)return;requestAnimationFrame(animate);renderer.render(scene,camera)}animate();
+ activeViewer={dispose(){alive=false;observer.disconnect();renderer.dispose();scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()})}};
 }
-
-$('avatarSkin').addEventListener('input', updateAvatarPreview);
-$('avatarShirt').addEventListener('input', updateAvatarPreview);
-$('avatarPants').addEventListener('input', updateAvatarPreview);
-
-/* SALVAR AVATAR */
-
-$('saveAvatar').onclick = async () => {
-  if (!currentUser) return;
-
-  const avatar = {
-    skin: $('avatarSkin').value,
-    shirt: $('avatarShirt').value,
-    pants: $('avatarPants').value
-  };
-
-  $('avatarStatus').textContent =
-    currentLanguage === 'en' ? 'Saving...' : 'Salvando...';
-
-  const { error } = await supabase
-    .from('profiles')
-    .update({ avatar_data: avatar })
-    .eq('id', currentUser.id);
-
-  if (error) {
-    $('avatarStatus').textContent = error.message;
-    return;
-  }
-
-  renderAvatar($('profileAvatar'), avatar);
-  renderAvatar($('homeAvatar'), avatar);
-
-  $('avatarStatus').textContent =
-    currentLanguage === 'en' ? 'Avatar saved!' : 'Avatar salvo com sucesso!';
-};
-
-/* JOGADORES */
-
-async function loadUsers() {
-  const list = $('userList');
-  list.textContent = currentLanguage === 'en'
-    ? 'Loading players...'
-    : 'Carregando jogadores...';
-
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('username, display_name, user_number, avatar_data')
-    .order('user_number', { ascending: true });
-
-  if (error) {
-    list.textContent = currentLanguage === 'en'
-      ? 'Could not load players.'
-      : 'Não foi possível carregar os jogadores.';
-    console.error(error);
-    return;
-  }
-
-  if (!data?.length) {
-    list.textContent = currentLanguage === 'en'
-      ? 'No players yet.'
-      : 'Ainda não há jogadores.';
-    return;
-  }
-
-  list.innerHTML = '';
-
-  data.forEach(user => {
-    const card = document.createElement('div');
-    card.className = 'user-card';
-
-    const avatarWrap = document.createElement('div');
-    avatarWrap.className = 'user-avatar-wrap';
-    renderAvatar(avatarWrap, user.avatar_data);
-
-    const details = document.createElement('div');
-    const name = document.createElement('strong');
-    name.textContent = user.display_name || user.username || 'Player';
-
-    const number = document.createElement('small');
-    number.textContent = 'Curth ID: #' + (user.user_number ?? '?');
-
-    details.append(name, number);
-    card.append(avatarWrap, details);
-    list.appendChild(card);
-  });
-}
-
-/* IDIOMA */
-
-async function changeLanguage(language) {
-  if (!translations[language]) return;
-
-  currentLanguage = language;
-  $('languageSelect').value = language;
-  $('settingsLanguage').value = language;
-  translatePage();
-
-  if (!currentUser) return;
-
-  const { error } = await supabase
-    .from('profiles')
-    .update({ preferred_language: language })
-    .eq('id', currentUser.id);
-
-  if (error) console.error('Language save error:', error);
-}
-
-$('languageSelect').addEventListener('change', event => {
-  changeLanguage(event.target.value);
+function readConfig(){return{skinColor:$('skinColor').value,shirtColor:$('shirtColor').value,pantsColor:$('pantsColor').value,face:$('faceStyle').value,hair:$('hairStyle').value}}
+['skinColor','shirtColor','pantsColor','faceStyle','hairStyle'].forEach(id=>$(id).addEventListener('input',()=>{avatarConfig=readConfig();renderAvatar('avatarEditorView',avatarConfig,{cameraZ:9.3,cameraY:2,lookY:1.55})}));
+$('saveAvatar').addEventListener('click',async()=>{
+ if(!currentUser)return;$('saveAvatar').disabled=true;$('avatarStatus').textContent='Saving...';
+ const config=readConfig();const {error}=await supabase.from('profiles').update({avatar_config:config}).eq('id',currentUser.id);
+ $('saveAvatar').disabled=false;
+ if(error){$('avatarStatus').textContent='Could not save: '+error.message;return}
+ avatarConfig=config;$('avatarStatus').textContent='Avatar saved successfully.';
 });
-
-$('settingsLanguage').addEventListener('change', event => {
-  changeLanguage(event.target.value);
-});
-
-/* TEMAS */
-
-function applyTheme(mode, color) {
-  document.body.classList.toggle('dark', mode === 'dark');
-
-  document.documentElement.style.setProperty(
-    '--blue',
-    mode === 'custom' ? color : '#0877c9'
-  );
-}
-
-document.querySelectorAll('input[name="theme"]').forEach(input => {
-  input.addEventListener('change', () => {
-    applyTheme(input.value, $('themeColor').value);
-  });
-});
-
-$('themeColor').addEventListener('input', () => {
-  const selected = document.querySelector('input[name="theme"]:checked');
-
-  if (selected?.value === 'custom') {
-    applyTheme('custom', $('themeColor').value);
-  }
-});
-
-/* SALVAR CONFIGURAÇÕES */
-
-$('saveSettings').onclick = async () => {
-  if (!currentUser) return;
-
-  const selected = document.querySelector('input[name="theme"]:checked');
-
-  if (!selected) return;
-
-  const settings = {
-    preferred_language: currentLanguage,
-    theme_mode: selected.value,
-    theme_color: $('themeColor').value
-  };
-
-  const { error } = await supabase
-    .from('profiles')
-    .update(settings)
-    .eq('id', currentUser.id);
-
-  if (error) {
-    $('settingsStatus').textContent = error.message;
-    return;
-  }
-
-  applyTheme(settings.theme_mode, settings.theme_color);
-
-  $('settingsStatus').textContent =
-    currentLanguage === 'en'
-      ? 'Settings saved!'
-      : 'Configurações salvas!';
-};
-
-/* PESQUISA DE JOGADORES */
-
-$('searchInput').addEventListener('keydown', event => {
-  if (event.key !== 'Enter') return;
-
-  const query = event.target.value.trim().toLowerCase();
-
-  navigate('users');
-
-  if (!query) return;
-
-  loadUsers().then(() => {
-    document.querySelectorAll('.user-card').forEach(card => {
-      card.hidden = !card.textContent.toLowerCase().includes(query);
-    });
-  });
-});
-
-/* SAIR */
-
-$('logoutButton').onclick = async () => {
-  await supabase.auth.signOut();
-  location.reload();
-};
-
-/* INICIAR APLICAÇÃO */
-
-let startingApp = false;
-
-async function startApp(user) {
-  if (!user || startingApp) return;
-
-  startingApp = true;
-  currentUser = user;
-
-  $('authScreen').style.display = 'none';
-  $('app').style.display = 'block';
-
-  await loadProfile();
-
-  startingApp = false;
-}
-
-async function initialize() {
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  if (data.session?.user) {
-    await startApp(data.session.user);
-  }
-}
-
-/* EVENTOS DE AUTENTICAÇÃO */
-
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    showRecoveryForm();
-    return;
-  }
-
-  if (session?.user && !recoveryMode) {
-    startApp(session.user);
-  }
-});
-
-initialize();
 </script>
-
 </body>
 </html>
