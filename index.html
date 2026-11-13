@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:'Source Sans Pro',Arial,sans-serif;color:#393b3d;background:#fff}
-button,input,select{font:inherit}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
 :root{--red:#c8202b;--red-dark:#a81721;--line:#ddd;--light:#f4f4f4}
@@ -22,9 +22,8 @@ button{cursor:pointer}
 .nav-links a:hover{color:var(--red)}
 .account-actions{display:flex;gap:8px;align-items:center}
 .account-button{border:1px solid var(--red);background:#fff;color:var(--red);padding:7px 15px;border-radius:3px;font-weight:700}
-.account-button.primary,.main-button,.blue-button{background:var(--red);color:#fff;border-color:var(--red)}
-.account-button:hover,.main-button:hover,.blue-button:hover{background:var(--red-dark);color:#fff}
-.account-name{font-weight:700;color:#333}
+.account-button.primary,.main-button,.action-button{background:var(--red);color:#fff;border-color:var(--red)}
+.account-button:hover,.main-button:hover,.action-button:hover{background:var(--red-dark);color:#fff}
 .hero{min-height:590px;padding:90px 20px 60px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('https://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg') center/cover no-repeat}
 .hero-content{max-width:700px}
 .hero h1{font-size:76px;margin:0;font-weight:900;letter-spacing:-3px}
@@ -48,7 +47,7 @@ footer{background:#191919;color:#aaa;padding:35px 20px;text-align:center}
 footer a{color:#ddd;text-decoration:none;margin:0 10px}
 footer p{margin-top:25px;font-size:14px}
 
-/* Authentication modal */
+/* Authentication */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;align-items:center;justify-content:center;padding:15px}
 .modal-overlay.active{display:flex}
 .auth-modal{position:relative;width:100%;max-width:420px;background:#fff;border-radius:5px;padding:30px;box-shadow:0 8px 35px #0004}
@@ -66,9 +65,9 @@ footer p{margin-top:25px;font-size:14px}
 .auth-message.error{display:block;color:#a12626;background:#ffeaea}
 .auth-message.success{display:block;color:#216b38;background:#e8f7ed}
 
-/* Signed-in classic white/red interface */
-.app{display:none;min-height:calc(100vh - 60px);background:#fff}
-.app.visible{display:flex}
+/* Signed-in app */
+#signedInSite{min-height:100vh;background:#fff}
+.app{display:flex;min-height:calc(100vh - 60px);background:#fff}
 .sidebar{width:205px;flex:0 0 205px;background:#f7f7f7;border-right:1px solid #ddd;padding:15px 10px;min-height:calc(100vh - 60px)}
 .sidebar-user{font-weight:700;padding:10px 9px;border-bottom:1px solid #ddd;margin-bottom:8px;color:#333}
 .side-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px;border:0;background:transparent;color:#444;text-align:left;border-radius:3px;font-size:15px}
@@ -79,7 +78,7 @@ footer p{margin-top:25px;font-size:14px}
 .page.active{display:block}
 .page-title{font-size:25px;margin:0 0 18px;color:#333}
 .home-profile{display:flex;align-items:center;gap:16px;padding:8px 5px 24px}
-.home-avatar{width:80px;height:80px;border-radius:50%;background:#eee;overflow:hidden;display:grid;place-items:center}
+.home-avatar{width:90px;height:90px;border-radius:50%;background:#eee;overflow:hidden;display:block;border:1px solid #ddd}
 .home-avatar canvas{width:100%;height:100%;display:block}
 .home-profile h1{font-size:27px;margin:0;color:#333}
 .home-profile small{color:#888}
@@ -104,12 +103,12 @@ footer p{margin-top:25px;font-size:14px}
 .profile-tab.active{border-bottom-color:var(--red);color:var(--red);font-weight:700}
 .profile-section{padding:18px 10px}
 .profile-section h3{margin:0 0 5px;color:#333}
-.profile-section p{color:#777;margin:5px 0 22px}
+.profile-section p{color:#777;margin:5px 0 22px;white-space:pre-wrap}
 .avatar-preview{height:360px;max-width:550px;margin:10px auto;background:#f1f1f1;border:1px solid #ddd;overflow:hidden;position:relative}
 .avatar-preview canvas{width:100%;height:100%;display:block}
 .preview-label{position:absolute;top:10px;left:12px;color:#555;background:#fff;padding:5px 9px;border:1px solid #ddd;border-radius:3px;font-size:13px;pointer-events:none}
 .profile-actions{text-align:center;margin:12px}
-.blue-button{border:0;border-radius:3px;padding:10px 18px;font-weight:700}
+.action-button{border:0;border-radius:3px;padding:10px 18px;font-weight:700}
 .editor-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:18px}
 .editor-view{height:460px;background:#f1f1f1;border:1px solid #ddd;overflow:hidden}
 .editor-view canvas{width:100%;height:100%;display:block}
@@ -117,36 +116,77 @@ footer p{margin-top:25px;font-size:14px}
 .editor-controls h3{margin:0 0 15px;color:#333}
 .control-group{margin:14px 0}
 .control-group label{display:block;margin-bottom:7px;color:#444}
-.control-group input,.control-group select{width:100%}
+.control-group input,.control-group select,.control-group textarea{width:100%}
 .color-row{display:flex;align-items:center;gap:10px}
 .color-row input{height:38px;max-width:65px;border:0;background:none}
 .save-status{font-size:13px;color:#777;margin-top:12px;min-height:20px}
 .logout-button{border:1px solid #ccc;background:#fff;color:#555;padding:6px 12px;border-radius:3px}
 .app-top-user{margin-left:auto;display:flex;align-items:center;gap:10px;font-weight:700;color:#444}
 .app-top-user .logout-button{margin-left:6px}
+.settings-card{background:#f7f7f7;border:1px solid #ddd;padding:20px;margin-bottom:18px;border-radius:3px}
+.settings-card h2{font-size:20px;margin:0 0 18px;color:#333}
+.settings-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #ddd}
+.settings-row:last-child{border-bottom:0}
+.settings-row span{color:#777}
+.settings-row strong{overflow-wrap:anywhere;text-align:right}
+#profileBio{width:100%;resize:vertical;padding:11px;border:1px solid #ccc;border-radius:3px;font:inherit;background:#fff;color:#333}
+.theme-select{width:100%;padding:10px;border:1px solid #ccc;border-radius:3px;background:#fff}
+.app-top-user .logout-button{white-space:nowrap}
+
+/* Dark theme is limited to the signed-in app */
+body.dark-theme #signedInSite,
+body.dark-theme #signedInSite .navbar,
+body.dark-theme #signedInSite .app,
+body.dark-theme #signedInSite .app-content,
+body.dark-theme #signedInSite .sidebar{background:#191919;color:#eee}
+body.dark-theme #signedInSite .navbar,
+body.dark-theme #signedInSite .sidebar{border-color:#383838}
+body.dark-theme #signedInSite .sidebar-user,
+body.dark-theme #signedInSite .page-title,
+body.dark-theme #signedInSite h1,
+body.dark-theme #signedInSite h2,
+body.dark-theme #signedInSite h3,
+body.dark-theme #signedInSite .profile-info h1,
+body.dark-theme #signedInSite .side-item,
+body.dark-theme #signedInSite .app-top-user{color:#eee}
+body.dark-theme #signedInSite .side-item:hover,
+body.dark-theme #signedInSite .side-item.active{background:#303030;color:#ff5963}
+body.dark-theme #signedInSite .empty-panel,
+body.dark-theme #signedInSite .settings-card,
+body.dark-theme #signedInSite .profile-card,
+body.dark-theme #signedInSite .profile-tabs,
+body.dark-theme #signedInSite .editor-controls{background:#252525;border-color:#3c3c3c;color:#ccc}
+body.dark-theme #signedInSite .settings-row{border-color:#444}
+body.dark-theme #signedInSite input,
+body.dark-theme #signedInSite select,
+body.dark-theme #signedInSite textarea{background:#303030;color:#fff;border-color:#555}
+body.dark-theme #signedInSite .logout-button{background:#292929;color:#fff;border-color:#555}
+body.dark-theme #signedInSite .profile-section p,
+body.dark-theme #signedInSite .muted,
+body.dark-theme #signedInSite .profile-stats{color:#aaa}
+body.dark-theme #signedInSite .profile-banner{background:linear-gradient(110deg,#292929,#383838);border-color:#444}
+
 @media(max-width:760px){
  .nav-content{gap:12px;padding:0 10px}.nav-links{gap:10px}.nav-links a{font-size:13px}
  .brand{font-size:22px}.account-button{padding:6px 9px;font-size:12px}
  .hero h1{font-size:53px}.hero h2{font-size:22px}.game-images{flex-direction:column}.game-image{width:100%}
- .app{display:none!important}.app.visible{display:block!important}
- .sidebar{width:100%;min-height:0;border-right:0;border-bottom:1px solid #ddd;display:flex;overflow-x:auto;padding:5px}
+ .app{display:block}.sidebar{width:100%;min-height:0;border-right:0;border-bottom:1px solid #ddd;display:flex;overflow-x:auto;padding:5px}
  .sidebar-user{display:none}.side-item{width:auto;flex:0 0 auto;white-space:nowrap}
  .app-content{padding:18px 12px 45px}
  .editor-layout{grid-template-columns:1fr}.editor-view{height:390px}
+ .nav-links{display:none}
 }
+.sidebar.sidebar-hidden{display:none!important}
 </style>
 </head>
 <body>
 
-<!-- Public landing page: shown before login -->
 <div id="publicSite">
 <nav class="navbar">
  <div class="nav-content">
   <a href="#" class="brand">PEBLUX</a>
-  <div class="nav-links">
-   <a href="#home">Play</a><a href="#about">About</a><a href="#platforms">Platforms</a>
-  </div>
-  <div class="account-actions" id="loggedOutButtons">
+  <div class="nav-links"><a href="#home">Play</a><a href="#about">About</a><a href="#platforms">Platforms</a></div>
+  <div class="account-actions">
    <button class="account-button" id="loginButton">Login</button>
    <button class="account-button primary" id="signupButton">Sign Up</button>
   </div>
@@ -175,7 +215,6 @@ footer p{margin-top:25px;font-size:14px}
 </footer>
 </div>
 
-<!-- Signed-in app -->
 <div id="signedInSite" hidden>
 <header class="navbar">
  <div class="nav-content">
@@ -184,7 +223,7 @@ footer p{margin-top:25px;font-size:14px}
   <div class="app-top-user"><span id="topUsername">Player</span><button class="logout-button" id="logoutButton">Logout</button></div>
  </div>
 </header>
-<div class="app visible">
+<div class="app">
  <aside class="sidebar" id="sidebar">
   <div class="sidebar-user" id="sidebarUsername">Player</div>
   <button class="side-item active" data-page="home"><span class="side-icon">⌂</span>Home</button>
@@ -193,6 +232,7 @@ footer p{margin-top:25px;font-size:14px}
   <button class="side-item" data-page="friends"><span class="side-icon">♧</span>Friends</button>
   <button class="side-item" data-page="avatar"><span class="side-icon">♟</span>Avatar</button>
   <button class="side-item" data-page="inventory"><span class="side-icon">▣</span>Inventory</button>
+  <button class="side-item" data-page="settings"><span class="side-icon">⚙</span>Settings</button>
  </aside>
  <main class="app-content">
   <section class="page active" id="page-home">
@@ -204,35 +244,53 @@ footer p{margin-top:25px;font-size:14px}
    <div class="section-heading"><h2>Popular</h2></div>
    <div class="empty-panel"><strong>Discover Peblux</strong>There is no content to display yet.</div>
   </section>
+
   <section class="page" id="page-profile">
    <div class="profile-banner"></div>
    <div class="profile-card"><div class="profile-avatar" id="profileAvatar"></div><div class="profile-info"><h1 id="profileUsername">Player</h1><p id="profileHandle">@player</p><div class="profile-stats">0 Friends &nbsp; 0 Followers &nbsp; 0 Following</div></div></div>
    <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="about">About</button><button class="profile-tab" data-profile-tab="creations">Creations</button></div>
-   <div class="profile-section" id="profileAbout"><h3>About</h3><p>Welcome to my Peblux profile!</p><h3>Currently Wearing</h3>
+   <div class="profile-section" id="profileAbout"><h3>About</h3><p id="profileBioText">Welcome to my Peblux profile!</p><h3>Currently Wearing</h3>
     <div class="avatar-preview" id="profile3D"><span class="preview-label">3D Avatar</span></div>
-    <div class="profile-actions"><button class="blue-button" data-page="avatar">Edit Avatar</button></div>
+    <div class="profile-actions"><button class="action-button" data-page="avatar">Edit Avatar</button></div>
    </div>
    <div class="profile-section" id="profileCreations" hidden><h3>Creations</h3><div class="empty-panel">This player has not created anything yet.</div></div>
   </section>
+
   <section class="page" id="page-avatar"><h1 class="page-title">Avatar Editor</h1>
    <div class="editor-layout"><div class="editor-view" id="avatarEditorView"></div><div class="editor-controls">
     <h3>Customize your character</h3>
     <div class="control-group"><label for="skinColor">Skin Color</label><div class="color-row"><input type="color" id="skinColor" value="#F2C18D"><span>Body color</span></div></div>
     <div class="control-group"><label for="shirtColor">Shirt Color</label><div class="color-row"><input type="color" id="shirtColor" value="#c8202b"><span>Torso color</span></div></div>
     <div class="control-group"><label for="pantsColor">Pants Color</label><div class="color-row"><input type="color" id="pantsColor" value="#444444"><span>Leg color</span></div></div>
-    <div class="control-group"><label for="faceStyle">Face</label><select id="faceStyle"><option value="classic">Classic Smile</option><option value="happy">Happy</option><option value="serious">Serious</option></select></div>
+    <div class="control-group"><label for="faceStyle">Face</label><select id="faceStyle"><option value="classic">Happy Portrait</option><option value="happy">Big Smile</option><option value="serious">Calm Smile</option></select></div>
     <div class="control-group"><label for="hairStyle">Hair</label><select id="hairStyle"><option value="none">No Hair</option><option value="brown">Brown Hair</option><option value="black">Black Hair</option><option value="blond">Blond Hair</option></select></div>
-    <button class="blue-button" id="saveAvatar">Save Avatar</button><div class="save-status" id="avatarStatus"></div>
+    <button class="action-button" id="saveAvatar">Save Avatar</button><div class="save-status" id="avatarStatus"></div>
    </div></div>
   </section>
+
   <section class="page" id="page-messages"><h1 class="page-title">Messages</h1><div class="empty-panel"><strong>No messages</strong>Your messages will appear here.</div></section>
   <section class="page" id="page-friends"><h1 class="page-title">Friends</h1><div class="empty-panel"><strong>No friends yet</strong>Your friends will appear here.</div></section>
   <section class="page" id="page-inventory"><h1 class="page-title">Inventory</h1><div class="empty-panel"><strong>Your inventory is empty</strong>Your items will appear here.</div></section>
+
+  <section class="page" id="page-settings">
+   <h1 class="page-title">Settings</h1>
+   <div class="settings-card">
+    <h2>Account Information</h2>
+    <div class="settings-row"><span>Username</span><strong id="settingsUsername">Player</strong></div>
+    <div class="settings-row"><span>Gender</span><strong id="settingsGender">Prefer not to say</strong></div>
+    <div class="settings-row"><span>Account Created</span><strong id="settingsCreated">Unknown</strong></div>
+   </div>
+   <div class="settings-card">
+    <h2>Design</h2>
+    <div class="control-group"><label for="profileBio">Edit Profile — Bio</label><textarea id="profileBio" maxlength="250" rows="4" placeholder="Tell everyone a little about yourself..."></textarea><small>Maximum 250 characters.</small></div>
+    <div class="control-group"><label for="themeSelect">Theme</label><select class="theme-select" id="themeSelect"><option value="default">Default</option><option value="dark">Dark</option></select></div>
+    <button class="action-button" id="saveSettings">Save Settings</button><div class="save-status" id="settingsStatus"></div>
+   </div>
+  </section>
  </main>
 </div>
 </div>
 
-<!-- Login / signup dialog -->
 <div class="modal-overlay" id="authModal">
  <div class="auth-modal">
   <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
@@ -251,157 +309,555 @@ footer p{margin-top:25px;font-size:14px}
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const SUPABASE_URL='https://rdsezvmtrnfgjithodjc.supabase.co';
-const SUPABASE_KEY='sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
-const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
-const $=id=>document.getElementById(id);
-let currentUser=null,authMode='login';
-const defaultAvatar={skinColor:'#F2C18D',shirtColor:'#c8202b',pantsColor:'#444444',face:'classic',hair:'none'};
-let avatarConfig={...defaultAvatar};
-let activeViewer=null;
-function internalEmail(username){return username.trim().toLowerCase()+'@users.peblux.invalid'}
-function showAuthMessage(text,type='error'){$('authMessage').textContent=text;$('authMessage').className='auth-message '+type}
-function setMode(mode){
- authMode=mode;$('loginTab').classList.toggle('active',mode==='login');$('signupTab').classList.toggle('active',mode==='signup');
- $('genderField').hidden=mode!=='signup';$('confirmField').hidden=mode!=='signup';$('confirmPassword').required=mode==='signup';
- $('password').autocomplete=mode==='signup'?'new-password':'current-password';
- $('modalTitle').textContent=mode==='signup'?'Create Your Account':'Welcome to Peblux';
- $('submitButton').textContent=mode==='signup'?'Create Account':'Login';
- $('authMessage').className='auth-message';$('authMessage').textContent='';
-}
-function openModal(mode){setMode(mode);$('authModal').classList.add('active')}
-$('loginButton').addEventListener('click',()=>openModal('login'));
-$('signupButton').addEventListener('click',()=>openModal('signup'));
-$('loginTab').addEventListener('click',()=>setMode('login'));
-$('signupTab').addEventListener('click',()=>setMode('signup'));
-$('closeModal').addEventListener('click',()=>$('authModal').classList.remove('active'));
-$('authModal').addEventListener('click',e=>{if(e.target===$('authModal'))$('authModal').classList.remove('active')});
-$('authForm').addEventListener('submit',async e=>{
- e.preventDefault();const username=$('username').value.trim(),password=$('password').value;
- if(!/^[A-Za-z0-9_]{3,20}$/.test(username))return showAuthMessage('Username must contain 3–20 letters, numbers or underscores.');
- if(password.length<8)return showAuthMessage('Password must have at least 8 characters.');
- if(authMode==='signup'&&password!==$('confirmPassword').value)return showAuthMessage('Passwords do not match.');
- $('submitButton').disabled=true;$('submitButton').textContent='Please wait...';
- try{
-  if(authMode==='signup'){
-   const {data,error}=await supabase.auth.signUp({email:internalEmail(username),password,options:{data:{username,gender:$('gender').value}}});
-   if(error)throw error;
-   if(data.session)showAuthMessage('Your Peblux account has been created successfully.','success');
-   else showAuthMessage('Account created. Check Supabase Auth confirmation settings.','success');
-  }else{
-   const {error}=await supabase.auth.signInWithPassword({email:internalEmail(username),password});
-   if(error)throw error;
-   $('authModal').classList.remove('active');
-  }
- }catch(error){
-  let msg=error.message||'Something went wrong.';
-  if(msg.toLowerCase().includes('already registered')||msg.toLowerCase().includes('already exists'))msg='This username is already registered.';
-  if(msg.toLowerCase().includes('invalid login credentials'))msg='Incorrect username or password.';
-  showAuthMessage(msg);
- }finally{$('submitButton').disabled=false;$('submitButton').textContent=authMode==='signup'?'Create Account':'Login'}
-});
-$('logoutButton').addEventListener('click',async()=>{await supabase.auth.signOut()});
-function showPublic(){ $('publicSite').hidden=false;$('signedInSite').hidden=true;$('authModal').classList.remove('active');if(activeViewer){activeViewer.dispose();activeViewer=null} }
-function showApp(){ $('publicSite').hidden=true;$('signedInSite').hidden=false; }
-function navigate(page){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- $('page-'+page)?.classList.add('active');
- document.querySelectorAll('.side-item').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- if(page==='profile')renderAvatar('profile3D',avatarConfig,{cameraZ:8.2,cameraY:2.1,lookY:2.0});
- if(page==='avatar')renderAvatar('avatarEditorView',avatarConfig,{cameraZ:9.3,cameraY:2.0,lookY:1.55});
-}
-document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
-$('menuToggle').addEventListener('click',()=>{$('sidebar').hidden=!$('sidebar').hidden});
-$('brandHome').addEventListener('click',e=>{e.preventDefault();navigate('home')});
-document.querySelectorAll('.profile-tab').forEach(tab=>tab.addEventListener('click',()=>{
- document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');
- const about=tab.dataset.profileTab==='about';$('profileAbout').hidden=!about;$('profileCreations').hidden=about;
-}));
-async function loadProfile(user){
- currentUser=user;let profile=null;
- const {data,error}=await supabase.from('profiles').select('username,avatar_config').eq('id',user.id).single();
- if(error)console.warn('Profile read:',error.message);
- profile=data||{};
- const username=profile.username||user.user_metadata?.username||'Player';
- avatarConfig={...defaultAvatar,...(profile.avatar_config||{})};
- $('topUsername').textContent=username;$('sidebarUsername').textContent=username;
- $('homeUsername').textContent=username;$('homeHandle').textContent='@'+username;
- $('profileUsername').textContent=username;$('profileHandle').textContent='@'+username;
- $('skinColor').value=avatarConfig.skinColor;$('shirtColor').value=avatarConfig.shirtColor;$('pantsColor').value=avatarConfig.pantsColor;
- $('faceStyle').value=avatarConfig.face;$('hairStyle').value=avatarConfig.hair;
- showApp();navigate('home');
-}
-supabase.auth.onAuthStateChange((_event,session)=>{if(session?.user)loadProfile(session.user);else{currentUser=null;showPublic()}});
-const {data:{session}}=await supabase.auth.getSession();
-if(session?.user)await loadProfile(session.user);else showPublic();
 
-/* Rounded R6-inspired character built from softened 3D shapes */
-function mat(color){return new THREE.MeshStandardMaterial({color,roughness:.78})}
-function roundedBox(w,h,d,r,material){
- const shape=new THREE.Shape();const x=-w/2,y=-h/2;
- shape.moveTo(x+r,y);shape.lineTo(x+w-r,y);shape.quadraticCurveTo(x+w,y,x+w,y+r);
- shape.lineTo(x+w,y+h-r);shape.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
- shape.lineTo(x+r,y+h);shape.quadraticCurveTo(x,y+h,x,y+h-r);
- shape.lineTo(x,y+r);shape.quadraticCurveTo(x,y,x+r,y);
- const geo=new THREE.ExtrudeGeometry(shape,{depth:d-2*r,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:r,bevelThickness:r,curveSegments:5});
- geo.translate(0,0,-(d-2*r)/2);
- const mesh=new THREE.Mesh(geo,material);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;
+const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let authMode = 'login';
+let avatarConfig = {
+  skinColor:'#F2C18D',
+  shirtColor:'#c8202b',
+  pantsColor:'#444444',
+  face:'classic',
+  hair:'none'
+};
+const activeViewers = new Map();
+let authStateReady = false;
+let lastSessionUserId = null;
+
+function internalEmail(username) {
+  return username.trim().toLowerCase() + '@users.peblux.invalid';
 }
-function buildAvatar(c){
- const g=new THREE.Group(),skin=mat(c.skinColor),shirt=mat(c.shirtColor),pants=mat(c.pantsColor),dark=mat('#292929'),white=mat('#fff');
- function part(w,h,d,r,m,x,y,z){const o=roundedBox(w,h,d,r,m);o.position.set(x,y,z);g.add(o);return o}
- // Legs, torso and arms retain classic R6 proportions but use rounded bevels.
- part(.46,.92,.46,.065,pants,-.245,.47,0);part(.46,.92,.46,.065,pants,.245,.47,0);
- part(.98,1.02,.48,.075,shirt,0,1.48,0);
- part(.38,1.02,.40,.09,skin,-.69,1.48,0);part(.38,1.02,.40,.09,skin,.69,1.48,0);
- // Head is softly rounded, not a sharp cube.
- part(.78,.78,.76,.13,skin,0,2.43,0);
- // Front-facing simple classic face
- function facePart(w,h,d,m,x,y,z){part(w,h,d,.012,m,x,y,z)}
- facePart(.075,.09,.018,dark,-.16,2.49,.386);facePart(.075,.09,.018,dark,.16,2.49,.386);
- if(c.face==='classic'){
-  facePart(.27,.035,.018,dark,0,2.25,.386);
-  facePart(.035,.04,.02,white,-.08,2.25,.399);facePart(.035,.04,.02,white,0,2.25,.399);facePart(.035,.04,.02,white,.08,2.25,.399);
- }else if(c.face==='happy'){facePart(.23,.065,.018,dark,0,2.26,.386)}
- else{facePart(.22,.025,.018,dark,0,2.23,.386)}
- if(c.hair!=='none'){
-  const hc={brown:'#68452d',black:'#202020',blond:'#d6b35d'}[c.hair],hair=mat(hc);
-  part(.82,.17,.80,.07,hair,0,2.84,-.015);
-  part(.16,.22,.78,.05,hair,-.32,2.72,-.015);
-  part(.16,.22,.78,.05,hair,.32,2.72,-.015);
- }
- return g;
+function showAuthMessage(message, type='error') {
+  $('authMessage').textContent = message;
+  $('authMessage').className = 'auth-message ' + type;
 }
-function renderAvatar(containerId,config,opts={}){
- const container=$(containerId);if(!container)return;
- if(activeViewer){activeViewer.dispose();activeViewer=null}
- container.innerHTML='';
- const scene=new THREE.Scene();scene.background=new THREE.Color('#f1f1f1');
- const camera=new THREE.PerspectiveCamera(34,1,.1,100);
- camera.position.set(0,opts.cameraY||2,opts.cameraZ||9);camera.lookAt(0,opts.lookY||1.55,0);
- const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
- renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- container.appendChild(renderer.domElement);
- scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2));
- const key=new THREE.DirectionalLight(0xffffff,2.1);key.position.set(-3,6,5);key.castShadow=true;scene.add(key);
- const avatar=buildAvatar(config);scene.add(avatar);
- const floor=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat('#e5e5e5'));floor.rotation.x=-Math.PI/2;floor.position.y=-.02;floor.receiveShadow=true;scene.add(floor);
- let drag=false,last=0;renderer.domElement.addEventListener('pointerdown',e=>{drag=true;last=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
- renderer.domElement.addEventListener('pointermove',e=>{if(drag){avatar.rotation.y+=(e.clientX-last)*.012;last=e.clientX}});
- renderer.domElement.addEventListener('pointerup',()=>drag=false);renderer.domElement.addEventListener('pointercancel',()=>drag=false);
- const resize=()=>{const w=container.clientWidth||300,h=container.clientHeight||300;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};resize();
- const observer=new ResizeObserver(resize);observer.observe(container);
- let alive=true;function animate(){if(!alive)return;requestAnimationFrame(animate);renderer.render(scene,camera)}animate();
- activeViewer={dispose(){alive=false;observer.disconnect();renderer.dispose();scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()})}};
+function setMode(mode) {
+  authMode = mode;
+  $('loginTab').classList.toggle('active', mode === 'login');
+  $('signupTab').classList.toggle('active', mode === 'signup');
+  $('genderField').hidden = mode !== 'signup';
+  $('confirmField').hidden = mode !== 'signup';
+  $('confirmPassword').required = mode === 'signup';
+  $('password').autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
+  $('modalTitle').textContent = mode === 'signup' ? 'Create Your Account' : 'Welcome to Peblux';
+  $('submitButton').textContent = mode === 'signup' ? 'Create Account' : 'Login';
+  $('authMessage').className = 'auth-message';
+  $('authMessage').textContent = '';
 }
-function readConfig(){return{skinColor:$('skinColor').value,shirtColor:$('shirtColor').value,pantsColor:$('pantsColor').value,face:$('faceStyle').value,hair:$('hairStyle').value}}
-['skinColor','shirtColor','pantsColor','faceStyle','hairStyle'].forEach(id=>$(id).addEventListener('input',()=>{avatarConfig=readConfig();renderAvatar('avatarEditorView',avatarConfig,{cameraZ:9.3,cameraY:2,lookY:1.55})}));
-$('saveAvatar').addEventListener('click',async()=>{
- if(!currentUser)return;$('saveAvatar').disabled=true;$('avatarStatus').textContent='Saving...';
- const config=readConfig();const {error}=await supabase.from('profiles').update({avatar_config:config}).eq('id',currentUser.id);
- $('saveAvatar').disabled=false;
- if(error){$('avatarStatus').textContent='Could not save: '+error.message;return}
- avatarConfig=config;$('avatarStatus').textContent='Avatar saved successfully.';
+function openModal(mode) {
+  setMode(mode);
+  $('authModal').classList.add('active');
+}
+$('loginButton').addEventListener('click', () => openModal('login'));
+$('signupButton').addEventListener('click', () => openModal('signup'));
+$('loginTab').addEventListener('click', () => setMode('login'));
+$('signupTab').addEventListener('click', () => setMode('signup'));
+$('closeModal').addEventListener('click', () => $('authModal').classList.remove('active'));
+$('authModal').addEventListener('click', e => {
+  if (e.target === $('authModal')) $('authModal').classList.remove('active');
+});
+
+$('authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const username = $('username').value.trim();
+  const password = $('password').value;
+
+  if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
+    showAuthMessage('Username must contain 3–20 letters, numbers or underscores.');
+    return;
+  }
+  if (password.length < 8) {
+    showAuthMessage('Password must have at least 8 characters.');
+    return;
+  }
+  if (authMode === 'signup' && password !== $('confirmPassword').value) {
+    showAuthMessage('Passwords do not match.');
+    return;
+  }
+
+  $('submitButton').disabled = true;
+  $('submitButton').textContent = 'Please wait...';
+
+  try {
+    if (authMode === 'signup') {
+      const {data, error} = await supabase.auth.signUp({
+        email: internalEmail(username),
+        password,
+        options: {data: {username, gender: $('gender').value}}
+      });
+      if (error) throw error;
+
+      if (data.session) {
+        $('authModal').classList.remove('active');
+        showAuthMessage('Your Peblux account has been created successfully.', 'success');
+      } else {
+        showAuthMessage('Account created. If email confirmation is enabled, check your Supabase Auth settings.', 'success');
+      }
+    } else {
+      const {error} = await supabase.auth.signInWithPassword({
+        email: internalEmail(username),
+        password
+      });
+      if (error) throw error;
+      $('authModal').classList.remove('active');
+    }
+  } catch (error) {
+    let message = error.message || 'Something went wrong.';
+    const lower = message.toLowerCase();
+    if (lower.includes('already registered') || lower.includes('already exists')) message = 'This username is already registered.';
+    if (lower.includes('invalid login credentials')) message = 'Incorrect username or password.';
+    showAuthMessage(message);
+  } finally {
+    $('submitButton').disabled = false;
+    $('submitButton').textContent = authMode === 'signup' ? 'Create Account' : 'Login';
+  }
+});
+
+$('logoutButton').addEventListener('click', async () => {
+  const {error} = await supabase.auth.signOut();
+  if (error) console.error('Sign out:', error.message);
+});
+
+function disposeAllViewers() {
+  activeViewers.forEach(viewer => viewer.dispose());
+  activeViewers.clear();
+}
+function showPublic() {
+  $('publicSite').hidden = false;
+  $('signedInSite').hidden = true;
+  $('authModal').classList.remove('active');
+  disposeAllViewers();
+  document.body.classList.remove('dark-theme');
+}
+function showApp() {
+  $('publicSite').hidden = true;
+  $('signedInSite').hidden = false;
+}
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(section => section.classList.remove('active'));
+  const target = $('page-' + page);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.side-item').forEach(button => {
+    button.classList.toggle('active', button.dataset.page === page);
+  });
+
+  if (page === 'home') {
+    renderAvatar('homeAvatar', avatarConfig, {cameraZ:5.4, cameraY:2.55, lookY:2.4});
+  } else if (page === 'profile') {
+    renderAvatar('profileAvatar', avatarConfig, {cameraZ:5.4, cameraY:2.55, lookY:2.4});
+    renderAvatar('profile3D', avatarConfig, {cameraZ:8.2, cameraY:2.1, lookY:2});
+  } else if (page === 'avatar') {
+    renderAvatar('avatarEditorView', avatarConfig, {cameraZ:9.3, cameraY:2, lookY:1.55});
+  }
+}
+document.querySelectorAll('[data-page]').forEach(button => {
+  button.addEventListener('click', () => navigate(button.dataset.page));
+});
+$('menuToggle').addEventListener('click', () => $('sidebar').classList.toggle('sidebar-hidden'));
+$('brandHome').addEventListener('click', e => {
+  e.preventDefault();
+  navigate('home');
+});
+document.querySelectorAll('.profile-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.profile-tab').forEach(item => item.classList.remove('active'));
+    tab.classList.add('active');
+    const showAbout = tab.dataset.profileTab === 'about';
+    $('profileAbout').hidden = !showAbout;
+    $('profileCreations').hidden = showAbout;
+  });
+});
+
+async function loadProfile(user) {
+  currentUser = user;
+  const {data, error} = await supabase
+    .from('profiles')
+    .select('username, avatar_config, bio, theme, gender, created_at')
+    .eq('id', user.id)
+    .single();
+
+  if (error) console.warn('Profile read:', error.message);
+  const profile = data || {};
+  const username = profile.username || user.user_metadata?.username || 'Player';
+
+  avatarConfig = {...avatarConfig, ...(profile.avatar_config || {})};
+
+  $('topUsername').textContent = username;
+  $('sidebarUsername').textContent = username;
+  $('homeUsername').textContent = username;
+  $('homeHandle').textContent = '@' + username;
+  $('profileUsername').textContent = username;
+  $('profileHandle').textContent = '@' + username;
+
+  $('settingsUsername').textContent = username;
+  $('settingsGender').textContent = profile.gender || user.user_metadata?.gender || 'Prefer not to say';
+
+  const createdAt = profile.created_at || user.created_at;
+  $('settingsCreated').textContent = createdAt
+    ? new Date(createdAt).toLocaleDateString()
+    : 'Unknown';
+
+  $('profileBio').value = profile.bio || '';
+  $('profileBioText').textContent = profile.bio || 'Welcome to my Peblux profile!';
+  $('themeSelect').value = profile.theme === 'dark' ? 'dark' : 'default';
+  document.body.classList.toggle('dark-theme', profile.theme === 'dark');
+
+  $('skinColor').value = avatarConfig.skinColor || '#F2C18D';
+  $('shirtColor').value = avatarConfig.shirtColor || '#c8202b';
+  $('pantsColor').value = avatarConfig.pantsColor || '#444444';
+  $('faceStyle').value = avatarConfig.face || 'classic';
+  $('hairStyle').value = avatarConfig.hair || 'none';
+
+  showApp();
+  navigate('home');
+}
+
+supabase.auth.onAuthStateChange(async (_event, session) => {
+  const user = session?.user || null;
+  if (user && user.id !== lastSessionUserId) {
+    lastSessionUserId = user.id;
+    await loadProfile(user);
+  } else if (!user && lastSessionUserId !== null) {
+    lastSessionUserId = null;
+    currentUser = null;
+    showPublic();
+  }
+});
+const {data: initialAuth} = await supabase.auth.getSession();
+if (initialAuth.session?.user) {
+  lastSessionUserId = initialAuth.session.user.id;
+  await loadProfile(initialAuth.session.user);
+} else {
+  lastSessionUserId = null;
+  showPublic();
+}
+authStateReady = true;
+
+/* A soft-edged classic R6-inspired avatar with a 2D happy portrait face. */
+function material(color) {
+  return new THREE.MeshStandardMaterial({color, roughness:.78});
+}
+function roundedBox(w, h, d, r, mat) {
+  const shape = new THREE.Shape();
+  const x = -w/2, y = -h/2;
+  shape.moveTo(x+r, y);
+  shape.lineTo(x+w-r, y);
+  shape.quadraticCurveTo(x+w, y, x+w, y+r);
+  shape.lineTo(x+w, y+h-r);
+  shape.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  shape.lineTo(x+r, y+h);
+  shape.quadraticCurveTo(x, y+h, x, y+h-r);
+  shape.lineTo(x, y+r);
+  shape.quadraticCurveTo(x, y, x+r, y);
+  const depth = Math.max(.05, d - 2*r);
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth, bevelEnabled:true, bevelSegments:3, steps:1,
+    bevelSize:r, bevelThickness:r, curveSegments:7
+  });
+  geometry.translate(0, 0, -depth/2);
+  const mesh = new THREE.Mesh(geometry, mat);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+function createHappyFaceTexture(style='classic') {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  // Portrait-like warm lighting and soft photographic shading.
+  const bg = ctx.createLinearGradient(0, 0, 512, 512);
+  bg.addColorStop(0, '#f8d8bd');
+  bg.addColorStop(.55, '#efbd9a');
+  bg.addColorStop(1, '#d99b7b');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 512, 512);
+
+  const glow = ctx.createRadialGradient(220, 180, 25, 256, 250, 270);
+  glow.addColorStop(0, 'rgba(255,245,226,.72)');
+  glow.addColorStop(1, 'rgba(255,245,226,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, 512, 512);
+
+  // Face silhouette.
+  ctx.fillStyle = '#efbd99';
+  ctx.beginPath();
+  ctx.ellipse(256, 265, 174, 210, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Soft cheeks.
+  ctx.fillStyle = 'rgba(205,104,94,.23)';
+  ctx.beginPath();
+  ctx.ellipse(151, 306, 45, 24, -.12, 0, Math.PI*2);
+  ctx.ellipse(361, 306, 45, 24, .12, 0, Math.PI*2);
+  ctx.fill();
+
+  // Brows.
+  ctx.strokeStyle = '#68473c';
+  ctx.lineWidth = 12;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(155, 190); ctx.quadraticCurveTo(190, 171, 220, 190);
+  ctx.moveTo(292, 190); ctx.quadraticCurveTo(322, 171, 357, 190);
+  ctx.stroke();
+
+  // Eyes with subtle highlights.
+  ctx.fillStyle = '#292323';
+  ctx.beginPath();
+  ctx.ellipse(190, 232, 15, style === 'happy' ? 19 : 16, 0, 0, Math.PI*2);
+  ctx.ellipse(322, 232, 15, style === 'happy' ? 19 : 16, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#fff8ed';
+  ctx.beginPath();
+  ctx.arc(195, 225, 5, 0, Math.PI*2);
+  ctx.arc(327, 225, 5, 0, Math.PI*2);
+  ctx.fill();
+
+  // Small nose shading.
+  ctx.strokeStyle = 'rgba(145,83,66,.35)';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(256, 245);
+  ctx.quadraticCurveTo(244, 277, 260, 279);
+  ctx.stroke();
+
+  // Smile.
+  ctx.strokeStyle = '#713d36';
+  ctx.lineWidth = style === 'happy' ? 17 : 13;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  if (style === 'serious') {
+    ctx.moveTo(205, 330);
+    ctx.quadraticCurveTo(256, 354, 307, 330);
+  } else {
+    ctx.moveTo(190, 315);
+    ctx.quadraticCurveTo(256, style === 'happy' ? 405 : 385, 322, 315);
+  }
+  ctx.stroke();
+
+  // A little warm highlight on the lower face.
+  ctx.fillStyle = 'rgba(255,239,216,.22)';
+  ctx.beginPath();
+  ctx.ellipse(256, 365, 70, 22, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  return texture;
+}
+function buildAvatar(config) {
+  const group = new THREE.Group();
+  const skin = material(config.skinColor || '#F2C18D');
+  const shirt = material(config.shirtColor || '#c8202b');
+  const pants = material(config.pantsColor || '#444444');
+  const hairColor = {brown:'#68452d', black:'#202020', blond:'#d6b35d'}[config.hair];
+  function part(w,h,d,r,mat,x,y,z) {
+    const object = roundedBox(w,h,d,r,mat);
+    object.position.set(x,y,z);
+    group.add(object);
+    return object;
+  }
+
+  part(.46,.92,.46,.065,pants,-.245,.47,0);
+  part(.46,.92,.46,.065,pants,.245,.47,0);
+  part(.98,1.02,.48,.075,shirt,0,1.48,0);
+  part(.38,1.02,.40,.09,skin,-.69,1.48,0);
+  part(.38,1.02,.40,.09,skin,.69,1.48,0);
+  part(.78,.78,.76,.13,skin,0,2.43,0);
+
+  // The face is a flat 2D portrait texture, not separate 3D facial parts.
+  const faceTexture = createHappyFaceTexture(config.face || 'classic');
+  const faceMaterial = new THREE.MeshBasicMaterial({map:faceTexture});
+  const face = new THREE.Mesh(new THREE.PlaneGeometry(.49,.49), faceMaterial);
+  face.position.set(0,2.43,.392);
+  group.add(face);
+
+  if (hairColor) {
+    const hair = material(hairColor);
+    part(.82,.17,.80,.07,hair,0,2.84,-.015);
+    part(.16,.22,.78,.05,hair,-.32,2.72,-.015);
+    part(.16,.22,.78,.05,hair,.32,2.72,-.015);
+  }
+  return group;
+}
+
+function renderAvatar(containerId, config, options={}) {
+  const container = $(containerId);
+  if (!container) return;
+
+  const previous = activeViewers.get(containerId);
+  if (previous) {
+    previous.dispose();
+    activeViewers.delete(containerId);
+  }
+  container.innerHTML = '';
+
+  const width = Math.max(container.clientWidth, 120);
+  const height = Math.max(container.clientHeight, 120);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('#f1f1f1');
+
+  const camera = new THREE.PerspectiveCamera(34, width/height, .1, 100);
+  camera.position.set(0, options.cameraY ?? 2, options.cameraZ ?? 9);
+  camera.lookAt(0, options.lookY ?? 1.55, 0);
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
+  } catch (error) {
+    container.textContent = 'Avatar preview is unavailable in this browser.';
+    console.error('WebGL initialization failed:', error);
+    return;
+  }
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(width, height, false);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2));
+  const keyLight = new THREE.DirectionalLight(0xffffff,2.1);
+  keyLight.position.set(-3,6,5);
+  keyLight.castShadow = true;
+  scene.add(keyLight);
+
+  const avatar = buildAvatar(config);
+  scene.add(avatar);
+
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(100,100), material('#e5e5e5'));
+  floor.rotation.x = -Math.PI/2;
+  floor.position.y = -.02;
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  let dragging = false;
+  let lastX = 0;
+  renderer.domElement.addEventListener('pointerdown', event => {
+    dragging = true;
+    lastX = event.clientX;
+    renderer.domElement.setPointerCapture(event.pointerId);
+  });
+  renderer.domElement.addEventListener('pointermove', event => {
+    if (!dragging) return;
+    avatar.rotation.y += (event.clientX-lastX)*.012;
+    lastX = event.clientX;
+  });
+  const stopDrag = () => dragging = false;
+  renderer.domElement.addEventListener('pointerup', stopDrag);
+  renderer.domElement.addEventListener('pointercancel', stopDrag);
+
+  let frameId = 0;
+  let alive = true;
+  const resize = () => {
+    if (!alive) return;
+    const w = Math.max(container.clientWidth, 120);
+    const h = Math.max(container.clientHeight, 120);
+    renderer.setSize(w,h,false);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+    renderer.render(scene,camera);
+  };
+  const observer = new ResizeObserver(resize);
+  observer.observe(container);
+
+  const animate = () => {
+    if (!alive) return;
+    frameId = requestAnimationFrame(animate);
+    renderer.render(scene,camera);
+  };
+  animate();
+
+  activeViewers.set(containerId, {
+    dispose() {
+      alive = false;
+      cancelAnimationFrame(frameId);
+      observer.disconnect();
+      scene.traverse(object => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) {
+          const materials = Array.isArray(object.material) ? object.material : [object.material];
+          materials.forEach(item => {
+            if (item.map) item.map.dispose();
+            item.dispose();
+          });
+        }
+      });
+      renderer.dispose();
+      renderer.domElement.remove();
+    }
+  });
+}
+
+function readAvatarConfig() {
+  return {
+    skinColor:$('skinColor').value,
+    shirtColor:$('shirtColor').value,
+    pantsColor:$('pantsColor').value,
+    face:$('faceStyle').value,
+    hair:$('hairStyle').value
+  };
+}
+['skinColor','shirtColor','pantsColor','faceStyle','hairStyle'].forEach(id => {
+  $(id).addEventListener('input', () => {
+    avatarConfig = readAvatarConfig();
+    renderAvatar('avatarEditorView', avatarConfig, {cameraZ:9.3,cameraY:2,lookY:1.55});
+  });
+});
+
+$('saveAvatar').addEventListener('click', async () => {
+  if (!currentUser) return;
+  $('saveAvatar').disabled = true;
+  $('avatarStatus').textContent = 'Saving...';
+
+  const config = readAvatarConfig();
+  const {error} = await supabase
+    .from('profiles')
+    .update({avatar_config:config})
+    .eq('id',currentUser.id);
+
+  $('saveAvatar').disabled = false;
+  if (error) {
+    $('avatarStatus').textContent = 'Could not save: ' + error.message;
+    return;
+  }
+  avatarConfig = config;
+  $('avatarStatus').textContent = 'Avatar saved successfully.';
+  renderAvatar('avatarEditorView', avatarConfig, {cameraZ:9.3,cameraY:2,lookY:1.55});
+});
+
+$('saveSettings').addEventListener('click', async () => {
+  if (!currentUser) return;
+  const bio = $('profileBio').value.trim();
+  const theme = $('themeSelect').value;
+
+  $('saveSettings').disabled = true;
+  $('settingsStatus').textContent = 'Saving...';
+
+  const {error} = await supabase
+    .from('profiles')
+    .update({bio,theme})
+    .eq('id',currentUser.id);
+
+  $('saveSettings').disabled = false;
+  if (error) {
+    $('settingsStatus').textContent = 'Could not save: ' + error.message;
+    return;
+  }
+
+  document.body.classList.toggle('dark-theme', theme === 'dark');
+  $('profileBioText').textContent = bio || 'Welcome to my Peblux profile!';
+  $('settingsStatus').textContent = 'Settings saved successfully.';
+});
+$('themeSelect').addEventListener('change', () => {
+  document.body.classList.toggle('dark-theme', $('themeSelect').value === 'dark');
 });
 </script>
 </body>
