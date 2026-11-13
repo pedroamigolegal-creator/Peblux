@@ -2,833 +2,780 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Peblux - A classic online gaming platform.">
-    <title>Peblux</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Source Sans Pro', Arial, sans-serif;
-            color: #393b3d;
-            background: #fff;
-        }
-
-        button, input, select {
-            font: inherit;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            z-index: 100;
-        }
-
-        .nav-content {
-            max-width: 1170px;
-            height: 100%;
-            margin: auto;
-            padding: 0 15px;
-            display: flex;
-            align-items: center;
-            gap: 35px;
-        }
-
-        .brand {
-            color: #00a2ff;
-            font-size: 29px;
-            font-weight: 700;
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            margin-left: auto;
-        }
-
-        .nav-links a {
-            color: #333;
-            text-decoration: none;
-            font-size: 17px;
-        }
-
-        .nav-links a:hover {
-            color: #00a2ff;
-        }
-
-        .account-button {
-            border: 1px solid #00a2ff;
-            background: white;
-            color: #008bdc;
-            padding: 7px 16px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .account-button.primary {
-            background: #00a2ff;
-            color: white;
-        }
-
-        .account-button:hover {
-            opacity: .85;
-        }
-
-        .hero {
-            min-height: 650px;
-            padding: 100px 20px 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            background:
-                linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.55)),
-                url('https://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg')
-                center / cover no-repeat;
-        }
-
-        .hero-content {
-            max-width: 700px;
-        }
-
-        .hero h1 {
-            font-size: 76px;
-            margin: 0;
-            font-weight: 700;
-            letter-spacing: -3px;
-        }
-
-        .hero h2 {
-            font-size: 27px;
-            font-weight: 400;
-            margin: 5px 0 25px;
-        }
-
-        .hero p {
-            font-size: 20px;
-        }
-
-        .main-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 45px;
-            background: #00a2ff;
-            color: white;
-            border-radius: 3px;
-            text-decoration: none;
-            font-size: 21px;
-            font-weight: 600;
-        }
-
-        .main-button:hover {
-            background: #008bdc;
-        }
-
-        .section {
-            padding: 85px 20px;
-            text-align: center;
-        }
-
-        .section h2 {
-            font-size: 34px;
-            margin-top: 0;
-            color: #333;
-        }
-
-        .section p {
-            max-width: 850px;
-            margin: 15px auto;
-            font-size: 20px;
-            line-height: 1.5;
-        }
-
-        .about {
-            background: #f2f2f2;
-        }
-
-        .game-images {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            max-width: 1000px;
-            margin: 35px auto 0;
-        }
-
-        .game-image {
-            width: 33.333%;
-            height: 180px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 3px;
-        }
-
-        .game-image:nth-child(1) {
-            background-image: url('https://images.rbxcdn.com/42268b6264d89827401ef912f174f288.jpg');
-        }
-
-        .game-image:nth-child(2) {
-            background-image: url('https://images.rbxcdn.com/04baeb33ef66ef1395cd5464309fece6.jpg');
-        }
-
-        .game-image:nth-child(3) {
-            background-image: url('https://images.rbxcdn.com/e8b89d14690203420d64b5b2fda0b461.jpg');
-        }
-
-        .platforms {
-            background: white;
-        }
-
-        .platform-list {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .platform {
-            padding: 15px 25px;
-            min-width: 130px;
-            background: #eee;
-            border-radius: 3px;
-            font-size: 18px;
-        }
-
-        .status {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 7px 15px;
-            background: #fff2cc;
-            color: #856404;
-            border-radius: 3px;
-            font-weight: 600;
-        }
-
-        footer {
-            background: #191919;
-            color: #aaa;
-            padding: 35px 20px;
-            text-align: center;
-        }
-
-        footer a {
-            color: #ddd;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        footer p {
-            margin-top: 25px;
-            font-size: 14px;
-        }
-
-        /* Account modal */
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.65);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .auth-modal {
-            position: relative;
-            width: 100%;
-            max-width: 420px;
-            background: white;
-            border-radius: 5px;
-            padding: 30px;
-            box-shadow: 0 8px 35px rgba(0,0,0,.25);
-        }
-
-        .modal-close {
-            position: absolute;
-            right: 15px;
-            top: 10px;
-            border: none;
-            background: none;
-            font-size: 27px;
-            color: #777;
-            cursor: pointer;
-        }
-
-        .auth-modal h2 {
-            margin: 0 0 20px;
-            text-align: center;
-            color: #333;
-            font-size: 29px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 22px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: white;
-            color: #777;
-            cursor: pointer;
-            font-weight: 600;
-            border-bottom: 3px solid transparent;
-        }
-
-        .auth-tab.active {
-            color: #00a2ff;
-            border-bottom-color: #00a2ff;
-        }
-
-        .auth-field {
-            margin-bottom: 15px;
-        }
-
-        .auth-field label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #444;
-        }
-
-        .auth-field input,
-        .auth-field select {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            outline: none;
-            background: white;
-        }
-
-        .auth-field input:focus,
-        .auth-field select:focus {
-            border-color: #00a2ff;
-        }
-
-        .auth-submit {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: none;
-            border-radius: 3px;
-            background: #00a2ff;
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .auth-submit:hover {
-            background: #008bdc;
-        }
-
-        .auth-submit:disabled {
-            opacity: .6;
-            cursor: wait;
-        }
-
-        .auth-message {
-            display: none;
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 3px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .auth-message.error {
-            display: block;
-            color: #a12626;
-            background: #ffeaea;
-        }
-
-        .auth-message.success {
-            display: block;
-            color: #216b38;
-            background: #e8f7ed;
-        }
-
-        .account-name {
-            color: #333;
-            font-weight: 600;
-        }
-
-        @media (max-width: 650px) {
-            .nav-content {
-                gap: 10px;
-                padding: 0 10px;
-            }
-
-            .brand {
-                font-size: 23px;
-            }
-
-            .nav-links {
-                gap: 9px;
-            }
-
-            .nav-links a {
-                font-size: 13px;
-            }
-
-            .account-button {
-                padding: 6px 9px;
-                font-size: 12px;
-            }
-
-            .hero h1 {
-                font-size: 53px;
-            }
-
-            .hero h2 {
-                font-size: 22px;
-            }
-
-            .game-images {
-                flex-direction: column;
-            }
-
-            .game-image {
-                width: 100%;
-            }
-
-            .auth-modal {
-                padding: 25px 20px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peblux</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#202225;color:#f5f5f5;font-family:'Source Sans Pro',Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+
+/* Top navigation */
+.topbar{height:62px;background:#191a1d;border-bottom:1px solid #333;display:flex;align-items:center;padding:0 18px;gap:18px;position:sticky;top:0;z-index:20}
+.icon-button{background:none;border:0;color:#ddd;font-size:23px;padding:6px}
+.brand{font-size:25px;font-weight:700;color:#00a2ff;text-decoration:none}
+.search{background:#101114;border:1px solid #444;border-radius:5px;color:white;padding:8px 12px;width:min(340px,35vw)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:15px}
+.top-user{display:flex;align-items:center;gap:8px;font-weight:600}
+.top-avatar{width:30px;height:30px;border-radius:50%;background:#444;display:grid;place-items:center;color:white;font-size:13px}
+.top-link{color:#ddd;text-decoration:none;font-size:14px}
+
+/* Layout */
+.layout{display:flex;min-height:calc(100vh - 62px)}
+.sidebar{width:0;overflow:hidden;background:#191a1d;transition:width .2s;flex-shrink:0}
+.sidebar.open{width:220px}
+.sidebar-inner{width:220px;padding:12px 9px}
+.sidebar-user{padding:12px 8px;border-bottom:1px solid #333;margin-bottom:8px;font-weight:700}
+.side-item{width:100%;display:flex;align-items:center;gap:11px;padding:10px 9px;border:0;background:transparent;color:#ddd;text-align:left;border-radius:4px;font-size:15px}
+.side-item:hover,.side-item.active{background:#34373b;color:white}
+.side-icon{width:20px;text-align:center;font-size:17px}
+.content{flex:1;min-width:0;padding:20px 14px 60px;max-width:1500px;margin:0 auto;width:100%}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:24px;margin:0 0 18px}
+
+/* Home */
+.home-profile{display:flex;align-items:center;gap:16px;padding:12px 5px 25px}
+.home-avatar{width:82px;height:82px;border-radius:50%;background:#444;overflow:hidden;display:grid;place-items:center;font-size:28px}
+.home-avatar canvas{width:100%;height:100%;display:block}
+.home-profile h1{font-size:27px;margin:0}
+.home-profile small{color:#aaa}
+.section-heading{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}
+.section-heading h2{font-size:19px;margin:0}
+.muted{color:#aaa}
+.friend-list{display:flex;gap:20px;overflow-x:auto;padding:5px 2px 18px;border-bottom:1px solid #444}
+.friend{width:70px;flex-shrink:0;text-align:center}
+.friend-avatar{width:62px;height:62px;margin:auto auto 5px;border-radius:50%;background:#3b4148;display:grid;place-items:center;font-size:22px;border:2px solid #555}
+.friend span{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty-panel{background:#292c30;border:1px solid #393d42;border-radius:4px;padding:25px;margin:12px 0 25px;color:#aaa;text-align:center}
+.empty-panel strong{display:block;color:#eee;font-size:17px;margin-bottom:5px}
+
+/* Profile */
+.profile-banner{height:105px;background:linear-gradient(110deg,#30363c,#45494d);border-radius:3px}
+.profile-card{display:flex;align-items:center;gap:15px;background:#383b3f;padding:14px;margin-top:-1px}
+.profile-avatar{width:90px;height:90px;border-radius:50%;background:#25282b;overflow:hidden;flex-shrink:0}
+.profile-avatar canvas{width:100%;height:100%;display:block}
+.profile-info h1{margin:0;font-size:27px}
+.profile-info p{margin:3px 0;color:#bbb}
+.profile-stats{font-size:13px;color:#ddd;margin-top:8px}
+.profile-tabs{display:flex;background:#383b3f;margin-top:12px}
+.profile-tab{flex:1;background:none;border:0;color:#ddd;padding:12px;border-bottom:3px solid transparent}
+.profile-tab.active{border-bottom-color:white;color:white}
+.profile-section{padding:18px 10px}
+.profile-section h3{margin:0 0 5px}
+.profile-section p{color:#bbb;margin:5px 0 22px}
+.avatar-preview{height:360px;max-width:550px;margin:10px auto;background:#17191c;border-radius:4px;overflow:hidden;position:relative}
+.avatar-preview canvas{width:100%;height:100%;display:block}
+.preview-label{position:absolute;top:10px;left:12px;color:#ddd;background:#1119;padding:5px 9px;border-radius:3px;font-size:13px;pointer-events:none}
+.profile-actions{text-align:center;margin:12px}
+.blue-button{background:#00a2ff;border:0;border-radius:4px;padding:10px 18px;color:white;font-weight:700}
+.blue-button:hover{background:#008bdc}
+
+/* Avatar editor */
+.editor-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:18px}
+.editor-view{height:460px;background:#17191c;border-radius:4px;overflow:hidden}
+.editor-view canvas{width:100%;height:100%;display:block}
+.editor-controls{background:#2b2e32;padding:18px;border-radius:4px}
+.editor-controls h3{margin:0 0 15px}
+.control-group{margin:14px 0}
+.control-group label{display:block;margin-bottom:7px;color:#ddd}
+.control-group input,.control-group select{width:100%}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-row input{height:38px;max-width:65px;border:0;background:none}
+.save-status{font-size:13px;color:#aaa;margin-top:12px;min-height:20px}
+
+/* Auth */
+.auth-screen{position:fixed;inset:0;background:#17191c;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px}
+.auth-box{width:100%;max-width:390px;background:#292c30;padding:28px;border-radius:5px;border:1px solid #444}
+.auth-box h1{text-align:center;color:#00a2ff;margin:0 0 5px}
+.auth-box>p{text-align:center;color:#aaa;margin:0 0 20px}
+.auth-tabs{display:flex;margin-bottom:18px}
+.auth-tab{flex:1;padding:10px;background:#202225;border:0;color:#aaa}
+.auth-tab.active{background:#00a2ff;color:white}
+.field{margin:12px 0}
+.field label{display:block;margin-bottom:5px}
+.field input,.field select{width:100%;padding:11px;background:#17191c;color:white;border:1px solid #555;border-radius:3px}
+.auth-submit{width:100%;padding:12px;background:#00a2ff;color:white;border:0;border-radius:3px;font-weight:700;margin-top:10px}
+.auth-message{font-size:14px;margin-top:12px;color:#ff9b9b}
+.auth-message.success{color:#7ce3a0}
+.logout-button{background:#383b3f;color:#eee;border:1px solid #555;padding:7px 12px;border-radius:3px}
+.mobile-menu{display:none}
+
+@media(max-width:700px){
+ .topbar{padding:0 9px;gap:9px}
+ .brand{font-size:21px}
+ .search{width:30vw}
+ .top-right{gap:8px}
+ .top-link{display:none}
+ .sidebar.open{width:190px}
+ .sidebar-inner{width:190px}
+ .content{padding:15px 10px 50px}
+ .home-profile h1{font-size:23px}
+ .editor-layout{grid-template-columns:1fr}
+ .editor-view{height:390px}
+ .avatar-preview{height:330px}
+}
+</style>
 </head>
 
 <body>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="#" class="brand">PEBLUX</a>
+<!-- Authentication -->
+<div class="auth-screen" id="authScreen">
+ <div class="auth-box">
+  <h1>PEBLUX</h1>
+  <p>A classic online world</p>
+  <div class="auth-tabs">
+   <button class="auth-tab active" id="loginTab">Login</button>
+   <button class="auth-tab" id="signupTab">Sign Up</button>
+  </div>
+  <form id="authForm">
+   <div class="field">
+    <label for="username">Username</label>
+    <input id="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]+" autocomplete="username" required placeholder="Username">
+   </div>
+   <div class="field" id="genderField" hidden>
+    <label for="gender">Gender</label>
+    <select id="gender">
+     <option value="Prefer not to say">Prefer not to say</option>
+     <option value="Male">Male</option>
+     <option value="Female">Female</option>
+     <option value="Other">Other</option>
+    </select>
+   </div>
+   <div class="field">
+    <label for="password">Password</label>
+    <input id="password" type="password" minlength="8" required autocomplete="current-password" placeholder="Password">
+   </div>
+   <div class="field" id="confirmField" hidden>
+    <label for="confirmPassword">Confirm Password</label>
+    <input id="confirmPassword" type="password" minlength="8" placeholder="Confirm password">
+   </div>
+   <button class="auth-submit" id="authSubmit" type="submit">Login</button>
+   <div class="auth-message" id="authMessage" role="status"></div>
+  </form>
+ </div>
+</div>
 
-            <div class="nav-links">
-                <a href="#home">Play</a>
-                <a href="#about">About</a>
-                <a href="#platforms">Platforms</a>
+<!-- Header -->
+<header class="topbar">
+ <button class="icon-button" id="menuToggle" aria-label="Open menu">☰</button>
+ <a class="brand" href="#" id="brandHome">PEBLUX</a>
+ <input class="search" placeholder="Search" aria-label="Search">
+ <div class="top-right">
+  <div class="top-user">
+   <div class="top-avatar" id="topAvatar">P</div>
+   <span id="topUsername">Player</span>
+  </div>
+  <a class="top-link" href="#" data-page="friends">Friends</a>
+  <button class="logout-button" id="logoutButton">Logout</button>
+ </div>
+</header>
 
-                <div id="loggedOutButtons">
-                    <button class="account-button" id="loginButton">Login</button>
-                    <button class="account-button primary" id="signupButton">Sign Up</button>
-                </div>
+<div class="layout">
+ <aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+   <div class="sidebar-user" id="sidebarUsername">Player</div>
+   <button class="side-item active" data-page="home"><span class="side-icon">⌂</span>Home</button>
+   <button class="side-item" data-page="profile"><span class="side-icon">♙</span>Profile</button>
+   <button class="side-item" data-page="messages"><span class="side-icon">▤</span>Messages</button>
+   <button class="side-item" data-page="friends"><span class="side-icon">♧</span>Friends</button>
+   <button class="side-item" data-page="avatar"><span class="side-icon">♟</span>Avatar</button>
+   <button class="side-item" data-page="inventory"><span class="side-icon">▣</span>Inventory</button>
+  </div>
+ </aside>
 
-                <div id="loggedInButtons" style="display:none;">
-                    <span class="account-name" id="accountName"></span>
-                    <button class="account-button" id="logoutButton">Logout</button>
-                </div>
-            </div>
-        </div>
-    </nav>
+ <main class="content">
 
-    <main>
-        <section class="hero" id="home">
-            <div class="hero-content">
-                <h1>PEBLUX</h1>
-                <h2>Powering Imagination</h2>
-
-                <p>
-                    A world of creativity, games and adventures.
-                    Discover a classic online gaming experience.
-                </p>
-
-                <a href="#about" class="main-button">Explore Peblux</a>
-            </div>
-        </section>
-
-        <section class="section about" id="about">
-            <h2>WHAT IS PEBLUX?</h2>
-
-            <p>
-                Peblux is a platform inspired by the classic era
-                of online gaming. Explore experiences, meet new
-                people and discover a world created by players.
-            </p>
-
-            <p>
-                Our goal is to bring back the feeling of classic
-                virtual worlds while building something new.
-            </p>
-
-            <div class="game-images">
-                <div class="game-image"></div>
-                <div class="game-image"></div>
-                <div class="game-image"></div>
-            </div>
-
-            <span class="status">Peblux is under development</span>
-        </section>
-
-        <section class="section platforms" id="platforms">
-            <h2>PEBLUX ON YOUR DEVICE</h2>
-
-            <p>
-                Peblux is being developed with the goal of
-                supporting a classic desktop experience.
-            </p>
-
-            <div class="platform-list">
-                <div class="platform">PC</div>
-                <div class="platform">Mac</div>
-                <div class="platform">Web Browser</div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#platforms">Platforms</a>
-        </div>
-
-        <p>
-            Peblux is an independent project.
-            Not affiliated with or endorsed by Roblox Corporation.
-        </p>
-
-        <p>© 2026 Peblux. All rights reserved.</p>
-    </footer>
-
-    <!-- Authentication modal -->
-
-    <div class="modal-overlay" id="authModal">
-        <div class="auth-modal">
-            <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
-
-            <h2 id="modalTitle">Welcome to Peblux</h2>
-
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="loginTab">Login</button>
-                <button class="auth-tab" id="signupTab">Sign Up</button>
-            </div>
-
-            <form id="authForm">
-                <div class="auth-field">
-                    <label for="username">Username</label>
-                    <input
-                        id="username"
-                        type="text"
-                        minlength="3"
-                        maxlength="20"
-                        pattern="[A-Za-z0-9_]+"
-                        autocomplete="username"
-                        placeholder="Enter your username"
-                        required
-                    >
-                </div>
-
-                <div class="auth-field" id="genderField" style="display:none;">
-                    <label for="gender">Gender</label>
-                    <select id="gender">
-                        <option value="Prefer not to say">Prefer not to say</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="auth-field">
-                    <label for="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        minlength="8"
-                        autocomplete="current-password"
-                        placeholder="Enter your password"
-                        required
-                    >
-                </div>
-
-                <div class="auth-field" id="confirmField" style="display:none;">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        minlength="8"
-                        autocomplete="new-password"
-                        placeholder="Confirm your password"
-                    >
-                </div>
-
-                <button class="auth-submit" id="submitButton" type="submit">
-                    Login
-                </button>
-
-                <div class="auth-message" id="authMessage" role="status"></div>
-            </form>
-        </div>
+  <!-- HOME -->
+  <section class="page active" id="page-home">
+   <div class="home-profile">
+    <div class="home-avatar" id="homeAvatar">P</div>
+    <div>
+     <h1 id="homeUsername">Player</h1>
+     <small id="homeHandle">@player</small>
     </div>
+   </div>
 
-    <script type="module">
-        import { createClient } from
-            'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+   <div class="section-heading">
+    <h2>Friends <span class="muted" id="friendCount">(0)</span></h2>
+    <span class="muted">See All</span>
+   </div>
+   <div class="friend-list">
+    <div class="friend">
+     <div class="friend-avatar">?</div>
+     <span>No friends yet</span>
+    </div>
+   </div>
 
-        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+   <div class="section-heading" style="margin-top:24px">
+    <h2>Recent</h2>
+   </div>
+   <div class="empty-panel">
+    <strong>Your recent activity will appear here</strong>
+    Peblux is still under development.
+   </div>
 
-        const SUPABASE_PUBLISHABLE_KEY =
-            'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+   <div class="section-heading">
+    <h2>Popular</h2>
+   </div>
+   <div class="empty-panel">
+    <strong>Discover Peblux</strong>
+    There is no content to display yet.
+   </div>
+  </section>
 
-        const supabase = createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
+  <!-- PROFILE -->
+  <section class="page" id="page-profile">
+   <div class="profile-banner"></div>
+   <div class="profile-card">
+    <div class="profile-avatar" id="profileAvatar"></div>
+    <div class="profile-info">
+     <h1 id="profileUsername">Player</h1>
+     <p id="profileHandle">@player</p>
+     <div class="profile-stats">0 Friends &nbsp; 0 Followers &nbsp; 0 Following</div>
+    </div>
+   </div>
 
-        const modal = document.getElementById('authModal');
-        const authForm = document.getElementById('authForm');
-        const message = document.getElementById('authMessage');
+   <div class="profile-tabs">
+    <button class="profile-tab active" data-profile-tab="about">About</button>
+    <button class="profile-tab" data-profile-tab="creations">Creations</button>
+   </div>
 
-        const loginButton = document.getElementById('loginButton');
-        const signupButton = document.getElementById('signupButton');
-        const logoutButton = document.getElementById('logoutButton');
+   <div class="profile-section" id="profileAbout">
+    <h3>About</h3>
+    <p id="profileDescription">Welcome to my Peblux profile!</p>
 
-        const loginTab = document.getElementById('loginTab');
-        const signupTab = document.getElementById('signupTab');
+    <h3>Currently Wearing</h3>
+    <div class="avatar-preview" id="profile3D">
+     <span class="preview-label">3D Avatar</span>
+    </div>
+    <div class="profile-actions">
+     <button class="blue-button" data-page="avatar">Edit Avatar</button>
+    </div>
+   </div>
 
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const confirmInput = document.getElementById('confirmPassword');
-        const genderInput = document.getElementById('gender');
+   <div class="profile-section" id="profileCreations" hidden>
+    <h3>Creations</h3>
+    <div class="empty-panel">This player has not created anything yet.</div>
+   </div>
+  </section>
 
-        const genderField = document.getElementById('genderField');
-        const confirmField = document.getElementById('confirmField');
+  <!-- AVATAR EDITOR -->
+  <section class="page" id="page-avatar">
+   <h1 class="page-title">Avatar Editor</h1>
+   <div class="editor-layout">
+    <div class="editor-view" id="avatarEditorView"></div>
+    <div class="editor-controls">
+     <h3>Customize your character</h3>
 
-        const submitButton = document.getElementById('submitButton');
-        const modalTitle = document.getElementById('modalTitle');
+     <div class="control-group">
+      <label for="skinColor">Skin Color</label>
+      <div class="color-row"><input type="color" id="skinColor" value="#F2C18D"><span>Body color</span></div>
+     </div>
 
-        let currentMode = 'login';
+     <div class="control-group">
+      <label for="shirtColor">Shirt Color</label>
+      <div class="color-row"><input type="color" id="shirtColor" value="#2563EB"><span>Torso color</span></div>
+     </div>
 
-        function getInternalEmail(username) {
-            return username.trim().toLowerCase() + '@users.peblux.invalid';
-        }
+     <div class="control-group">
+      <label for="pantsColor">Pants Color</label>
+      <div class="color-row"><input type="color" id="pantsColor" value="#444444"><span>Leg color</span></div>
+     </div>
 
-        function showMessage(text, type) {
-            message.textContent = text;
-            message.className = 'auth-message ' + type;
-        }
+     <div class="control-group">
+      <label for="faceStyle">Face</label>
+      <select id="faceStyle">
+       <option value="classic">Classic Smile</option>
+       <option value="happy">Happy</option>
+       <option value="serious">Serious</option>
+      </select>
+     </div>
 
-        function clearMessage() {
-            message.textContent = '';
-            message.className = 'auth-message';
-        }
+     <div class="control-group">
+      <label for="hairStyle">Hair</label>
+      <select id="hairStyle">
+       <option value="none">No Hair</option>
+       <option value="brown">Brown Hair</option>
+       <option value="black">Black Hair</option>
+       <option value="blond">Blond Hair</option>
+      </select>
+     </div>
 
-        function setMode(mode) {
-            currentMode = mode;
-            clearMessage();
-            authForm.reset();
+     <button class="blue-button" id="saveAvatar">Save Avatar</button>
+     <div class="save-status" id="avatarStatus"></div>
+    </div>
+   </div>
+  </section>
 
-            const isSignup = mode === 'signup';
+  <!-- OTHER PAGES -->
+  <section class="page" id="page-messages">
+   <h1 class="page-title">Messages</h1>
+   <div class="empty-panel"><strong>No messages</strong>Your messages will appear here.</div>
+  </section>
 
-            loginTab.classList.toggle('active', !isSignup);
-            signupTab.classList.toggle('active', isSignup);
+  <section class="page" id="page-friends">
+   <h1 class="page-title">Friends</h1>
+   <div class="empty-panel"><strong>No friends yet</strong>Your friends will appear here.</div>
+  </section>
 
-            genderField.style.display = isSignup ? 'block' : 'none';
-            confirmField.style.display = isSignup ? 'block' : 'none';
+  <section class="page" id="page-inventory">
+   <h1 class="page-title">Inventory</h1>
+   <div class="empty-panel"><strong>Your inventory is empty</strong>Your items will appear here.</div>
+  </section>
 
-            confirmInput.required = isSignup;
-            passwordInput.autocomplete = isSignup
-                ? 'new-password'
-                : 'current-password';
+ </main>
+</div>
 
-            modalTitle.textContent = isSignup
-                ? 'Create Your Account'
-                : 'Welcome to Peblux';
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-            submitButton.textContent = isSignup
-                ? 'Create Account'
-                : 'Login';
-        }
+/* Supabase */
+const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        function openModal(mode) {
-            setMode(mode);
-            modal.classList.add('active');
-        }
+let currentUser = null;
+let currentProfile = null;
+let authMode = 'login';
 
-        function closeModal() {
-            modal.classList.remove('active');
-        }
+const defaultAvatar = {
+ skinColor:'#F2C18D',
+ shirtColor:'#2563EB',
+ pantsColor:'#444444',
+ face:'classic',
+ hair:'none'
+};
 
-        loginButton.addEventListener('click', () => openModal('login'));
-        signupButton.addEventListener('click', () => openModal('signup'));
+let avatarConfig = {...defaultAvatar};
+const viewers = [];
 
-        loginTab.addEventListener('click', () => setMode('login'));
-        signupTab.addEventListener('click', () => setMode('signup'));
+/* Authentication */
+const $ = id => document.getElementById(id);
 
-        document.getElementById('closeModal').addEventListener('click', closeModal);
+function internalEmail(username){
+ return username.trim().toLowerCase() + '@users.peblux.invalid';
+}
 
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) closeModal();
-        });
+function setAuthMode(mode){
+ authMode = mode;
+ $('loginTab').classList.toggle('active',mode==='login');
+ $('signupTab').classList.toggle('active',mode==='signup');
+ $('genderField').hidden = mode!=='signup';
+ $('confirmField').hidden = mode!=='signup';
+ $('confirmPassword').required = mode==='signup';
+ $('authSubmit').textContent = mode==='signup'?'Create Account':'Login';
+ $('password').autocomplete = mode==='signup'?'new-password':'current-password';
+ $('authMessage').textContent = '';
+ $('authMessage').className = 'auth-message';
+}
 
-        function updateAccountInterface(user) {
-            const loggedOut = document.getElementById('loggedOutButtons');
-            const loggedIn = document.getElementById('loggedInButtons');
-            const accountName = document.getElementById('accountName');
+$('loginTab').addEventListener('click',()=>setAuthMode('login'));
+$('signupTab').addEventListener('click',()=>setAuthMode('signup'));
 
-            if (user) {
-                const username =
-                    user.user_metadata?.username || 'Player';
+$('authForm').addEventListener('submit',async event=>{
+ event.preventDefault();
 
-                loggedOut.style.display = 'none';
-                loggedIn.style.display = 'flex';
-                loggedIn.style.alignItems = 'center';
-                loggedIn.style.gap = '10px';
+ const username = $('username').value.trim();
+ const password = $('password').value;
+ const confirm = $('confirmPassword').value;
+ const message = $('authMessage');
 
-                accountName.textContent = username;
-            } else {
-                loggedOut.style.display = 'flex';
-                loggedOut.style.alignItems = 'center';
-                loggedOut.style.gap = '8px';
+ if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){
+  message.textContent='Username must be 3–20 letters, numbers or underscores.';
+  return;
+ }
+ if(password.length<8){
+  message.textContent='Password must contain at least 8 characters.';
+  return;
+ }
+ if(authMode==='signup' && password!==confirm){
+  message.textContent='Passwords do not match.';
+  return;
+ }
 
-                loggedIn.style.display = 'none';
-                accountName.textContent = '';
-            }
-        }
+ $('authSubmit').disabled=true;
+ $('authSubmit').textContent='Please wait...';
 
-        authForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            clearMessage();
+ try{
+  if(authMode==='signup'){
+   const {data,error}=await supabase.auth.signUp({
+    email:internalEmail(username),
+    password,
+    options:{data:{username,gender:$('gender').value}}
+   });
+   if(error) throw error;
 
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value;
-            const confirmPassword = confirmInput.value;
+   if(data.session){
+    message.textContent='Account created successfully.';
+    message.className='auth-message success';
+   }else{
+    message.textContent='Account created, but confirmation may be required. Check your Supabase Auth settings.';
+   }
+  }else{
+   const {error}=await supabase.auth.signInWithPassword({
+    email:internalEmail(username),
+    password
+   });
+   if(error) throw error;
+  }
+ }catch(error){
+  let text=error.message||'Something went wrong.';
+  if(text.toLowerCase().includes('invalid login credentials')) text='Incorrect username or password.';
+  if(text.toLowerCase().includes('already registered')) text='This username is already registered.';
+  message.textContent=text;
+ }finally{
+  $('authSubmit').disabled=false;
+  $('authSubmit').textContent=authMode==='signup'?'Create Account':'Login';
+ }
+});
 
-            if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
-                showMessage(
-                    'Username must contain 3–20 letters, numbers or underscores.',
-                    'error'
-                );
-                return;
-            }
+$('logoutButton').addEventListener('click',async()=>{
+ await supabase.auth.signOut();
+});
 
-            if (password.length < 8) {
-                showMessage(
-                    'Your password must have at least 8 characters.',
-                    'error'
-                );
-                return;
-            }
+/* Navigation */
+function navigate(page){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ const target=$('page-'+page);
+ if(target) target.classList.add('active');
 
-            if (currentMode === 'signup' && password !== confirmPassword) {
-                showMessage('Passwords do not match.', 'error');
-                return;
-            }
+ document.querySelectorAll('.side-item').forEach(item=>{
+  item.classList.toggle('active',item.dataset.page===page);
+ });
 
-            submitButton.disabled = true;
-            submitButton.textContent = 'Please wait...';
+ $('sidebar').classList.remove('open');
 
-            try {
-                const internalEmail = getInternalEmail(username);
+ if(page==='profile') createProfileViewer();
+ if(page==='avatar') createEditorViewer();
+}
 
-                if (currentMode === 'signup') {
-                    const { data, error } = await supabase.auth.signUp({
-                        email: internalEmail,
-                        password: password,
-                        options: {
-                            data: {
-                                username: username,
-                                gender: genderInput.value
-                            }
-                        }
-                    });
+document.querySelectorAll('[data-page]').forEach(button=>{
+ button.addEventListener('click',()=>navigate(button.dataset.page));
+});
 
-                    if (error) throw error;
+$('menuToggle').addEventListener('click',()=>{
+ $('sidebar').classList.toggle('open');
+});
+$('brandHome').addEventListener('click',event=>{
+ event.preventDefault();
+ navigate('home');
+});
 
-                    if (data.session) {
-                        showMessage(
-                            'Your Peblux account has been created successfully.',
-                            'success'
-                        );
-                    } else {
-                        showMessage(
-                            'Account created. If email confirmation is enabled in Supabase, check your authentication settings.',
-                            'success'
-                        );
-                    }
-                } else {
-                    const { error } = await supabase.auth.signInWithPassword({
-                        email: internalEmail,
-                        password: password
-                    });
+document.querySelectorAll('.profile-tab').forEach(tab=>{
+ tab.addEventListener('click',()=>{
+  document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  const about=tab.dataset.profileTab==='about';
+  $('profileAbout').hidden=!about;
+  $('profileCreations').hidden=about;
+ });
+});
 
-                    if (error) throw error;
+/* User profile */
+async function loadProfile(user){
+ currentUser=user;
 
-                    showMessage('Login successful.', 'success');
+ const {data,error}=await supabase
+  .from('profiles')
+  .select('username, avatar_config')
+  .eq('id',user.id)
+  .single();
 
-                    setTimeout(closeModal, 700);
-                }
-            } catch (error) {
-                let errorText = error.message || 'Something went wrong.';
+ if(error){
+  console.error('Profile loading error:',error);
+ }
 
-                if (
-                    errorText.toLowerCase().includes('already registered') ||
-                    errorText.toLowerCase().includes('already exists')
-                ) {
-                    errorText = 'This username is already registered.';
-                }
+ currentProfile=data||{};
+ const username=currentProfile.username||user.user_metadata?.username||'Player';
 
-                if (
-                    errorText.toLowerCase().includes('invalid login credentials')
-                ) {
-                    errorText = 'Incorrect username or password.';
-                }
+ avatarConfig={
+  ...defaultAvatar,
+  ...(currentProfile.avatar_config||{})
+ };
 
-                showMessage(errorText, 'error');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent =
-                    currentMode === 'signup' ? 'Create Account' : 'Login';
-            }
-        });
+ $('topUsername').textContent=username;
+ $('sidebarUsername').textContent=username;
+ $('homeUsername').textContent=username;
+ $('homeHandle').textContent='@'+username;
+ $('profileUsername').textContent=username;
+ $('profileHandle').textContent='@'+username;
+ $('topAvatar').textContent=username.charAt(0).toUpperCase();
+ $('homeAvatar').textContent=username.charAt(0).toUpperCase();
 
-        logoutButton.addEventListener('click', async () => {
-            const { error } = await supabase.auth.signOut();
+ $('skinColor').value=avatarConfig.skinColor;
+ $('shirtColor').value=avatarConfig.shirtColor;
+ $('pantsColor').value=avatarConfig.pantsColor;
+ $('faceStyle').value=avatarConfig.face;
+ $('hairStyle').value=avatarConfig.hair;
 
-            if (error) {
-                alert('Could not log out: ' + error.message);
-            }
-        });
+ $('authScreen').hidden=true;
+ navigate('home');
+}
 
-        supabase.auth.onAuthStateChange((_event, session) => {
-            updateAccountInterface(session?.user || null);
-        });
+supabase.auth.onAuthStateChange((event,session)=>{
+ if(session?.user){
+  loadProfile(session.user);
+ }else{
+  currentUser=null;
+  currentProfile=null;
+  $('authScreen').hidden=false;
+  $('sidebar').classList.remove('open');
+ }
+});
 
-        const { data: { session } } = await supabase.auth.getSession();
-        updateAccountInterface(session?.user || null);
-    </script>
+const {data:{session}}=await supabase.auth.getSession();
+if(session?.user) await loadProfile(session.user);
 
+/* Three.js R6 avatar */
+function makeMaterial(color){
+ return new THREE.MeshStandardMaterial({color,roughness:0.82});
+}
+
+function createAvatar(config){
+ const group=new THREE.Group();
+
+ const skin=makeMaterial(config.skinColor);
+ const shirt=makeMaterial(config.shirtColor);
+ const pants=makeMaterial(config.pantsColor);
+ const dark=makeMaterial('#242424');
+ const white=makeMaterial('#ffffff');
+ const hairColor={
+  brown:'#654321',
+  black:'#171717',
+  blond:'#e2bd68'
+ }[config.hair];
+
+ function block(w,h,d,material,x,y,z){
+  const mesh=new THREE.Mesh(
+   new THREE.BoxGeometry(w,h,d),
+   material
+  );
+  mesh.position.set(x,y,z);
+  mesh.castShadow=true;
+  mesh.receiveShadow=true;
+  group.add(mesh);
+  return mesh;
+ }
+
+ // Legs
+ block(0.48,0.95,0.48,pants,-0.25,0.48,0);
+ block(0.48,0.95,0.48,pants,0.25,0.48,0);
+
+ // Torso
+ block(1.02,1.05,0.5,shirt,0,1.52,0);
+
+ // Arms
+ block(0.42,1.05,0.45,skin,-0.73,1.52,0);
+ block(0.42,1.05,0.45,skin,0.73,1.52,0);
+
+ // Head
+ block(0.85,0.85,0.82,skin,0,2.48,0);
+
+ // Face details on the front
+ const eyeMaterial=makeMaterial('#242424');
+ const eyeY=2.58;
+
+ block(0.09,0.11,0.025,eyeMaterial,-0.18,eyeY,0.418);
+ block(0.09,0.11,0.025,eyeMaterial,0.18,eyeY,0.418);
+
+ if(config.face==='classic'){
+  block(0.32,0.045,0.025,dark,0,2.31,0.418);
+  for(let i=0;i<3;i++){
+   block(0.025,0.045,0.012,white,-0.09+i*0.09,2.31,0.433);
+  }
+ }else if(config.face==='happy'){
+  block(0.27,0.07,0.025,dark,0,2.32,0.418);
+ }else{
+  block(0.24,0.035,0.025,dark,0,2.29,0.418);
+ }
+
+ // Simple block hair
+ if(hairColor){
+  const hair=makeMaterial(hairColor);
+  block(0.9,0.22,0.87,hair,0,2.92,-0.02);
+  block(0.18,0.25,0.86,hair,-0.34,2.78,0);
+  block(0.18,0.18,0.86,hair,0.34,2.78,0);
+ }
+
+ return group;
+}
+
+function createViewer(container,config,options={}){
+ if(!container) return null;
+
+ container.innerHTML='';
+
+ const scene=new THREE.Scene();
+ scene.background=new THREE.Color(options.background||'#17191c');
+
+ const camera=new THREE.PerspectiveCamera(
+  options.fov||35,
+  1,
+  0.1,
+  100
+ );
+ camera.position.set(0,options.cameraY||2.0,options.cameraZ||9.5);
+ camera.lookAt(0,options.lookY||1.55,0);
+
+ const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+ renderer.shadowMap.enabled=true;
+ renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ container.appendChild(renderer.domElement);
+
+ scene.add(new THREE.HemisphereLight(0xffffff,0x454545,2));
+
+ const light=new THREE.DirectionalLight(0xffffff,2.4);
+ light.position.set(-3,7,5);
+ light.castShadow=true;
+ scene.add(light);
+
+ const avatar=createAvatar(config);
+ scene.add(avatar);
+
+ const floor=new THREE.Mesh(
+  new THREE.PlaneGeometry(200,200),
+  makeMaterial('#202225')
+ );
+ floor.rotation.x=-Math.PI/2;
+ floor.position.y=-0.03;
+ floor.receiveShadow=true;
+ scene.add(floor);
+
+ let dragging=false;
+ let lastX=0;
+
+ renderer.domElement.addEventListener('pointerdown',event=>{
+  dragging=true;
+  lastX=event.clientX;
+  renderer.domElement.setPointerCapture(event.pointerId);
+ });
+
+ renderer.domElement.addEventListener('pointermove',event=>{
+  if(!dragging)return;
+  avatar.rotation.y+=(event.clientX-lastX)*0.012;
+  lastX=event.clientX;
+ });
+
+ renderer.domElement.addEventListener('pointerup',()=>dragging=false);
+ renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+
+ function resize(){
+  const width=container.clientWidth||300;
+  const height=container.clientHeight||300;
+  renderer.setSize(width,height,false);
+  camera.aspect=width/height;
+  camera.updateProjectionMatrix();
+ }
+ resize();
+
+ const observer=new ResizeObserver(resize);
+ observer.observe(container);
+
+ let active=true;
+ function animate(){
+  if(!active)return;
+  requestAnimationFrame(animate);
+  renderer.render(scene,camera);
+ }
+ animate();
+
+ const viewer={
+  destroy(){
+   active=false;
+   observer.disconnect();
+   renderer.dispose();
+   scene.traverse(object=>{
+    if(object.geometry)object.geometry.dispose();
+    if(object.material){
+     if(Array.isArray(object.material))object.material.forEach(m=>m.dispose());
+     else object.material.dispose();
+    }
+   });
+   renderer.domElement.remove();
+  }
+ };
+
+ viewers.push(viewer);
+ return viewer;
+}
+
+function clearViewers(){
+ while(viewers.length){
+  viewers.pop().destroy();
+ }
+}
+
+function createProfileViewer(){
+ clearViewers();
+ createViewer($('profile3D'),avatarConfig,{
+  cameraY:2.25,
+  cameraZ:8.3,
+  lookY:2.05,
+  fov:32
+ });
+}
+
+function createEditorViewer(){
+ clearViewers();
+ createViewer($('avatarEditorView'),avatarConfig,{
+  cameraY:2,
+  cameraZ:9.5,
+  lookY:1.55,
+  fov:35
+ });
+}
+
+/* Avatar customization */
+function readAvatarControls(){
+ return {
+  skinColor:$('skinColor').value,
+  shirtColor:$('shirtColor').value,
+  pantsColor:$('pantsColor').value,
+  face:$('faceStyle').value,
+  hair:$('hairStyle').value
+ };
+}
+
+['skinColor','shirtColor','pantsColor','faceStyle','hairStyle'].forEach(id=>{
+ $(id).addEventListener('input',()=>{
+  avatarConfig=readAvatarControls();
+  createEditorViewer();
+ });
+});
+
+$('saveAvatar').addEventListener('click',async()=>{
+ if(!currentUser)return;
+
+ $('saveAvatar').disabled=true;
+ $('avatarStatus').textContent='Saving...';
+
+ const newConfig=readAvatarControls();
+
+ const {error}=await supabase
+  .from('profiles')
+  .update({avatar_config:newConfig})
+  .eq('id',currentUser.id);
+
+ $('saveAvatar').disabled=false;
+
+ if(error){
+  $('avatarStatus').textContent='Could not save: '+error.message;
+  return;
+ }
+
+ avatarConfig=newConfig;
+ $('avatarStatus').textContent='Avatar saved successfully.';
+ createProfileViewer();
+});
+
+</script>
 </body>
 </html>
