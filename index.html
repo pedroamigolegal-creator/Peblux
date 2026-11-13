@@ -1,781 +1,1505 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Peblux</title>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curth</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#202225;color:#f5f5f5;font-family:'Source Sans Pro',Arial,sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer}
-[hidden]{display:none!important}
+:root {
+  --blue: #0877c9;
+  --blue-dark: #075b9b;
+  --background: #e9edf1;
+  --surface: #ffffff;
+  --text: #333333;
+  --muted: #777777;
+  --border: #c8d8e5;
+}
 
-/* Top navigation */
-.topbar{height:62px;background:#191a1d;border-bottom:1px solid #333;display:flex;align-items:center;padding:0 18px;gap:18px;position:sticky;top:0;z-index:20}
-.icon-button{background:none;border:0;color:#ddd;font-size:23px;padding:6px}
-.brand{font-size:25px;font-weight:700;color:#00a2ff;text-decoration:none}
-.search{background:#101114;border:1px solid #444;border-radius:5px;color:white;padding:8px 12px;width:min(340px,35vw)}
-.top-right{margin-left:auto;display:flex;align-items:center;gap:15px}
-.top-user{display:flex;align-items:center;gap:8px;font-weight:600}
-.top-avatar{width:30px;height:30px;border-radius:50%;background:#444;display:grid;place-items:center;color:white;font-size:13px}
-.top-link{color:#ddd;text-decoration:none;font-size:14px}
+* { box-sizing: border-box; }
 
-/* Layout */
-.layout{display:flex;min-height:calc(100vh - 62px)}
-.sidebar{width:0;overflow:hidden;background:#191a1d;transition:width .2s;flex-shrink:0}
-.sidebar.open{width:220px}
-.sidebar-inner{width:220px;padding:12px 9px}
-.sidebar-user{padding:12px 8px;border-bottom:1px solid #333;margin-bottom:8px;font-weight:700}
-.side-item{width:100%;display:flex;align-items:center;gap:11px;padding:10px 9px;border:0;background:transparent;color:#ddd;text-align:left;border-radius:4px;font-size:15px}
-.side-item:hover,.side-item.active{background:#34373b;color:white}
-.side-icon{width:20px;text-align:center;font-size:17px}
-.content{flex:1;min-width:0;padding:20px 14px 60px;max-width:1500px;margin:0 auto;width:100%}
-.page{display:none}
-.page.active{display:block}
-.page-title{font-size:24px;margin:0 0 18px}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
 
-/* Home */
-.home-profile{display:flex;align-items:center;gap:16px;padding:12px 5px 25px}
-.home-avatar{width:82px;height:82px;border-radius:50%;background:#444;overflow:hidden;display:grid;place-items:center;font-size:28px}
-.home-avatar canvas{width:100%;height:100%;display:block}
-.home-profile h1{font-size:27px;margin:0}
-.home-profile small{color:#aaa}
-.section-heading{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}
-.section-heading h2{font-size:19px;margin:0}
-.muted{color:#aaa}
-.friend-list{display:flex;gap:20px;overflow-x:auto;padding:5px 2px 18px;border-bottom:1px solid #444}
-.friend{width:70px;flex-shrink:0;text-align:center}
-.friend-avatar{width:62px;height:62px;margin:auto auto 5px;border-radius:50%;background:#3b4148;display:grid;place-items:center;font-size:22px;border:2px solid #555}
-.friend span{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.empty-panel{background:#292c30;border:1px solid #393d42;border-radius:4px;padding:25px;margin:12px 0 25px;color:#aaa;text-align:center}
-.empty-panel strong{display:block;color:#eee;font-size:17px;margin-bottom:5px}
+button, input, select { font-family: inherit; }
+button { cursor: pointer; }
 
-/* Profile */
-.profile-banner{height:105px;background:linear-gradient(110deg,#30363c,#45494d);border-radius:3px}
-.profile-card{display:flex;align-items:center;gap:15px;background:#383b3f;padding:14px;margin-top:-1px}
-.profile-avatar{width:90px;height:90px;border-radius:50%;background:#25282b;overflow:hidden;flex-shrink:0}
-.profile-avatar canvas{width:100%;height:100%;display:block}
-.profile-info h1{margin:0;font-size:27px}
-.profile-info p{margin:3px 0;color:#bbb}
-.profile-stats{font-size:13px;color:#ddd;margin-top:8px}
-.profile-tabs{display:flex;background:#383b3f;margin-top:12px}
-.profile-tab{flex:1;background:none;border:0;color:#ddd;padding:12px;border-bottom:3px solid transparent}
-.profile-tab.active{border-bottom-color:white;color:white}
-.profile-section{padding:18px 10px}
-.profile-section h3{margin:0 0 5px}
-.profile-section p{color:#bbb;margin:5px 0 22px}
-.avatar-preview{height:360px;max-width:550px;margin:10px auto;background:#17191c;border-radius:4px;overflow:hidden;position:relative}
-.avatar-preview canvas{width:100%;height:100%;display:block}
-.preview-label{position:absolute;top:10px;left:12px;color:#ddd;background:#1119;padding:5px 9px;border-radius:3px;font-size:13px;pointer-events:none}
-.profile-actions{text-align:center;margin:12px}
-.blue-button{background:#00a2ff;border:0;border-radius:4px;padding:10px 18px;color:white;font-weight:700}
-.blue-button:hover{background:#008bdc}
+[hidden] { display: none !important; }
 
-/* Avatar editor */
-.editor-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:18px}
-.editor-view{height:460px;background:#17191c;border-radius:4px;overflow:hidden}
-.editor-view canvas{width:100%;height:100%;display:block}
-.editor-controls{background:#2b2e32;padding:18px;border-radius:4px}
-.editor-controls h3{margin:0 0 15px}
-.control-group{margin:14px 0}
-.control-group label{display:block;margin-bottom:7px;color:#ddd}
-.control-group input,.control-group select{width:100%}
-.color-row{display:flex;align-items:center;gap:10px}
-.color-row input{height:38px;max-width:65px;border:0;background:none}
-.save-status{font-size:13px;color:#aaa;margin-top:12px;min-height:20px}
+/* LOGIN E CADASTRO */
 
-/* Auth */
-.auth-screen{position:fixed;inset:0;background:#17191c;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px}
-.auth-box{width:100%;max-width:390px;background:#292c30;padding:28px;border-radius:5px;border:1px solid #444}
-.auth-box h1{text-align:center;color:#00a2ff;margin:0 0 5px}
-.auth-box>p{text-align:center;color:#aaa;margin:0 0 20px}
-.auth-tabs{display:flex;margin-bottom:18px}
-.auth-tab{flex:1;padding:10px;background:#202225;border:0;color:#aaa}
-.auth-tab.active{background:#00a2ff;color:white}
-.field{margin:12px 0}
-.field label{display:block;margin-bottom:5px}
-.field input,.field select{width:100%;padding:11px;background:#17191c;color:white;border:1px solid #555;border-radius:3px}
-.auth-submit{width:100%;padding:12px;background:#00a2ff;color:white;border:0;border-radius:3px;font-weight:700;margin-top:10px}
-.auth-message{font-size:14px;margin-top:12px;color:#ff9b9b}
-.auth-message.success{color:#7ce3a0}
-.logout-button{background:#383b3f;color:#eee;border:1px solid #555;padding:7px 12px;border-radius:3px}
-.mobile-menu{display:none}
+#authScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    linear-gradient(90deg, #052c50dd, #075b9bcc),
+    url("https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=1800&q=85")
+    center/cover;
+}
 
-@media(max-width:700px){
- .topbar{padding:0 9px;gap:9px}
- .brand{font-size:21px}
- .search{width:30vw}
- .top-right{gap:8px}
- .top-link{display:none}
- .sidebar.open{width:190px}
- .sidebar-inner{width:190px}
- .content{padding:15px 10px 50px}
- .home-profile h1{font-size:23px}
- .editor-layout{grid-template-columns:1fr}
- .editor-view{height:390px}
- .avatar-preview{height:330px}
+.auth-box {
+  width: 100%;
+  max-width: 410px;
+  padding: 28px;
+  background: var(--surface);
+  border-radius: 7px;
+  box-shadow: 0 10px 40px #0005;
+}
+
+.logo {
+  text-align: center;
+  color: var(--blue);
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin: 5px 0 25px;
+}
+
+.auth-box h2 { font-size: 21px; }
+
+.auth-box input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #b9c5ce;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  background: var(--blue);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.primary-btn:hover, .avatar-save:hover {
+  background: var(--blue-dark);
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 18px;
+}
+
+.auth-switch button, .text-button {
+  border: 0;
+  background: none;
+  color: var(--blue);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.forgot-row {
+  text-align: right;
+  margin: 10px 0;
+}
+
+#authMessage {
+  font-size: 13px;
+  margin-top: 13px;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+/* TOPO */
+
+#app { display: none; }
+
+.topbar {
+  min-height: 54px;
+  background: var(--blue);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 7px 18px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.top-logo {
+  color: white;
+  font-size: 27px;
+  font-weight: 900;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+.top-links {
+  display: flex;
+  gap: 17px;
+}
+
+.top-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search { flex: 1; max-width: 360px; }
+
+.search input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 4px;
+}
+
+.account-area {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account-area select {
+  padding: 7px;
+  border-radius: 4px;
+  border: 0;
+}
+
+.account-area button {
+  padding: 8px 11px;
+  color: white;
+  background: transparent;
+  border: 1px solid #ffffff88;
+  border-radius: 4px;
+}
+
+/* LAYOUT */
+
+.layout {
+  display: flex;
+  max-width: 1400px;
+  min-height: calc(100vh - 54px);
+  margin: auto;
+}
+
+.sidebar {
+  width: 190px;
+  flex-shrink: 0;
+  padding: 17px 10px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.sidebar-title {
+  padding: 12px 10px 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  display: block;
+  padding: 11px 12px;
+  margin-bottom: 3px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.nav-item:hover, .nav-item.active {
+  background: #e5f2fc;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+.page-title {
+  margin: 0 0 18px;
+  font-size: 24px;
+}
+
+.panel {
+  padding: 18px;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.panel h2 { margin: 0 0 14px; font-size: 18px; }
+
+/* INÍCIO */
+
+.welcome {
+  padding: 23px;
+  margin-bottom: 22px;
+  color: white;
+  border-radius: 6px;
+  background:
+    linear-gradient(100deg, #075b9beF, #0877c9bb),
+    url("https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=1400&q=85")
+    center/cover;
+}
+
+.welcome-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.welcome h1 { margin: 0 0 8px; font-size: 28px; }
+.welcome p { margin: 0; }
+
+.home-avatar {
+  width: 115px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #ffffff33;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 14px;
+}
+
+.game-card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.game-thumb {
+  height: 115px;
+  background: linear-gradient(135deg, #2778b9, #65b5e8);
+}
+
+.game-info { padding: 10px; }
+.game-info strong { display: block; font-size: 14px; }
+.game-info small { color: var(--muted); }
+
+/* AVATAR */
+
+.curth-avatar {
+  width: 140px;
+  height: 180px;
+  position: relative;
+  margin: 10px auto;
+  --skin: #F5CD30;
+  --shirt: #1769AA;
+  --pants: #287A42;
+}
+
+.curth-avatar div {
+  position: absolute;
+  border: 2px solid #0002;
+  border-radius: 2px;
+}
+
+.avatar-head {
+  width: 52px;
+  height: 48px;
+  top: 0;
+  left: 44px;
+  background: var(--skin);
+}
+
+.avatar-torso {
+  width: 76px;
+  height: 65px;
+  top: 52px;
+  left: 32px;
+  background: var(--shirt);
+}
+
+.avatar-arm {
+  width: 19px;
+  height: 63px;
+  top: 54px;
+  background: var(--skin);
+}
+
+.avatar-arm.left { left: 10px; }
+.avatar-arm.right { right: 10px; }
+
+.avatar-leg {
+  width: 32px;
+  height: 55px;
+  top: 119px;
+  background: var(--pants);
+}
+
+.avatar-leg.left { left: 34px; }
+.avatar-leg.right { right: 34px; }
+
+.avatar-editor {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.avatar-editor label {
+  display: block;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.avatar-editor input[type="color"] {
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  height: 42px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.avatar-save {
+  padding: 12px 20px;
+  margin-top: 18px;
+  color: white;
+  background: var(--blue);
+  border: 0;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.profile-details h2 { margin: 0 0 8px; }
+.profile-details p { margin: 5px 0; color: var(--muted); font-size: 14px; }
+
+/* JOGADORES */
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.user-avatar-wrap {
+  width: 55px;
+  height: 70px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.user-avatar-wrap .curth-avatar {
+  margin: 0;
+  transform: scale(.38);
+  transform-origin: top left;
+}
+
+.user-card strong { display: block; font-size: 14px; }
+.user-card small { color: var(--muted); }
+
+/* CONFIGURAÇÕES */
+
+.setting-option {
+  display: block;
+  margin: 13px 0;
+}
+
+.setting-option input { margin-right: 7px; }
+
+#themeColor {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: 42px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+#settingsLanguage {
+  width: 100%;
+  max-width: 280px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.footer {
+  padding: 25px 10px;
+  margin-top: 30px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+/* TEMA ESCURO */
+
+body.dark {
+  --background: #17191e;
+  --surface: #252a32;
+  --text: #eeeeee;
+  --muted: #b2b9c2;
+  --border: #3b424d;
+}
+
+body.dark .nav-item { color: #ddd; }
+body.dark .nav-item:hover,
+body.dark .nav-item.active {
+  background: #343e4b;
+  color: #65baff;
+}
+
+body.dark .game-card,
+body.dark .user-card,
+body.dark .panel,
+body.dark .avatar-editor {
+  color: var(--text);
+}
+
+body.dark .auth-box {
+  background: #252a32;
+  color: white;
+}
+
+body.dark .auth-box input {
+  background: #17191e;
+  color: white;
+  border-color: #555;
+}
+
+body.dark .search input,
+body.dark select {
+  background: #252a32;
+  color: white;
+}
+
+/* RESPONSIVO */
+
+@media(max-width: 750px) {
+  .topbar { gap: 9px; padding: 8px 10px; }
+  .top-links { display: none; }
+  .search { max-width: none; }
+  .account-area { gap: 5px; }
+  .account-area select { max-width: 105px; }
+  .layout { display: block; }
+  .sidebar {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    padding: 7px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-title { display: none; }
+  .nav-item { white-space: nowrap; margin: 0 2px; }
+  .content { padding: 14px; }
+  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Authentication -->
-<div class="auth-screen" id="authScreen">
- <div class="auth-box">
-  <h1>PEBLUX</h1>
-  <p>A classic online world</p>
-  <div class="auth-tabs">
-   <button class="auth-tab active" id="loginTab">Login</button>
-   <button class="auth-tab" id="signupTab">Sign Up</button>
+<!-- AUTENTICAÇÃO -->
+
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="logo">CURTH</div>
+    <div class="auth-subtitle">Play. Create. Connect.</div>
+
+    <div id="loginForm">
+      <h2 data-i18n="login">Entrar</h2>
+      <input id="loginEmail" type="email" placeholder="Email" autocomplete="email">
+      <input id="loginPassword" type="password" placeholder="Senha" autocomplete="current-password">
+
+      <div class="forgot-row">
+        <button class="text-button" id="forgotPassword" type="button"
+          data-i18n="forgot">Esqueceu a senha?</button>
+      </div>
+
+      <button class="primary-btn" id="loginButton" data-i18n="login">Entrar</button>
+
+      <div class="auth-switch">
+        <span data-i18n="noAccount">Não tem uma conta?</span>
+        <button id="showRegister" data-i18n="register">Cadastre-se</button>
+      </div>
+    </div>
+
+    <div id="registerForm" hidden>
+      <h2 data-i18n="createAccount">Criar conta</h2>
+      <input id="registerUsername" maxlength="20" placeholder="Nome de usuário" autocomplete="username">
+      <input id="registerEmail" type="email" placeholder="Email" autocomplete="email">
+      <input id="registerPassword" type="password" placeholder="Senha" autocomplete="new-password">
+
+      <button class="primary-btn" id="registerButton" data-i18n="register">Criar conta</button>
+
+      <div class="auth-switch">
+        <span data-i18n="hasAccount">Já tem uma conta?</span>
+        <button id="showLogin" data-i18n="login">Entrar</button>
+      </div>
+    </div>
+
+    <div id="authMessage" role="status"></div>
   </div>
-  <form id="authForm">
-   <div class="field">
-    <label for="username">Username</label>
-    <input id="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]+" autocomplete="username" required placeholder="Username">
-   </div>
-   <div class="field" id="genderField" hidden>
-    <label for="gender">Gender</label>
-    <select id="gender">
-     <option value="Prefer not to say">Prefer not to say</option>
-     <option value="Male">Male</option>
-     <option value="Female">Female</option>
-     <option value="Other">Other</option>
-    </select>
-   </div>
-   <div class="field">
-    <label for="password">Password</label>
-    <input id="password" type="password" minlength="8" required autocomplete="current-password" placeholder="Password">
-   </div>
-   <div class="field" id="confirmField" hidden>
-    <label for="confirmPassword">Confirm Password</label>
-    <input id="confirmPassword" type="password" minlength="8" placeholder="Confirm password">
-   </div>
-   <button class="auth-submit" id="authSubmit" type="submit">Login</button>
-   <div class="auth-message" id="authMessage" role="status"></div>
-  </form>
- </div>
 </div>
 
-<!-- Header -->
+<!-- APLICAÇÃO -->
+
+<div id="app">
+
 <header class="topbar">
- <button class="icon-button" id="menuToggle" aria-label="Open menu">☰</button>
- <a class="brand" href="#" id="brandHome">PEBLUX</a>
- <input class="search" placeholder="Search" aria-label="Search">
- <div class="top-right">
-  <div class="top-user">
-   <div class="top-avatar" id="topAvatar">P</div>
-   <span id="topUsername">Player</span>
+  <a class="top-logo" href="#" data-page="home">CURTH</a>
+
+  <div class="top-links">
+    <a data-page="home" data-i18n="home">Início</a>
+    <a data-page="games" data-i18n="games">Jogos</a>
+    <a data-page="catalog" data-i18n="catalog">Catálogo</a>
+    <a data-page="users" data-i18n="players">Jogadores</a>
   </div>
-  <a class="top-link" href="#" data-page="friends">Friends</a>
-  <button class="logout-button" id="logoutButton">Logout</button>
- </div>
+
+  <div class="search">
+    <input id="searchInput" placeholder="Pesquisar...">
+  </div>
+
+  <div class="account-area">
+    <select id="languageSelect" aria-label="Language">
+      <option value="pt-BR">Português</option>
+      <option value="en">English</option>
+    </select>
+    <span id="topUsername">Player</span>
+    <button id="logoutButton" data-i18n="logout">Sair</button>
+  </div>
 </header>
 
 <div class="layout">
- <aside class="sidebar" id="sidebar">
-  <div class="sidebar-inner">
-   <div class="sidebar-user" id="sidebarUsername">Player</div>
-   <button class="side-item active" data-page="home"><span class="side-icon">⌂</span>Home</button>
-   <button class="side-item" data-page="profile"><span class="side-icon">♙</span>Profile</button>
-   <button class="side-item" data-page="messages"><span class="side-icon">▤</span>Messages</button>
-   <button class="side-item" data-page="friends"><span class="side-icon">♧</span>Friends</button>
-   <button class="side-item" data-page="avatar"><span class="side-icon">♟</span>Avatar</button>
-   <button class="side-item" data-page="inventory"><span class="side-icon">▣</span>Inventory</button>
+
+<aside class="sidebar">
+  <div class="sidebar-title" data-i18n="navigation">Navegação</div>
+  <a class="nav-item active" data-page="home" data-i18n="home">Início</a>
+  <a class="nav-item" data-page="games" data-i18n="games">Jogos</a>
+  <a class="nav-item" data-page="catalog" data-i18n="catalog">Catálogo</a>
+  <a class="nav-item" data-page="users" data-i18n="players">Jogadores</a>
+
+  <div class="sidebar-title" data-i18n="myAccount">Minha conta</div>
+  <a class="nav-item" data-page="profile" data-i18n="profile">Meu Perfil</a>
+  <a class="nav-item" data-page="settings" data-i18n="settings">Configurações</a>
+</aside>
+
+<main class="content">
+
+<!-- INÍCIO -->
+
+<section id="home" class="page active">
+  <div class="welcome">
+    <div class="welcome-content">
+      <div class="home-avatar" id="homeAvatar"></div>
+      <div>
+        <h1 id="helloTitle">Olá!</h1>
+        <p id="helloSubtitle">Bem-vindo de volta ao Curth!</p>
+      </div>
+    </div>
   </div>
- </aside>
 
- <main class="content">
-
-  <!-- HOME -->
-  <section class="page active" id="page-home">
-   <div class="home-profile">
-    <div class="home-avatar" id="homeAvatar">P</div>
-    <div>
-     <h1 id="homeUsername">Player</h1>
-     <small id="homeHandle">@player</small>
+  <div class="panel">
+    <h2 data-i18n="featuredGames">Jogos em destaque</h2>
+    <div class="game-grid">
+      <div class="game-card">
+        <div class="game-thumb"></div>
+        <div class="game-info">
+          <strong>Curth Obby</strong>
+          <small data-i18n="comingSoon">Em breve</small>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#318b53,#9bd66d)"></div>
+        <div class="game-info">
+          <strong>Nature Simulator</strong>
+          <small data-i18n="comingSoon">Em breve</small>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#7850a8,#c18bdf)"></div>
+        <div class="game-info">
+          <strong>Block Adventure</strong>
+          <small data-i18n="comingSoon">Em breve</small>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#bd7031,#f0c36a)"></div>
+        <div class="game-info">
+          <strong>Speed World</strong>
+          <small data-i18n="comingSoon">Em breve</small>
+        </div>
+      </div>
     </div>
-   </div>
+  </div>
 
-   <div class="section-heading">
-    <h2>Friends <span class="muted" id="friendCount">(0)</span></h2>
-    <span class="muted">See All</span>
-   </div>
-   <div class="friend-list">
-    <div class="friend">
-     <div class="friend-avatar">?</div>
-     <span>No friends yet</span>
+  <div class="panel">
+    <h2 data-i18n="aboutCurth">Sobre o Curth</h2>
+    <p data-i18n="aboutText">Uma plataforma para descobrir experiências, criar sua identidade e conhecer jogadores.</p>
+  </div>
+</section>
+
+<!-- JOGOS -->
+
+<section id="games" class="page">
+  <h1 class="page-title" data-i18n="games">Jogos</h1>
+  <div class="panel">
+    <p data-i18n="gamesText">Explore os jogos disponíveis no Curth.</p>
+    <div class="game-grid">
+      <div class="game-card">
+        <div class="game-thumb"></div>
+        <div class="game-info">
+          <strong>Curth Obby</strong>
+          <small data-i18n="comingSoon">Em breve</small>
+        </div>
+      </div>
     </div>
-   </div>
+  </div>
+</section>
 
-   <div class="section-heading" style="margin-top:24px">
-    <h2>Recent</h2>
-   </div>
-   <div class="empty-panel">
-    <strong>Your recent activity will appear here</strong>
-    Peblux is still under development.
-   </div>
+<!-- CATÁLOGO -->
 
-   <div class="section-heading">
-    <h2>Popular</h2>
-   </div>
-   <div class="empty-panel">
-    <strong>Discover Peblux</strong>
-    There is no content to display yet.
-   </div>
-  </section>
+<section id="catalog" class="page">
+  <h1 class="page-title" data-i18n="catalog">Catálogo</h1>
+  <div class="panel">
+    <h2 data-i18n="catalogTitle">Catálogo do Curth</h2>
+    <p data-i18n="catalogText">Roupas, acessórios e itens estarão disponíveis aqui em breve.</p>
+  </div>
+</section>
 
-  <!-- PROFILE -->
-  <section class="page" id="page-profile">
-   <div class="profile-banner"></div>
-   <div class="profile-card">
-    <div class="profile-avatar" id="profileAvatar"></div>
-    <div class="profile-info">
-     <h1 id="profileUsername">Player</h1>
-     <p id="profileHandle">@player</p>
-     <div class="profile-stats">0 Friends &nbsp; 0 Followers &nbsp; 0 Following</div>
+<!-- JOGADORES -->
+
+<section id="users" class="page">
+  <h1 class="page-title" data-i18n="players">Jogadores</h1>
+  <div class="panel">
+    <h2 data-i18n="community">Comunidade Curth</h2>
+    <div id="userList" class="user-list">Carregando...</div>
+  </div>
+</section>
+
+<!-- PERFIL -->
+
+<section id="profile" class="page">
+  <h1 class="page-title" data-i18n="profile">Meu Perfil</h1>
+
+  <div class="panel">
+    <div class="profile-header">
+      <div id="profileAvatar"></div>
+      <div class="profile-details">
+        <h2 id="profileDisplayName">Player</h2>
+        <p id="profileUsername">@player</p>
+        <p id="profileUserNumber">Curth ID: #...</p>
+      </div>
     </div>
-   </div>
+  </div>
 
-   <div class="profile-tabs">
-    <button class="profile-tab active" data-profile-tab="about">About</button>
-    <button class="profile-tab" data-profile-tab="creations">Creations</button>
-   </div>
+  <div class="avatar-editor">
+    <h2 data-i18n="avatarEditor">Editor de Avatar</h2>
+    <p data-i18n="avatarDescription">Personalize seu personagem no Curth.</p>
 
-   <div class="profile-section" id="profileAbout">
-    <h3>About</h3>
-    <p id="profileDescription">Welcome to my Peblux profile!</p>
+    <div id="avatarEditorPreview"></div>
 
-    <h3>Currently Wearing</h3>
-    <div class="avatar-preview" id="profile3D">
-     <span class="preview-label">3D Avatar</span>
-    </div>
-    <div class="profile-actions">
-     <button class="blue-button" data-page="avatar">Edit Avatar</button>
-    </div>
-   </div>
+    <label for="avatarSkin" data-i18n="skinColor">Cor da pele</label>
+    <input type="color" id="avatarSkin" value="#F5CD30">
 
-   <div class="profile-section" id="profileCreations" hidden>
-    <h3>Creations</h3>
-    <div class="empty-panel">This player has not created anything yet.</div>
-   </div>
-  </section>
+    <label for="avatarShirt" data-i18n="shirtColor">Cor da camiseta</label>
+    <input type="color" id="avatarShirt" value="#1769AA">
 
-  <!-- AVATAR EDITOR -->
-  <section class="page" id="page-avatar">
-   <h1 class="page-title">Avatar Editor</h1>
-   <div class="editor-layout">
-    <div class="editor-view" id="avatarEditorView"></div>
-    <div class="editor-controls">
-     <h3>Customize your character</h3>
+    <label for="avatarPants" data-i18n="pantsColor">Cor da calça</label>
+    <input type="color" id="avatarPants" value="#287A42">
 
-     <div class="control-group">
-      <label for="skinColor">Skin Color</label>
-      <div class="color-row"><input type="color" id="skinColor" value="#F2C18D"><span>Body color</span></div>
-     </div>
+    <button class="avatar-save" id="saveAvatar" data-i18n="saveAvatar">
+      Salvar Avatar
+    </button>
 
-     <div class="control-group">
-      <label for="shirtColor">Shirt Color</label>
-      <div class="color-row"><input type="color" id="shirtColor" value="#2563EB"><span>Torso color</span></div>
-     </div>
+    <p id="avatarStatus" role="status"></p>
+  </div>
+</section>
 
-     <div class="control-group">
-      <label for="pantsColor">Pants Color</label>
-      <div class="color-row"><input type="color" id="pantsColor" value="#444444"><span>Leg color</span></div>
-     </div>
+<!-- CONFIGURAÇÕES -->
 
-     <div class="control-group">
-      <label for="faceStyle">Face</label>
-      <select id="faceStyle">
-       <option value="classic">Classic Smile</option>
-       <option value="happy">Happy</option>
-       <option value="serious">Serious</option>
-      </select>
-     </div>
+<section id="settings" class="page">
+  <h1 class="page-title" data-i18n="settings">Configurações</h1>
 
-     <div class="control-group">
-      <label for="hairStyle">Hair</label>
-      <select id="hairStyle">
-       <option value="none">No Hair</option>
-       <option value="brown">Brown Hair</option>
-       <option value="black">Black Hair</option>
-       <option value="blond">Blond Hair</option>
-      </select>
-     </div>
+  <div class="panel">
+    <h2 data-i18n="language">Idioma</h2>
+    <select id="settingsLanguage">
+      <option value="pt-BR">Português</option>
+      <option value="en">English</option>
+    </select>
+  </div>
 
-     <button class="blue-button" id="saveAvatar">Save Avatar</button>
-     <div class="save-status" id="avatarStatus"></div>
-    </div>
-   </div>
-  </section>
+  <div class="panel">
+    <h2 data-i18n="appearance">Aparência</h2>
 
-  <!-- OTHER PAGES -->
-  <section class="page" id="page-messages">
-   <h1 class="page-title">Messages</h1>
-   <div class="empty-panel"><strong>No messages</strong>Your messages will appear here.</div>
-  </section>
+    <label class="setting-option">
+      <input type="radio" name="theme" value="light">
+      <span data-i18n="light">Claro</span>
+    </label>
 
-  <section class="page" id="page-friends">
-   <h1 class="page-title">Friends</h1>
-   <div class="empty-panel"><strong>No friends yet</strong>Your friends will appear here.</div>
-  </section>
+    <label class="setting-option">
+      <input type="radio" name="theme" value="dark">
+      <span data-i18n="dark">Escuro</span>
+    </label>
 
-  <section class="page" id="page-inventory">
-   <h1 class="page-title">Inventory</h1>
-   <div class="empty-panel"><strong>Your inventory is empty</strong>Your items will appear here.</div>
-  </section>
+    <label class="setting-option">
+      <input type="radio" name="theme" value="custom">
+      <span data-i18n="custom">Personalizado</span>
+    </label>
 
- </main>
+    <label for="themeColor" data-i18n="themeColor">Cor principal</label>
+    <input type="color" id="themeColor" value="#0877c9">
+
+    <button class="avatar-save" id="saveSettings" data-i18n="saveSettings">
+      Salvar configurações
+    </button>
+
+    <p id="settingsStatus" role="status"></p>
+  </div>
+</section>
+
+<div class="footer">
+  Curth © 2026 — All rights reserved.
 </div>
 
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+</main>
+</div>
+</div>
 
-/* Supabase */
-const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+<!-- JAVASCRIPT -->
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const $ = id => document.getElementById(id);
+
+const defaultAvatar = {
+  skin: '#F5CD30',
+  shirt: '#1769AA',
+  pants: '#287A42'
+};
 
 let currentUser = null;
 let currentProfile = null;
-let authMode = 'login';
+let currentLanguage = 'pt-BR';
+let recoveryMode = false;
 
-const defaultAvatar = {
- skinColor:'#F2C18D',
- shirtColor:'#2563EB',
- pantsColor:'#444444',
- face:'classic',
- hair:'none'
+/* TRADUÇÕES */
+
+const translations = {
+  'pt-BR': {
+    login: 'Entrar',
+    forgot: 'Esqueceu a senha?',
+    noAccount: 'Não tem uma conta?',
+    register: 'Cadastre-se',
+    createAccount: 'Criar conta',
+    hasAccount: 'Já tem uma conta?',
+    home: 'Início',
+    games: 'Jogos',
+    catalog: 'Catálogo',
+    players: 'Jogadores',
+    profile: 'Meu Perfil',
+    settings: 'Configurações',
+    logout: 'Sair',
+    navigation: 'Navegação',
+    myAccount: 'Minha conta',
+    featuredGames: 'Jogos em destaque',
+    comingSoon: 'Em breve',
+    aboutCurth: 'Sobre o Curth',
+    aboutText: 'Uma plataforma para descobrir experiências, criar sua identidade e conhecer jogadores.',
+    gamesText: 'Explore os jogos disponíveis no Curth.',
+    catalogTitle: 'Catálogo do Curth',
+    catalogText: 'Roupas, acessórios e itens estarão disponíveis aqui em breve.',
+    community: 'Comunidade Curth',
+    avatarEditor: 'Editor de Avatar',
+    avatarDescription: 'Personalize seu personagem no Curth.',
+    skinColor: 'Cor da pele',
+    shirtColor: 'Cor da camiseta',
+    pantsColor: 'Cor da calça',
+    saveAvatar: 'Salvar Avatar',
+    language: 'Idioma',
+    appearance: 'Aparência',
+    light: 'Claro',
+    dark: 'Escuro',
+    custom: 'Personalizado',
+    themeColor: 'Cor principal',
+    saveSettings: 'Salvar configurações',
+    hello: 'Olá, ',
+    welcome: 'Bem-vindo de volta ao Curth!',
+    search: 'Pesquisar...',
+    emailPlaceholder: 'Email',
+    passwordPlaceholder: 'Senha',
+    usernamePlaceholder: 'Nome de usuário'
+  },
+
+  en: {
+    login: 'Log in',
+    forgot: 'Forgot password?',
+    noAccount: "Don't have an account?",
+    register: 'Sign up',
+    createAccount: 'Create account',
+    hasAccount: 'Already have an account?',
+    home: 'Home',
+    games: 'Games',
+    catalog: 'Catalog',
+    players: 'Players',
+    profile: 'My Profile',
+    settings: 'Settings',
+    logout: 'Log out',
+    navigation: 'Navigation',
+    myAccount: 'My account',
+    featuredGames: 'Featured games',
+    comingSoon: 'Coming soon',
+    aboutCurth: 'About Curth',
+    aboutText: 'A platform to discover experiences, create your identity and meet players.',
+    gamesText: 'Explore the games available on Curth.',
+    catalogTitle: 'Curth Catalog',
+    catalogText: 'Clothes, accessories and items will be available here soon.',
+    community: 'Curth Community',
+    avatarEditor: 'Avatar Editor',
+    avatarDescription: 'Customize your character on Curth.',
+    skinColor: 'Skin color',
+    shirtColor: 'Shirt color',
+    pantsColor: 'Pants color',
+    saveAvatar: 'Save Avatar',
+    language: 'Language',
+    appearance: 'Appearance',
+    light: 'Light',
+    dark: 'Dark',
+    custom: 'Custom',
+    themeColor: 'Main color',
+    saveSettings: 'Save settings',
+    hello: 'Hello, ',
+    welcome: 'Welcome back to Curth!',
+    search: 'Search...',
+    emailPlaceholder: 'Email',
+    passwordPlaceholder: 'Password',
+    usernamePlaceholder: 'Username'
+  }
 };
 
-let avatarConfig = {...defaultAvatar};
-const viewers = [];
-
-/* Authentication */
-const $ = id => document.getElementById(id);
-
-function internalEmail(username){
- return username.trim().toLowerCase() + '@users.peblux.invalid';
+function t(key) {
+  return translations[currentLanguage]?.[key] ||
+    translations['pt-BR'][key] || key;
 }
 
-function setAuthMode(mode){
- authMode = mode;
- $('loginTab').classList.toggle('active',mode==='login');
- $('signupTab').classList.toggle('active',mode==='signup');
- $('genderField').hidden = mode!=='signup';
- $('confirmField').hidden = mode!=='signup';
- $('confirmPassword').required = mode==='signup';
- $('authSubmit').textContent = mode==='signup'?'Create Account':'Login';
- $('password').autocomplete = mode==='signup'?'new-password':'current-password';
- $('authMessage').textContent = '';
- $('authMessage').className = 'auth-message';
+function translatePage() {
+  document.documentElement.lang = currentLanguage;
+
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    element.textContent = t(element.dataset.i18n);
+  });
+
+  $('loginEmail').placeholder = t('emailPlaceholder');
+  $('registerEmail').placeholder = t('emailPlaceholder');
+  $('loginPassword').placeholder = t('passwordPlaceholder');
+  $('registerPassword').placeholder = t('passwordPlaceholder');
+  $('registerUsername').placeholder = t('usernamePlaceholder');
+  $('searchInput').placeholder = t('search');
+
+  if (currentProfile) {
+    const name = currentProfile.display_name ||
+      currentProfile.username || 'Player';
+
+    $('helloTitle').textContent = t('hello') + name + '!';
+    $('helloSubtitle').textContent = t('welcome');
+  }
 }
 
-$('loginTab').addEventListener('click',()=>setAuthMode('login'));
-$('signupTab').addEventListener('click',()=>setAuthMode('signup'));
+/* MENSAGENS */
 
-$('authForm').addEventListener('submit',async event=>{
- event.preventDefault();
+function showAuthMessage(message, success = false) {
+  $('authMessage').textContent = message;
+  $('authMessage').style.color = success ? '#178b45' : '#d33';
+}
 
- const username = $('username').value.trim();
- const password = $('password').value;
- const confirm = $('confirmPassword').value;
- const message = $('authMessage');
+/* TROCAR FORMULÁRIOS */
 
- if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){
-  message.textContent='Username must be 3–20 letters, numbers or underscores.';
-  return;
- }
- if(password.length<8){
-  message.textContent='Password must contain at least 8 characters.';
-  return;
- }
- if(authMode==='signup' && password!==confirm){
-  message.textContent='Passwords do not match.';
-  return;
- }
+$('showRegister').onclick = () => {
+  $('loginForm').hidden = true;
+  $('registerForm').hidden = false;
+  $('authMessage').textContent = '';
+};
 
- $('authSubmit').disabled=true;
- $('authSubmit').textContent='Please wait...';
+$('showLogin').onclick = () => {
+  $('registerForm').hidden = true;
+  $('loginForm').hidden = false;
+  $('authMessage').textContent = '';
+};
 
- try{
-  if(authMode==='signup'){
-   const {data,error}=await supabase.auth.signUp({
-    email:internalEmail(username),
+/* CADASTRO */
+
+$('registerButton').onclick = async () => {
+  const username = $('registerUsername').value.trim();
+  const email = $('registerEmail').value.trim();
+  const password = $('registerPassword').value;
+
+  if (!username || !email || !password) {
+    return showAuthMessage('Preencha todos os campos.');
+  }
+
+  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+    return showAuthMessage('Use de 3 a 20 caracteres: letras, números ou _.');
+  }
+
+  if (password.length < 6) {
+    return showAuthMessage('A senha precisa ter pelo menos 6 caracteres.');
+  }
+
+  $('registerButton').disabled = true;
+  showAuthMessage('Criando sua conta...', true);
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
     password,
-    options:{data:{username,gender:$('gender').value}}
-   });
-   if(error) throw error;
-
-   if(data.session){
-    message.textContent='Account created successfully.';
-    message.className='auth-message success';
-   }else{
-    message.textContent='Account created, but confirmation may be required. Check your Supabase Auth settings.';
-   }
-  }else{
-   const {error}=await supabase.auth.signInWithPassword({
-    email:internalEmail(username),
-    password
-   });
-   if(error) throw error;
-  }
- }catch(error){
-  let text=error.message||'Something went wrong.';
-  if(text.toLowerCase().includes('invalid login credentials')) text='Incorrect username or password.';
-  if(text.toLowerCase().includes('already registered')) text='This username is already registered.';
-  message.textContent=text;
- }finally{
-  $('authSubmit').disabled=false;
-  $('authSubmit').textContent=authMode==='signup'?'Create Account':'Login';
- }
-});
-
-$('logoutButton').addEventListener('click',async()=>{
- await supabase.auth.signOut();
-});
-
-/* Navigation */
-function navigate(page){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- const target=$('page-'+page);
- if(target) target.classList.add('active');
-
- document.querySelectorAll('.side-item').forEach(item=>{
-  item.classList.toggle('active',item.dataset.page===page);
- });
-
- $('sidebar').classList.remove('open');
-
- if(page==='profile') createProfileViewer();
- if(page==='avatar') createEditorViewer();
-}
-
-document.querySelectorAll('[data-page]').forEach(button=>{
- button.addEventListener('click',()=>navigate(button.dataset.page));
-});
-
-$('menuToggle').addEventListener('click',()=>{
- $('sidebar').classList.toggle('open');
-});
-$('brandHome').addEventListener('click',event=>{
- event.preventDefault();
- navigate('home');
-});
-
-document.querySelectorAll('.profile-tab').forEach(tab=>{
- tab.addEventListener('click',()=>{
-  document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
-  tab.classList.add('active');
-  const about=tab.dataset.profileTab==='about';
-  $('profileAbout').hidden=!about;
-  $('profileCreations').hidden=about;
- });
-});
-
-/* User profile */
-async function loadProfile(user){
- currentUser=user;
-
- const {data,error}=await supabase
-  .from('profiles')
-  .select('username, avatar_config')
-  .eq('id',user.id)
-  .single();
-
- if(error){
-  console.error('Profile loading error:',error);
- }
-
- currentProfile=data||{};
- const username=currentProfile.username||user.user_metadata?.username||'Player';
-
- avatarConfig={
-  ...defaultAvatar,
-  ...(currentProfile.avatar_config||{})
- };
-
- $('topUsername').textContent=username;
- $('sidebarUsername').textContent=username;
- $('homeUsername').textContent=username;
- $('homeHandle').textContent='@'+username;
- $('profileUsername').textContent=username;
- $('profileHandle').textContent='@'+username;
- $('topAvatar').textContent=username.charAt(0).toUpperCase();
- $('homeAvatar').textContent=username.charAt(0).toUpperCase();
-
- $('skinColor').value=avatarConfig.skinColor;
- $('shirtColor').value=avatarConfig.shirtColor;
- $('pantsColor').value=avatarConfig.pantsColor;
- $('faceStyle').value=avatarConfig.face;
- $('hairStyle').value=avatarConfig.hair;
-
- $('authScreen').hidden=true;
- navigate('home');
-}
-
-supabase.auth.onAuthStateChange((event,session)=>{
- if(session?.user){
-  loadProfile(session.user);
- }else{
-  currentUser=null;
-  currentProfile=null;
-  $('authScreen').hidden=false;
-  $('sidebar').classList.remove('open');
- }
-});
-
-const {data:{session}}=await supabase.auth.getSession();
-if(session?.user) await loadProfile(session.user);
-
-/* Three.js R6 avatar */
-function makeMaterial(color){
- return new THREE.MeshStandardMaterial({color,roughness:0.82});
-}
-
-function createAvatar(config){
- const group=new THREE.Group();
-
- const skin=makeMaterial(config.skinColor);
- const shirt=makeMaterial(config.shirtColor);
- const pants=makeMaterial(config.pantsColor);
- const dark=makeMaterial('#242424');
- const white=makeMaterial('#ffffff');
- const hairColor={
-  brown:'#654321',
-  black:'#171717',
-  blond:'#e2bd68'
- }[config.hair];
-
- function block(w,h,d,material,x,y,z){
-  const mesh=new THREE.Mesh(
-   new THREE.BoxGeometry(w,h,d),
-   material
-  );
-  mesh.position.set(x,y,z);
-  mesh.castShadow=true;
-  mesh.receiveShadow=true;
-  group.add(mesh);
-  return mesh;
- }
-
- // Legs
- block(0.48,0.95,0.48,pants,-0.25,0.48,0);
- block(0.48,0.95,0.48,pants,0.25,0.48,0);
-
- // Torso
- block(1.02,1.05,0.5,shirt,0,1.52,0);
-
- // Arms
- block(0.42,1.05,0.45,skin,-0.73,1.52,0);
- block(0.42,1.05,0.45,skin,0.73,1.52,0);
-
- // Head
- block(0.85,0.85,0.82,skin,0,2.48,0);
-
- // Face details on the front
- const eyeMaterial=makeMaterial('#242424');
- const eyeY=2.58;
-
- block(0.09,0.11,0.025,eyeMaterial,-0.18,eyeY,0.418);
- block(0.09,0.11,0.025,eyeMaterial,0.18,eyeY,0.418);
-
- if(config.face==='classic'){
-  block(0.32,0.045,0.025,dark,0,2.31,0.418);
-  for(let i=0;i<3;i++){
-   block(0.025,0.045,0.012,white,-0.09+i*0.09,2.31,0.433);
-  }
- }else if(config.face==='happy'){
-  block(0.27,0.07,0.025,dark,0,2.32,0.418);
- }else{
-  block(0.24,0.035,0.025,dark,0,2.29,0.418);
- }
-
- // Simple block hair
- if(hairColor){
-  const hair=makeMaterial(hairColor);
-  block(0.9,0.22,0.87,hair,0,2.92,-0.02);
-  block(0.18,0.25,0.86,hair,-0.34,2.78,0);
-  block(0.18,0.18,0.86,hair,0.34,2.78,0);
- }
-
- return group;
-}
-
-function createViewer(container,config,options={}){
- if(!container) return null;
-
- container.innerHTML='';
-
- const scene=new THREE.Scene();
- scene.background=new THREE.Color(options.background||'#17191c');
-
- const camera=new THREE.PerspectiveCamera(
-  options.fov||35,
-  1,
-  0.1,
-  100
- );
- camera.position.set(0,options.cameraY||2.0,options.cameraZ||9.5);
- camera.lookAt(0,options.lookY||1.55,0);
-
- const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
- renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
- renderer.shadowMap.enabled=true;
- renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- container.appendChild(renderer.domElement);
-
- scene.add(new THREE.HemisphereLight(0xffffff,0x454545,2));
-
- const light=new THREE.DirectionalLight(0xffffff,2.4);
- light.position.set(-3,7,5);
- light.castShadow=true;
- scene.add(light);
-
- const avatar=createAvatar(config);
- scene.add(avatar);
-
- const floor=new THREE.Mesh(
-  new THREE.PlaneGeometry(200,200),
-  makeMaterial('#202225')
- );
- floor.rotation.x=-Math.PI/2;
- floor.position.y=-0.03;
- floor.receiveShadow=true;
- scene.add(floor);
-
- let dragging=false;
- let lastX=0;
-
- renderer.domElement.addEventListener('pointerdown',event=>{
-  dragging=true;
-  lastX=event.clientX;
-  renderer.domElement.setPointerCapture(event.pointerId);
- });
-
- renderer.domElement.addEventListener('pointermove',event=>{
-  if(!dragging)return;
-  avatar.rotation.y+=(event.clientX-lastX)*0.012;
-  lastX=event.clientX;
- });
-
- renderer.domElement.addEventListener('pointerup',()=>dragging=false);
- renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
-
- function resize(){
-  const width=container.clientWidth||300;
-  const height=container.clientHeight||300;
-  renderer.setSize(width,height,false);
-  camera.aspect=width/height;
-  camera.updateProjectionMatrix();
- }
- resize();
-
- const observer=new ResizeObserver(resize);
- observer.observe(container);
-
- let active=true;
- function animate(){
-  if(!active)return;
-  requestAnimationFrame(animate);
-  renderer.render(scene,camera);
- }
- animate();
-
- const viewer={
-  destroy(){
-   active=false;
-   observer.disconnect();
-   renderer.dispose();
-   scene.traverse(object=>{
-    if(object.geometry)object.geometry.dispose();
-    if(object.material){
-     if(Array.isArray(object.material))object.material.forEach(m=>m.dispose());
-     else object.material.dispose();
+    options: {
+      data: { username: username.toLowerCase() },
+      emailRedirectTo: location.origin
     }
-   });
-   renderer.domElement.remove();
+  });
+
+  $('registerButton').disabled = false;
+
+  if (error) return showAuthMessage(error.message);
+
+  if (data.session && data.user) {
+    await startApp(data.user);
+  } else {
+    showAuthMessage(
+      currentLanguage === 'en'
+        ? 'Account created! Check your email to confirm your account.'
+        : 'Conta criada! Confira seu email para confirmar o cadastro.',
+      true
+    );
   }
- };
+};
 
- viewers.push(viewer);
- return viewer;
+/* LOGIN */
+
+$('loginButton').onclick = async () => {
+  const email = $('loginEmail').value.trim();
+  const password = $('loginPassword').value;
+
+  if (!email || !password) {
+    return showAuthMessage('Preencha email e senha.');
+  }
+
+  $('loginButton').disabled = true;
+  showAuthMessage('Entrando...', true);
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  $('loginButton').disabled = false;
+
+  if (error) return showAuthMessage(error.message);
+
+  await startApp(data.user);
+};
+
+/* RECUPERAÇÃO DE SENHA */
+
+$('forgotPassword').onclick = async () => {
+  const email = prompt(
+    currentLanguage === 'en'
+      ? 'Enter the email used to create your account:'
+      : 'Digite o email usado para criar sua conta:'
+  );
+
+  if (!email || !email.trim()) return;
+
+  const { error } = await supabase.auth.resetPasswordForEmail(
+    email.trim(),
+    { redirectTo: location.origin }
+  );
+
+  showAuthMessage(
+    error
+      ? error.message
+      : currentLanguage === 'en'
+        ? 'If the account exists, a recovery email will be sent.'
+        : 'Se a conta existir, um email de recuperação será enviado.',
+    !error
+  );
+};
+
+/* NOVA SENHA */
+
+function showRecoveryForm() {
+  recoveryMode = true;
+  $('loginForm').hidden = true;
+  $('registerForm').hidden = true;
+
+  let form = $('recoveryForm');
+
+  if (!form) {
+    form = document.createElement('div');
+    form.id = 'recoveryForm';
+    form.innerHTML = `
+      <h2 data-i18n="newPasswordTitle">Nova senha</h2>
+      <input id="newPassword" type="password" autocomplete="new-password">
+      <button class="primary-btn" id="updatePasswordButton">Salvar nova senha</button>
+      <div class="auth-switch">
+        <button id="cancelRecovery">Voltar</button>
+      </div>
+    `;
+    $('loginForm').parentNode.appendChild(form);
+
+    $('cancelRecovery').onclick = () => {
+      recoveryMode = false;
+      form.hidden = true;
+      $('loginForm').hidden = false;
+    };
+
+    $('updatePasswordButton').onclick = async () => {
+      const password = $('newPassword').value;
+
+      if (password.length < 6) {
+        return showAuthMessage('A senha precisa ter pelo menos 6 caracteres.');
+      }
+
+      const { error } = await supabase.auth.updateUser({ password });
+
+      if (error) return showAuthMessage(error.message);
+
+      showAuthMessage(
+        currentLanguage === 'en'
+          ? 'Password updated. You can now log in.'
+          : 'Senha atualizada. Você já pode entrar.',
+        true
+      );
+
+      recoveryMode = false;
+      form.hidden = true;
+      $('loginForm').hidden = false;
+    };
+  }
+
+  form.hidden = false;
+  $('authMessage').textContent = '';
 }
 
-function clearViewers(){
- while(viewers.length){
-  viewers.pop().destroy();
- }
+/* NAVEGAÇÃO */
+
+function navigate(page) {
+  const target = $(page);
+  if (!target) return;
+
+  document.querySelectorAll('.page').forEach(section => {
+    section.classList.remove('active');
+  });
+
+  target.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.classList.toggle('active', link.dataset.page === page);
+  });
+
+  if (page === 'users') loadUsers();
+  if (page === 'profile') loadProfile();
+  if (page === 'settings') loadProfile();
 }
 
-function createProfileViewer(){
- clearViewers();
- createViewer($('profile3D'),avatarConfig,{
-  cameraY:2.25,
-  cameraZ:8.3,
-  lookY:2.05,
-  fov:32
- });
-}
-
-function createEditorViewer(){
- clearViewers();
- createViewer($('avatarEditorView'),avatarConfig,{
-  cameraY:2,
-  cameraZ:9.5,
-  lookY:1.55,
-  fov:35
- });
-}
-
-/* Avatar customization */
-function readAvatarControls(){
- return {
-  skinColor:$('skinColor').value,
-  shirtColor:$('shirtColor').value,
-  pantsColor:$('pantsColor').value,
-  face:$('faceStyle').value,
-  hair:$('hairStyle').value
- };
-}
-
-['skinColor','shirtColor','pantsColor','faceStyle','hairStyle'].forEach(id=>{
- $(id).addEventListener('input',()=>{
-  avatarConfig=readAvatarControls();
-  createEditorViewer();
- });
+document.querySelectorAll('[data-page]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    navigate(link.dataset.page);
+  });
 });
 
-$('saveAvatar').addEventListener('click',async()=>{
- if(!currentUser)return;
+/* AVATAR */
 
- $('saveAvatar').disabled=true;
- $('avatarStatus').textContent='Saving...';
+function validColor(value, fallback) {
+  return typeof value === 'string' &&
+    /^#[0-9a-fA-F]{6}$/.test(value)
+    ? value : fallback;
+}
 
- const newConfig=readAvatarControls();
+function normalizeAvatar(avatar) {
+  return {
+    skin: validColor(avatar?.skin, defaultAvatar.skin),
+    shirt: validColor(avatar?.shirt, defaultAvatar.shirt),
+    pants: validColor(avatar?.pants, defaultAvatar.pants)
+  };
+}
 
- const {error}=await supabase
-  .from('profiles')
-  .update({avatar_config:newConfig})
-  .eq('id',currentUser.id);
+function renderAvatar(element, avatar = defaultAvatar) {
+  if (!element) return;
 
- $('saveAvatar').disabled=false;
+  const colors = normalizeAvatar(avatar);
 
- if(error){
-  $('avatarStatus').textContent='Could not save: '+error.message;
-  return;
- }
+  element.innerHTML = `
+    <div class="curth-avatar">
+      <div class="avatar-head"></div>
+      <div class="avatar-arm left"></div>
+      <div class="avatar-arm right"></div>
+      <div class="avatar-torso"></div>
+      <div class="avatar-leg left"></div>
+      <div class="avatar-leg right"></div>
+    </div>
+  `;
 
- avatarConfig=newConfig;
- $('avatarStatus').textContent='Avatar saved successfully.';
- createProfileViewer();
+  const character = element.querySelector('.curth-avatar');
+
+  character.style.setProperty('--skin', colors.skin);
+  character.style.setProperty('--shirt', colors.shirt);
+  character.style.setProperty('--pants', colors.pants);
+}
+
+/* PERFIL */
+
+async function loadProfile() {
+  if (!currentUser) return;
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username, display_name, user_number, avatar_data, preferred_language, theme_mode, theme_color')
+    .eq('id', currentUser.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erro ao carregar perfil:', error);
+    return;
+  }
+
+  if (!data) return;
+
+  currentProfile = data;
+
+  const name = data.display_name || data.username || 'Player';
+  const avatar = normalizeAvatar(data.avatar_data);
+
+  $('profileDisplayName').textContent = name;
+  $('profileUsername').textContent = '@' + (data.username || 'player');
+  $('profileUserNumber').textContent =
+    'Curth ID: #' + (data.user_number ?? '...');
+
+  $('topUsername').textContent = name;
+  $('helloTitle').textContent = t('hello') + name + '!';
+
+  currentLanguage = data.preferred_language || 'pt-BR';
+  $('languageSelect').value = currentLanguage;
+  $('settingsLanguage').value = currentLanguage;
+
+  const theme = data.theme_mode || 'light';
+  const color = data.theme_color || '#0877c9';
+
+  document.querySelectorAll('input[name="theme"]').forEach(input => {
+    input.checked = input.value === theme;
+  });
+
+  $('themeColor').value = color;
+  applyTheme(theme, color);
+  translatePage();
+
+  $('avatarSkin').value = avatar.skin;
+  $('avatarShirt').value = avatar.shirt;
+  $('avatarPants').value = avatar.pants;
+
+  renderAvatar($('profileAvatar'), avatar);
+  renderAvatar($('avatarEditorPreview'), avatar);
+  renderAvatar($('homeAvatar'), avatar);
+}
+
+/* PRÉVIA DO AVATAR */
+
+function updateAvatarPreview() {
+  renderAvatar($('avatarEditorPreview'), {
+    skin: $('avatarSkin').value,
+    shirt: $('avatarShirt').value,
+    pants: $('avatarPants').value
+  });
+}
+
+$('avatarSkin').addEventListener('input', updateAvatarPreview);
+$('avatarShirt').addEventListener('input', updateAvatarPreview);
+$('avatarPants').addEventListener('input', updateAvatarPreview);
+
+/* SALVAR AVATAR */
+
+$('saveAvatar').onclick = async () => {
+  if (!currentUser) return;
+
+  const avatar = {
+    skin: $('avatarSkin').value,
+    shirt: $('avatarShirt').value,
+    pants: $('avatarPants').value
+  };
+
+  $('avatarStatus').textContent =
+    currentLanguage === 'en' ? 'Saving...' : 'Salvando...';
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ avatar_data: avatar })
+    .eq('id', currentUser.id);
+
+  if (error) {
+    $('avatarStatus').textContent = error.message;
+    return;
+  }
+
+  renderAvatar($('profileAvatar'), avatar);
+  renderAvatar($('homeAvatar'), avatar);
+
+  $('avatarStatus').textContent =
+    currentLanguage === 'en' ? 'Avatar saved!' : 'Avatar salvo com sucesso!';
+};
+
+/* JOGADORES */
+
+async function loadUsers() {
+  const list = $('userList');
+  list.textContent = currentLanguage === 'en'
+    ? 'Loading players...'
+    : 'Carregando jogadores...';
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username, display_name, user_number, avatar_data')
+    .order('user_number', { ascending: true });
+
+  if (error) {
+    list.textContent = currentLanguage === 'en'
+      ? 'Could not load players.'
+      : 'Não foi possível carregar os jogadores.';
+    console.error(error);
+    return;
+  }
+
+  if (!data?.length) {
+    list.textContent = currentLanguage === 'en'
+      ? 'No players yet.'
+      : 'Ainda não há jogadores.';
+    return;
+  }
+
+  list.innerHTML = '';
+
+  data.forEach(user => {
+    const card = document.createElement('div');
+    card.className = 'user-card';
+
+    const avatarWrap = document.createElement('div');
+    avatarWrap.className = 'user-avatar-wrap';
+    renderAvatar(avatarWrap, user.avatar_data);
+
+    const details = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = user.display_name || user.username || 'Player';
+
+    const number = document.createElement('small');
+    number.textContent = 'Curth ID: #' + (user.user_number ?? '?');
+
+    details.append(name, number);
+    card.append(avatarWrap, details);
+    list.appendChild(card);
+  });
+}
+
+/* IDIOMA */
+
+async function changeLanguage(language) {
+  if (!translations[language]) return;
+
+  currentLanguage = language;
+  $('languageSelect').value = language;
+  $('settingsLanguage').value = language;
+  translatePage();
+
+  if (!currentUser) return;
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ preferred_language: language })
+    .eq('id', currentUser.id);
+
+  if (error) console.error('Language save error:', error);
+}
+
+$('languageSelect').addEventListener('change', event => {
+  changeLanguage(event.target.value);
 });
 
+$('settingsLanguage').addEventListener('change', event => {
+  changeLanguage(event.target.value);
+});
+
+/* TEMAS */
+
+function applyTheme(mode, color) {
+  document.body.classList.toggle('dark', mode === 'dark');
+
+  document.documentElement.style.setProperty(
+    '--blue',
+    mode === 'custom' ? color : '#0877c9'
+  );
+}
+
+document.querySelectorAll('input[name="theme"]').forEach(input => {
+  input.addEventListener('change', () => {
+    applyTheme(input.value, $('themeColor').value);
+  });
+});
+
+$('themeColor').addEventListener('input', () => {
+  const selected = document.querySelector('input[name="theme"]:checked');
+
+  if (selected?.value === 'custom') {
+    applyTheme('custom', $('themeColor').value);
+  }
+});
+
+/* SALVAR CONFIGURAÇÕES */
+
+$('saveSettings').onclick = async () => {
+  if (!currentUser) return;
+
+  const selected = document.querySelector('input[name="theme"]:checked');
+
+  if (!selected) return;
+
+  const settings = {
+    preferred_language: currentLanguage,
+    theme_mode: selected.value,
+    theme_color: $('themeColor').value
+  };
+
+  const { error } = await supabase
+    .from('profiles')
+    .update(settings)
+    .eq('id', currentUser.id);
+
+  if (error) {
+    $('settingsStatus').textContent = error.message;
+    return;
+  }
+
+  applyTheme(settings.theme_mode, settings.theme_color);
+
+  $('settingsStatus').textContent =
+    currentLanguage === 'en'
+      ? 'Settings saved!'
+      : 'Configurações salvas!';
+};
+
+/* PESQUISA DE JOGADORES */
+
+$('searchInput').addEventListener('keydown', event => {
+  if (event.key !== 'Enter') return;
+
+  const query = event.target.value.trim().toLowerCase();
+
+  navigate('users');
+
+  if (!query) return;
+
+  loadUsers().then(() => {
+    document.querySelectorAll('.user-card').forEach(card => {
+      card.hidden = !card.textContent.toLowerCase().includes(query);
+    });
+  });
+});
+
+/* SAIR */
+
+$('logoutButton').onclick = async () => {
+  await supabase.auth.signOut();
+  location.reload();
+};
+
+/* INICIAR APLICAÇÃO */
+
+let startingApp = false;
+
+async function startApp(user) {
+  if (!user || startingApp) return;
+
+  startingApp = true;
+  currentUser = user;
+
+  $('authScreen').style.display = 'none';
+  $('app').style.display = 'block';
+
+  await loadProfile();
+
+  startingApp = false;
+}
+
+async function initialize() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (data.session?.user) {
+    await startApp(data.session.user);
+  }
+}
+
+/* EVENTOS DE AUTENTICAÇÃO */
+
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    showRecoveryForm();
+    return;
+  }
+
+  if (session?.user && !recoveryMode) {
+    startApp(session.user);
+  }
+});
+
+initialize();
 </script>
+
 </body>
 </html>
