@@ -476,9 +476,8 @@
 
     <!-- Lógica de Conexão com o Supabase -->
     <script>
-        // Substitua com as credenciais reais do seu projeto Supabase
-        const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI';
-        const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -529,7 +528,6 @@
             if (error) {
                 alert("Erro ao entrar: Verifique seu usuário e senha.");
             } else {
-                // Redireciona para a home que criamos
                 window.location.href = "home.html";
             }
         }
