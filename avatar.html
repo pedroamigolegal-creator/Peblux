@@ -89,6 +89,7 @@
 
                     <br>
                     <button class="save-btn" onclick="saveAvatar()">Save Avatar</button>
+                    <button class="btn btn-default" style="margin-left: 10px;" onclick="resetDefaultNoob()">Reset Default</button>
                 </div>
             </div>
         </div>
@@ -99,10 +100,19 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Cores padrão exatas do noob clássico da imagem: Cabeça e Braços amarelos, Tronco cinza, Pernas verde-oliva[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span)
+        let avatarColors = {
+            head: '#F5CD30',
+            torso: '#9BA0A5',
+            leftArm: '#F5CD30',
+            rightArm: '#F5CD30',
+            leftLeg: '#A4BD47',
+            rightLeg: '#A4BD47'
+        };
+
         const brickColors = ['#F5CD30', '#9BA0A5', '#A4BD47', '#0D69AC', '#C4281C', '#FFFFFF', '#1B2A35', '#635F62', '#EAB892', '#CC8E69', '#A05F35', '#694028', '#F8D96D', '#4B974B', '#27462D', '#008F9C', '#527CAE', '#2154B9', '#6B327C', '#AA00AA', '#FF66CC', '#DA8541', '#E29B40', '#D7C59A'];
         let selectedPart = 'head';
         let currentUserId = null;
-        let avatarColors = { head: '#F5CD30', torso: '#9BA0A5', leftArm: '#F5CD30', rightArm: '#F5CD30', leftLeg: '#A4BD47', rightLeg: '#A4BD47' };
         let equippedShirtURL = '';
 
         const paletteDiv = document.getElementById('colorPalette');
@@ -123,67 +133,71 @@
         const container = document.getElementById('avatar3DCanvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, 288 / 340, 0.1, 100);
-        camera.position.set(1.8, 1.3, 4.6);
+        camera.position.set(1.8, 1.4, 4.6);
         camera.lookAt(0, 0.2, 0);
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(288, 340);
         container.appendChild(renderer.domElement);
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.78));
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.42);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
         dirLight.position.set(4, 6, 5);
         scene.add(dirLight);
 
         const avatarGroup = new THREE.Group();
         scene.add(avatarGroup);
 
-        function createHeadMaterials(hexColor) {
-            const faceCanvas = document.createElement('canvas');
-            faceCanvas.width = 128; faceCanvas.height = 128;
-            const ctx = faceCanvas.getContext('2d');
+        // Gera a textura do rosto clássico embutida por canvas local (sem falhar CORS)
+        function createHeadMaterial(hexColor) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128; canvas.height = 128;
+            const ctx = canvas.getContext('2d');
             ctx.fillStyle = hexColor;
             ctx.fillRect(0, 0, 128, 128);
+
+            // Rosto clássico Roblox :)
             ctx.fillStyle = '#111111';
             ctx.beginPath(); ctx.ellipse(44, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
             ctx.beginPath(); ctx.ellipse(84, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
             ctx.lineWidth = 5; ctx.lineCap = 'round';
             ctx.beginPath(); ctx.arc(64, 66, 20, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
-            const tex = new THREE.CanvasTexture(faceCanvas);
-            const sideMat = new THREE.MeshLambertMaterial({ color: hexColor });
-            return [sideMat, sideMat, sideMat, sideMat, new THREE.MeshLambertMaterial({ map: tex }), sideMat];
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const mat = new THREE.MeshLambertMaterial({ color: hexColor });
+            // Aplica o rosto apenas na face frontal do cubo da cabeça
+            return [mat, mat, mat, mat, new THREE.MeshLambertMaterial({ map: texture }), mat];
         }
 
         function buildAvatar() {
             while(avatarGroup.children.length > 0){ avatarGroup.remove(avatarGroup.children[0]); }
 
-            // Cabeça
-            const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterials(avatarColors.head));
+            // Cabeça idêntica à imagem de referência[span_4](start_span)[span_4](end_span)
+            const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterial(avatarColors.head));
             headMesh.position.set(0, 1.45, 0);
             avatarGroup.add(headMesh);
 
-            // Tronco (Se houver camisa, aplica a textura mapeada; senão, usa a cor sólida)
-            let torsoMat = new THREE.MeshLambertMaterial({ color: avatarColors.torso });
-            if (equippedShirtURL) {
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 128; canvas.height = 128;
-                    const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = avatarColors.torso;
-                    ctx.fillRect(0, 0, 128, 128);
-                    ctx.drawImage(img, 16, 16, 32, 32, 0, 0, 128, 128);
-                    torsoMat.map = new THREE.CanvasTexture(canvas);
-                    torsoMat.needsUpdate = true;
-                };
-                img.src = equippedShirtURL;
-            }
+            // Tronco
+            const torsoMat = new THREE.MeshLambertMaterial({ color: avatarColors.torso });
             const torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), torsoMat);
             torsoMesh.position.set(0, 0.42, 0);
             avatarGroup.add(torsoMesh);
 
-            // Braços e Pernas
+            // Se houver camisa equipada, adiciona por cima do tronco com segurança local
+            if (equippedShirtURL) {
+                const shirtImg = new Image();
+                shirtImg.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 128; canvas.height = 128;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(shirtImg, 16, 16, 32, 32, 0, 0, 128, 128);
+                    torsoMat.map = new THREE.CanvasTexture(canvas);
+                    torsoMat.needsUpdate = true;
+                };
+                shirtImg.src = equippedShirtURL;
+            }
+
+            // Braços
             const armGeo = new THREE.BoxGeometry(0.52, 1.1, 0.55);
             const leftArm = new THREE.Mesh(armGeo, new THREE.MeshLambertMaterial({ color: avatarColors.leftArm }));
             leftArm.position.set(-0.83, 0.42, 0);
@@ -193,13 +207,14 @@
             rightArm.position.set(0.83, 0.42, 0);
             avatarGroup.add(rightArm);
 
-            const legGeo = new THREE.BoxGeometry(0.53, 1.1, 0.55);
+            // Pernas com o espaçamento clássico exato do R6
+            const legGeo = new THREE.BoxGeometry(0.52, 1.1, 0.55);
             const leftLeg = new THREE.Mesh(legGeo, new THREE.MeshLambertMaterial({ color: avatarColors.leftLeg }));
-            leftLeg.position.set(-0.28, -0.7, 0);
+            leftLeg.position.set(-0.29, -0.72, 0);
             avatarGroup.add(leftLeg);
 
             const rightLeg = new THREE.Mesh(legGeo, new THREE.MeshLambertMaterial({ color: avatarColors.rightLeg }));
-            rightLeg.position.set(0.28, -0.7, 0);
+            rightLeg.position.set(0.29, -0.72, 0);
             avatarGroup.add(rightLeg);
         }
 
@@ -235,8 +250,8 @@
                     rightLeg: profile.right_leg_color || '#A4BD47'
                 };
                 equippedShirtURL = profile.equipped_shirt || '';
-                buildAvatar();
             }
+            buildAvatar();
 
             const { data: items } = await supabaseClient.from('items').select('*');
             const invDiv = document.getElementById('shirtInventory');
@@ -258,6 +273,12 @@
 
         function equipShirt(url) {
             equippedShirtURL = url;
+            buildAvatar();
+        }
+
+        function resetDefaultNoob() {
+            avatarColors = { head: '#F5CD30', torso: '#9BA0A5', leftArm: '#F5CD30', rightArm: '#F5CD30', leftLeg: '#A4BD47', rightLeg: '#A4BD47' };
+            equippedShirtURL = '';
             buildAvatar();
         }
 
