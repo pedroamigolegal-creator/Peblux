@@ -481,7 +481,7 @@
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Função de Cadastro
+        // Função de Cadastro Atualizada
         async function handleSignup(event) {
             event.preventDefault();
             const username = document.getElementById('signupUsername').value;
@@ -496,7 +496,8 @@
 
             const fakeEmail = `${username.toLowerCase()}@peblux.local`;
 
-            const { data, error } = await supabaseClient.auth.signUp({
+            // 1. Cria o usuário no sistema de Auth do Supabase
+            const { data: authData, error: authError } = await supabaseClient.auth.signUp({
                 email: fakeEmail,
                 password: password,
                 options: {
@@ -504,12 +505,26 @@
                 }
             });
 
-            if (error) {
-                errorElement.innerText = error.message;
-            } else {
-                alert("Conta criada com sucesso! Faça login para entrar.");
-                location.reload();
+            if (authError) {
+                errorElement.innerText = authError.message;
+                return;
             }
+
+            // 2. Insere manualmente o perfil na tabela profiles que criamos
+            if (authData.user) {
+                const { error: profileError } = await supabaseClient
+                    .from('profiles')
+                    .insert([
+                        { id: authData.user.id, username: username, robux: 100 }
+                    ]);
+
+                if (profileError) {
+                    console.error("Erro ao criar perfil:", profileError.message);
+                }
+            }
+
+            alert("Conta criada com sucesso! Faça login para entrar.");
+            location.reload();
         }
 
         // Função de Login
