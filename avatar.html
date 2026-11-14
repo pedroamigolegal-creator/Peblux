@@ -14,160 +14,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #e3e3e3;
-            margin: 0;
-            padding-top: 40px;
-        }
-        .navbar-peblux {
-            background-color: #0074bd;
-            border: none;
-            min-height: 40px;
-            height: 40px;
-        }
-        .peblux-nav-logo {
-            font-family: 'Arial Black', Impact, sans-serif;
-            font-size: 20px;
-            font-weight: 900;
-            font-style: italic;
-            color: #da291c;
-            background: #fff;
-            padding: 0px 7px;
-            border: 2px solid #da291c;
-            border-radius: 3px;
-            margin-top: 5px;
-            display: inline-block;
-            text-decoration: none !important;
-        }
-        .navbar-peblux .nav > li > a {
-            color: white;
-            font-weight: 600;
-            padding: 10px 15px;
-        }
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 40px);
-        }
-        .sidebar {
-            width: 175px;
-            background: #fff;
-            border-right: 1px solid #d0d0d0;
-            padding-top: 10px;
-            flex-shrink: 0;
-        }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 40px; }
+        .navbar-peblux { background-color: #0074bd; border: none; min-height: 40px; height: 40px; }
+        .peblux-nav-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 20px; font-weight: 900; font-style: italic; color: #da291c; background: #fff; padding: 0px 7px; border: 2px solid #da291c; border-radius: 3px; margin-top: 5px; display: inline-block; text-decoration: none !important; }
+        .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 10px 15px; }
+        .main-container { display: flex; min-height: calc(100vh - 40px); }
+        .sidebar { width: 175px; background: #fff; border-right: 1px solid #d0d0d0; padding-top: 10px; flex-shrink: 0; }
         .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li a {
-            display: block; padding: 8px 15px; color: #191919; text-decoration: none; font-size: 15px;
-        }
-        .sidebar ul li a:hover, .sidebar ul li a.active {
-            background-color: #f2f2f2; color: #0074bd; font-weight: 600;
-        }
+        .sidebar ul li a { display: block; padding: 8px 15px; color: #191919; text-decoration: none; font-size: 15px; }
+        .sidebar ul li a:hover, .sidebar ul li a.active { background-color: #f2f2f2; color: #0074bd; font-weight: 600; }
         .sidebar ul li a i { margin-right: 10px; width: 18px; text-align: center; }
 
-        /* Editor 2016 Layout */
-        .content-area {
-            flex-grow: 1;
-            padding: 25px 40px;
-            max-width: 1050px;
-        }
-        .editor-title {
-            font-size: 28px;
-            font-weight: 300;
-            margin-bottom: 20px;
-            color: #191919;
-        }
-        .editor-grid {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        /* Palco 3D Esquerdo */
-        .avatar-stage {
-            width: 320px;
-            background: #fff;
-            border: 1px solid #d4d4d4;
-            padding: 15px;
-            text-align: center;
-        }
-        #avatar3DCanvas {
-            width: 288px;
-            height: 340px;
-            background: radial-gradient(circle, #f7f7f7 30%, #dcdcdc 100%);
-            border: 1px solid #e0e0e0;
-            cursor: grab;
-        }
-        /* Painel Direito de Customização */
-        .customization-panel {
-            flex-grow: 1;
-            background: #fff;
-            border: 1px solid #d4d4d4;
-            padding: 20px;
-            min-width: 300px;
-        }
-        .part-selector {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 15px;
-        }
-        .part-btn {
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        .part-btn.active {
-            background: #0074bd;
-            color: white;
-            border-color: #0074bd;
-        }
-        .color-palette {
-            display: grid;
-            grid-template-columns: repeat(8, 36px);
-            gap: 8px;
-            margin-bottom: 25px;
-        }
-        .color-swatch {
-            width: 36px;
-            height: 36px;
-            border-radius: 3px;
-            cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.2);
-            transition: transform 0.1s;
-        }
-        .color-swatch:hover {
-            transform: scale(1.1);
-        }
-        .save-btn {
-            background-color: #00b06f;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            font-weight: 600;
-            font-size: 15px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
+        .content-area { flex-grow: 1; padding: 25px 40px; max-width: 1050px; }
+        .editor-title { font-size: 28px; font-weight: 300; margin-bottom: 20px; color: #191919; }
+        .editor-grid { display: flex; gap: 25px; flex-wrap: wrap; }
+        .avatar-stage { width: 320px; background: #fff; border: 1px solid #d4d4d4; padding: 15px; text-align: center; }
+        #avatar3DCanvas { width: 288px; height: 340px; background: radial-gradient(circle, #f7f7f7 30%, #dcdcdc 100%); border: 1px solid #e0e0e0; cursor: grab; }
+        .customization-panel { flex-grow: 1; background: #fff; border: 1px solid #d4d4d4; padding: 20px; min-width: 300px; }
+        .part-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1px solid #e0e0e0; padding-bottom: 15px; }
+        .part-btn { padding: 6px 12px; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; font-weight: 600; font-size: 13px; }
+        .part-btn.active { background: #0074bd; color: white; border-color: #0074bd; }
+        .color-palette { display: grid; grid-template-columns: repeat(8, 36px); gap: 8px; margin-bottom: 25px; }
+        .color-swatch { width: 36px; height: 36px; border-radius: 3px; cursor: pointer; border: 1px solid rgba(0,0,0,0.2); transition: transform 0.1s; }
+        .color-swatch:hover { transform: scale(1.1); }
+        .save-btn { background-color: #00b06f; color: white; border: none; padding: 10px 25px; font-weight: 600; font-size: 15px; border-radius: 3px; cursor: pointer; }
         .save-btn:hover { background-color: #00965d; }
+
+        #loaderOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 9999; text-align: center; padding-top: 200px; }
+        .spinner { border: 6px solid #f3f3f3; border-top: 6px solid #0074bd; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <div id="loaderOverlay">
+        <div class="spinner"></div>
+        <h4 style="font-weight: 600; color: #333;">Loading...</h4>
+    </div>
+
     <nav class="navbar navbar-peblux navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="home.html" class="peblux-nav-logo">P</a>
+                <a href="home.html" class="peblux-nav-logo" onclick="loadPage(event, 'home.html')">P</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">Games</a></li>
-                <li><a href="#">Catalog</a></li>
-                <li><a href="#">Develop</a></li>
-                <li><a href="#">PEBLUX+</a></li>
+                <li><a href="#" onclick="loadPage(event, 'games.html')">Games</a></li>
+                <li><a href="#" onclick="loadPage(event, 'catalog.html')">Catalog</a></li>
+                <li><a href="#" onclick="loadPage(event, 'develop.html')">Develop</a></li>
+                <li><a href="buildersclub.html" onclick="loadPage(event, 'buildersclub.html')">PEBLUX+</a></li>
             </ul>
         </div>
     </nav>
@@ -175,34 +69,26 @@
     <div class="main-container">
         <div class="sidebar">
             <ul>
-                <li><a href="home.html"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> Messages</a></li>
-                <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="avatar.html" class="active"><i class="fa fa-male"></i> Avatar</a></li>
-                <li><a href="#"><i class="fa fa-briefcase"></i> Inventory</a></li>
-                <li><a href="#"><i class="fa fa-exchange"></i> Trade</a></li>
-                <li><a href="#"><i class="fa fa-globe"></i> Groups</a></li>
-                <li><a href="#"><i class="fa fa-comments-o"></i> Forum</a></li>
-                <li><a href="#"><i class="fa fa-rss"></i> Blog</a></li>
+                <li><a href="home.html" onclick="loadPage(event, 'home.html')"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#" onclick="loadPage(event, 'profile.html')"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="#" onclick="loadPage(event, 'messages.html')"><i class="fa fa-envelope-o"></i> Messages</a></li>
+                <li><a href="#" onclick="loadPage(event, 'friends.html')"><i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="avatar.html" class="active" onclick="loadPage(event, 'avatar.html')"><i class="fa fa-male"></i> Avatar</a></li>
+                <li><a href="#" onclick="loadPage(event, 'inventory.html')"><i class="fa fa-briefcase"></i> Inventory</a></li>
+                <li><a href="buildersclub.html" onclick="loadPage(event, 'buildersclub.html')" class="upgrade-btn" style="color:white; display:block; text-align:center; padding:8px 12px; background:#00a2ff; border-radius:3px; margin:15px 12px;">Upgrade Now</a></li>
             </ul>
         </div>
 
         <div class="content-area">
             <div class="editor-title">Avatar Editor</div>
-
             <div class="editor-grid">
-                <!-- Boneco 3D Default (Estilo R6 2016) -->
                 <div class="avatar-stage">
                     <div id="avatar3DCanvas"></div>
                     <small style="color: #777; display: block; margin-top: 8px;">Arraste para girar o avatar 3D</small>
                 </div>
-
-                <!-- Seletor de Cores do Corpo -->
                 <div class="customization-panel">
                     <h4 style="margin-top:0; font-weight: 600;">Body Colors</h4>
                     <p style="color: #666; font-size: 13px;">Selecione uma parte do corpo e clique na cor desejada:</p>
-
                     <div class="part-selector">
                         <button class="part-btn active" onclick="selectPart('head', this)">Head</button>
                         <button class="part-btn" onclick="selectPart('torso', this)">Torso</button>
@@ -211,9 +97,7 @@
                         <button class="part-btn" onclick="selectPart('leftLeg', this)">Left Leg</button>
                         <button class="part-btn" onclick="selectPart('rightLeg', this)">Right Leg</button>
                     </div>
-
                     <div class="color-palette" id="colorPalette"></div>
-
                     <button class="save-btn" onclick="saveAvatarColors()">Save Avatar</button>
                     <button class="btn btn-default" style="margin-left: 10px;" onclick="resetDefaultNoob()">Reset Default</button>
                 </div>
@@ -226,25 +110,23 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Cores clássicas do Roblox (BrickColors)
-        const brickColors = [
-            '#F5CD30', '#9BA0A5', '#A4BD47', '#0D69AC', '#C4281C', '#FFFFFF', '#1B2A35', '#635F62',
-            '#EAB892', '#CC8E69', '#A05F35', '#694028', '#F8D96D', '#4B974B', '#27462D', '#008F9C',
-            '#527CAE', '#2154B9', '#6B327C', '#AA00AA', '#FF66CC', '#DA8541', '#E29B40', '#D7C59A'
-        ];
+        function loadPage(event, page) {
+            event.preventDefault();
+            document.getElementById('loaderOverlay').style.display = 'block';
+            setTimeout(() => {
+                if (page === 'home.html' || page === 'avatar.html' || page === 'buildersclub.html') {
+                    window.location.href = page;
+                } else {
+                    window.location.href = 'error500.html';
+                }
+            }, 600);
+        }
 
+        const brickColors = ['#F5CD30', '#9BA0A5', '#A4BD47', '#0D69AC', '#C4281C', '#FFFFFF', '#1B2A35', '#635F62', '#EAB892', '#CC8E69', '#A05F35', '#694028', '#F8D96D', '#4B974B', '#27462D', '#008F9C', '#527CAE', '#2154B9', '#6B327C', '#AA00AA', '#FF66CC', '#DA8541', '#E29B40', '#D7C59A'];
         let selectedPart = 'head';
         let currentUserId = null;
-        let avatarColors = {
-            head: '#F5CD30',
-            torso: '#9BA0A5',
-            leftArm: '#F5CD30',
-            rightArm: '#F5CD30',
-            leftLeg: '#A4BD47',
-            rightLeg: '#A4BD47'
-        };
+        let avatarColors = { head: '#F5CD30', torso: '#9BA0A5', leftArm: '#F5CD30', rightArm: '#F5CD30', leftLeg: '#A4BD47', rightLeg: '#A4BD47' };
 
-        // Monta paleta na tela
         const paletteDiv = document.getElementById('colorPalette');
         brickColors.forEach(hex => {
             const swatch = document.createElement('div');
@@ -260,7 +142,6 @@
             btn.classList.add('active');
         }
 
-        // --- CENA 3D DO BONECO DEFAULT ---
         const container = document.getElementById('avatar3DCanvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, 288 / 340, 0.1, 100);
@@ -279,7 +160,6 @@
         const avatarGroup = new THREE.Group();
         scene.add(avatarGroup);
 
-        // Materiais das partes
         const mats = {
             torso: new THREE.MeshLambertMaterial({ color: avatarColors.torso }),
             leftArm: new THREE.MeshLambertMaterial({ color: avatarColors.leftArm }),
@@ -288,7 +168,6 @@
             rightLeg: new THREE.MeshLambertMaterial({ color: avatarColors.rightLeg })
         };
 
-        // Função para desenhar o rosto clássico na cor atual da cabeça
         function createHeadMaterials(hexColor) {
             const faceCanvas = document.createElement('canvas');
             faceCanvas.width = 128; faceCanvas.height = 128;
@@ -296,28 +175,24 @@
             ctx.fillStyle = hexColor;
             ctx.fillRect(0, 0, 128, 128);
             ctx.fillStyle = '#111111';
-            ctx.beginPath(); ctx.ellipse(46, 52, 6, 10, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(82, 52, 6, 10, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.lineWidth = 6; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.arc(64, 68, 22, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(44, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(84, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.lineWidth = 5; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.arc(64, 66, 20, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
 
             const tex = new THREE.CanvasTexture(faceCanvas);
             const sideMat = new THREE.MeshLambertMaterial({ color: hexColor });
             return [sideMat, sideMat, sideMat, sideMat, new THREE.MeshLambertMaterial({ map: tex }), sideMat];
         }
 
-        // Cabeça
-        const headMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.78, 24), createHeadMaterials(avatarColors.head));
-        headMesh.position.set(0, 1.38, 0);
-        headMesh.rotation.y = -Math.PI / 2;
+        const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterials(avatarColors.head));
+        headMesh.position.set(0, 1.45, 0);
         avatarGroup.add(headMesh);
 
-        // Tronco
         const torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), mats.torso);
         torsoMesh.position.set(0, 0.42, 0);
         avatarGroup.add(torsoMesh);
 
-        // Braços
         const leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), mats.leftArm);
         leftArmMesh.position.set(-0.83, 0.42, 0);
         avatarGroup.add(leftArmMesh);
@@ -326,7 +201,6 @@
         rightArmMesh.position.set(0.83, 0.42, 0);
         avatarGroup.add(rightArmMesh);
 
-        // Pernas
         const leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), mats.leftLeg);
         leftLegMesh.position.set(-0.28, -0.7, 0);
         avatarGroup.add(leftLegMesh);
@@ -335,9 +209,8 @@
         rightLegMesh.position.set(0.28, -0.7, 0);
         avatarGroup.add(rightLegMesh);
 
-        // Rotação com o mouse/toque
         let isDragging = false, prevX = 0;
-        avatarGroup.rotation.y = -0.35; // Ângulo clássico da imagem
+        avatarGroup.rotation.y = -0.35;
 
         container.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; });
         window.addEventListener('mouseup', () => isDragging = false);
@@ -368,14 +241,7 @@
         }
 
         function resetDefaultNoob() {
-            avatarColors = {
-                head: '#F5CD30',
-                torso: '#9BA0A5',
-                leftArm: '#F5CD30',
-                rightArm: '#F5CD30',
-                leftLeg: '#A4BD47',
-                rightLeg: '#A4BD47'
-            };
+            avatarColors = { head: '#F5CD30', torso: '#9BA0A5', leftArm: '#F5CD30', rightArm: '#F5CD30', leftLeg: '#A4BD47', rightLeg: '#A4BD47' };
             update3DMeshColors();
         }
 
@@ -400,23 +266,17 @@
 
         async function saveAvatarColors() {
             if (!currentUserId) return;
-            const { error } = await supabaseClient
-                .from('profiles')
-                .update({
-                    head_color: avatarColors.head,
-                    torso_color: avatarColors.torso,
-                    left_arm_color: avatarColors.leftArm,
-                    right_arm_color: avatarColors.rightArm,
-                    left_leg_color: avatarColors.leftLeg,
-                    right_leg_color: avatarColors.rightLeg
-                })
-                .eq('id', currentUserId);
+            const { error } = await supabaseClient.from('profiles').update({
+                head_color: avatarColors.head,
+                torso_color: avatarColors.torso,
+                left_arm_color: avatarColors.leftArm,
+                right_arm_color: avatarColors.rightArm,
+                left_leg_color: avatarColors.leftLeg,
+                right_leg_color: avatarColors.rightLeg
+            }).eq('id', currentUserId);
 
-            if (error) {
-                alert("Erro ao salvar avatar: " + error.message);
-            } else {
-                alert("Avatar salvo! Sua foto de perfil na Home já foi atualizada.");
-            }
+            if (error) alert("Erro ao salvar avatar: " + error.message);
+            else alert("Avatar salvo com sucesso!");
         }
 
         loadAvatar();
