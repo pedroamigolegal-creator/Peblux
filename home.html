@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Peblux</title>
+    <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Supabase SDK e Three.js para o Avatar 3D -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 45px; }
+        .navbar-peblux { background-color: #0074BD; border: none; min-height: 40px; height: 45px; border-bottom: 1px solid #005691; }
+        .peblux-nav-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 20px; font-weight: 900; font-style: italic; color: #da291c; background: #fff; padding: 2px 8px; border: 2px solid #da291c; border-radius: 3px; margin-top: 6px; display: inline-block; text-decoration: none !important; }
+        .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 12px 15px; font-size: 15px; }
+        .navbar-peblux .nav > li > a:hover { background: rgba(25,25,25,0.1); border-radius: 4px; color: white; }
+        
+        .currency-badge { color: white; font-weight: 600; line-height: 45px; margin-right: 15px; font-size: 15px; display: inline-block; }
+        .currency-badge span { margin-left: 4px; margin-right: 12px; }
+
+        .main-container { display: flex; min-height: calc(100vh - 45px); }
+        
+        /* Menu Lateral esquerdo clássico */
+        .sidebar { width: 175px; background: #f2f2f2; border-right: 1px solid #c3c3c3; padding-top: 10px; position: fixed; top: 45px; bottom: 0; left: 0; z-index: 100; }
+        .sidebar-user { color: #1e1e1f; font-size: 18px; font-weight: 700; padding: 8px 15px; border-bottom: 2px solid #c3c3c3; margin-bottom: 5px; }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar ul li a { display: block; padding: 8px 15px; color: #333; text-decoration: none; font-size: 15px; }
+        .sidebar ul li a:hover, .sidebar ul li a.active { background-color: rgba(25,25,25,0.08); color: #0074BD; font-weight: 600; border-radius: 4px; }
+        .sidebar ul li a i { margin-right: 10px; width: 18px; text-align: center; color: #555; }
+        .upgrade-btn { background-color: #01a2fd; color: white !important; text-align: center; margin: 15px 10px; border-radius: 4px; padding: 8px !important; font-weight: 600 !important; }
+        .upgrade-btn:hover { background-color: #3ab8ff !important; }
+
+        /* Conteúdo Central */
+        .content-area { margin-left: 175px; flex-grow: 1; padding: 30px; max-width: 1100px; }
+        .profile-header-box { display: flex; align-items: center; background: #fff; border: 1px solid #c3c3c3; padding: 25px; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); margin-bottom: 25px; }
+        
+        #headshotContainer { width: 115px; height: 115px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d4d4d4 100%); border: 1px solid #c3c3c3; overflow: hidden; margin-right: 25px; flex-shrink: 0; box-shadow: 0 -5px 20px rgba(25,25,25,0.15); }
+        .welcome-header { font-size: 36px; font-weight: 600; color: #333; margin: 0; }
+        .section-title { font-size: 22px; font-weight: 300; color: #4a4a4a; margin-bottom: 15px; }
+        .card-box { background: #fff; border: 1px solid #c3c3c3; padding: 20px; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); color: #666; }
+    </style>
+</head>
+<body>
+    <!-- Navbar Superior -->
+    <nav class="navbar navbar-peblux navbar-fixed-top">
+        <div class="container-fluid" style="padding-left: 15px; padding-right: 15px;">
+            <div class="navbar-header">
+                <a href="home.html" class="peblux-nav-logo">P</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="home.html">Games</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="develop.html">Develop</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <span class="currency-badge">
+                        <i class="fa fa-stop-circle" style="color:#00b06f;"></i> <span id="userRobux">100</span>
+                        <i class="fa fa-ticket" style="color:#e2a03f; margin-left: 5px;"></i> <span id="userTix">0</span>
+                    </span>
+                </li>
+                <li><a href="#" onclick="handleLogout()"><i class="fa fa-cog"></i> Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Menu Lateral -->
+        <div class="sidebar">
+            <div class="sidebar-user" id="sidebarUsername">Player</div>
+            <ul>
+                <li><a href="home.html" class="active"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="profile.html"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="messages.html"><i class="fa fa-envelope-o"></i> Messages</a></li>
+                <li><a href="friends.html"><i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="avatar.html"><i class="fa fa-male"></i> Avatar</a></li>
+                <li><a href="inventory.html"><i class="fa fa-briefcase"></i> Inventory</a></li>
+                <li><a href="buildersclub.html" class="upgrade-btn">Upgrade Now</a></li>
+            </ul>
+        </div>
+
+        <!-- Área Principal -->
+        <div class="content-area">
+            <div class="profile-header-box">
+                <div id="headshotContainer"></div>
+                <div>
+                    <h1 class="welcome-header" id="welcomeText">Hello, Player!</h1>
+                </div>
+            </div>
+
+            <div class="section-title">Friends (0)</div>
+            <div class="card-box">You don't have any friends online right now.</div>
+        </div>
+    </div>
+
+    <!-- Script de Integração com Supabase e Renderização do Avatar 3D no Círculo -->
+    <script>
+        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function render3DHeadshot(colors, shirtURL) {
+            const container = document.getElementById('headshotContainer');
+            container.innerHTML = '';
+            
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+            camera.position.set(1.3, 1.45, 2.3);
+            camera.lookAt(0, 1.35, 0);
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(115, 115);
+            container.appendChild(renderer.domElement);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            dirLight.position.set(3, 5, 4);
+            scene.add(dirLight);
+
+            // Cabeça com o rosto clássico Roblox
+            const faceCanvas = document.createElement('canvas');
+            faceCanvas.width = 128; faceCanvas.height = 128;
+            const ctx = faceCanvas.getContext('2d');
+            ctx.fillStyle = colors.head;
+            ctx.fillRect(0, 0, 128, 128);
+            ctx.fillStyle = '#111111';
+            ctx.beginPath(); ctx.ellipse(44, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(84, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.lineWidth = 5; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.arc(64, 66, 20, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+
+            const faceTexture = new THREE.CanvasTexture(faceCanvas);
+            const headMat = new THREE.MeshLambertMaterial({ color: colors.head });
+            const headMaterials = [headMat, headMat, headMat, headMat, new THREE.MeshLambertMaterial({ map: faceTexture }), headMat];
+
+            const head = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.72, 0.72), headMaterials);
+            head.position.set(0, 1.55, 0);
+            scene.add(head);
+
+            // Tronco
+            const torsoMat = new THREE.MeshLambertMaterial({ color: colors.torso });
+            if (shirtURL) {
+                const shirtImg = new Image();
+                shirtImg.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 128; canvas.height = 128;
+                    const c = canvas.getContext('2d');
+                    c.drawImage(shirtImg, 16, 16, 32, 32, 0, 0, 128, 128);
+                    torsoMat.map = new THREE.CanvasTexture(canvas);
+                    torsoMat.needsUpdate = true;
+                };
+                shirtImg.src = shirtURL;
+            }
+            const torso = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), torsoMat);
+            torso.position.set(0, 0.6, 0);
+            scene.add(torso);
+
+            // Braços
+            const armGeo = new THREE.BoxGeometry(0.52, 1.1, 0.55);
+            const leftArm = new THREE.Mesh(armGeo, new THREE.MeshLambertMaterial({ color: colors.leftArm }));
+            leftArm.position.set(-0.83, 0.6, 0);
+            scene.add(leftArm);
+            const rightArm = new THREE.Mesh(armGeo, new THREE.MeshLambertMaterial({ color: colors.rightArm }));
+            rightArm.position.set(0.83, 0.6, 0);
+            scene.add(rightArm);
+
+            renderer.render(scene, camera);
+        }
+
+        async function loadUserData() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = "index.html"; return; }
+
+            const user = session.user;
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+
+            if (profile) {
+                // Sistema do Builders Club: Verifica se passou 1 dia para adicionar 150 Robux
+                const lastClaim = profile.last_bc_claim ? new Date(profile.last_bc_claim) : new Date(0);
+                const now = new Date();
+                const diffHours = (now - lastClaim) / (1000 * 60 * 60);
+
+                let currentRobux = profile.robux;
+                if (diffHours >= 24) {
+                    currentRobux += 150;
+                    await supabaseClient.from('profiles').update({ 
+                        robux: currentRobux, 
+                        last_bc_claim: now.toISOString() 
+                    }).eq('id', user.id);
+                }
+
+                document.getElementById('userRobux').innerText = currentRobux;
+                document.getElementById('welcomeText').innerText = `Hello, ${profile.username}!`;
+                document.getElementById('sidebarUsername').innerText = profile.username;
+                
+                render3DHeadshot({
+                    head: profile.head_color || '#F5CD30',
+                    torso: profile.torso_color || '#9BA0A5',
+                    leftArm: profile.left_arm_color || '#F5CD30',
+                    rightArm: profile.right_arm_color || '#F5CD30'
+                }, profile.equipped_shirt || '');
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = "index.html";
+        }
+
+        loadUserData();
+    </script>
+</body>
+</html>
