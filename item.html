@@ -13,10 +13,12 @@
         .peblux-nav-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 20px; font-weight: 900; font-style: italic; color: #da291c; background: #fff; padding: 0px 7px; border: 2px solid #da291c; border-radius: 3px; margin-top: 5px; display: inline-block; text-decoration: none !important; }
         .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 10px 15px; }
         .content-area { max-width: 900px; margin: 40px auto; background: #fff; border: 1px solid #ccc; padding: 30px; border-radius: 4px; display: flex; gap: 30px; }
-        .item-image-box { width: 300px; height: 300px; background: #f9f9f9; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; }
+        .item-image-box { width: 300px; height: 300px; background: #f9f9f9; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; padding: 10px; }
         .item-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .btn-green { background-color: #00b06f; color: white; font-weight: bold; border: none; padding: 10px 30px; font-size: 16px; border-radius: 4px; }
         .btn-green:hover { background-color: #00965d; }
+        .btn-danger { background-color: #d9534f; color: white; font-weight: bold; border: none; padding: 10px 20px; font-size: 14px; border-radius: 4px; margin-left: 10px; }
+        .btn-danger:hover { background-color: #c9302c; }
     </style>
 </head>
 <body>
@@ -42,6 +44,9 @@
         async function loadItem() {
             if (!itemId) { window.location.href = 'catalog.html'; return; }
 
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const currentUserId = session ? session.user.id : null;
+
             const { data: item } = await supabaseClient.from('items').select('*').eq('id', itemId).single();
             const container = document.getElementById('itemDetails');
 
@@ -49,6 +54,8 @@
                 container.innerHTML = `<h3>Item not found.</h3>`;
                 return;
             }
+
+            const isOwner = currentUserId && currentUserId === item.creator_id;
 
             container.innerHTML = `
                 <div class="item-image-box">
@@ -63,6 +70,7 @@
                     <h3 style="color:#00b06f; font-weight:bold;">${item.price} Robux</h3>
                     <br>
                     <button class="btn btn-green" onclick="buyItem('${item.id}', ${item.price}, '${item.creator_id}')">Buy</button>
+                    ${isOwner ? `<button class="btn btn-danger" onclick="deleteItem('${item.id}')">Delete Item</button>` : ''}
                 </div>
             `;
         }
@@ -79,14 +87,11 @@
                 return;
             }
 
-            // Calcula 30% para a plataforma Peblux (sem vírgula / arredondado)
             const platformFee = Math.round(price * 0.30);
             const creatorEarnings = price - platformFee;
 
-            // Desconta do comprador
             await supabaseClient.from('profiles').update({ robux: buyerProfile.robux - price }).eq('id', buyerId);
 
-            // Adiciona para o criador (se não for o próprio comprador)
             if (creatorId !== buyerId) {
                 const { data: creatorProfile } = await supabaseClient.from('profiles').select('robux').eq('id', creatorId).single();
                 if (creatorProfile) {
@@ -94,12 +99,22 @@
                 }
             }
 
-            // Incrementa vendas
             const { data: currentItem } = await supabaseClient.from('items').select('sales').eq('id', id).single();
             await supabaseClient.from('items').update({ sales: (currentItem.sales || 0) + 1 }).eq('id', id);
 
             alert("Compra realizada com sucesso!");
             location.reload();
+        }
+
+        async function deleteItem(id) {
+            if (!confirm("Tem certeza que deseja excluir esta roupa?")) return;
+            const { error } = await supabaseClient.from('items').delete().eq('id', id);
+            if (error) {
+                alert("Erro ao excluir: " + error.message);
+            } else {
+                alert("Roupa excluída com sucesso!");
+                window.location.href = "catalog.html";
+            }
         }
 
         loadItem();
