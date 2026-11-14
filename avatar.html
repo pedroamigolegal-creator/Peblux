@@ -120,7 +120,6 @@
             btn.classList.add('active');
         }
 
-        // Configuração Three.js
         const container = document.getElementById('avatar3DCanvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, 288 / 340, 0.1, 100);
@@ -157,30 +156,28 @@
             return [sideMat, sideMat, sideMat, sideMat, new THREE.MeshLambertMaterial({ map: tex }), sideMat];
         }
 
-        // Função mágica que formata a template plana .png e aplica corretamente no torso e braços sem aparecer a folha inteira
-        function createFormattedMaterial(colorHex, shirtURL) {
-            if (!shirtURL) {
-                return new THREE.MeshLambertMaterial({ color: colorHex });
-            }
+        // Aplica e estica a textura da camisa perfeitamente no corpo do boneco igual ao modelo do macaco
+        function createTorsoMaterial(colorHex, shirtURL) {
+            if (!shirtURL) return new THREE.MeshLambertMaterial({ color: colorHex });
 
             const canvas = document.createElement('canvas');
             canvas.width = 128; canvas.height = 128;
             const ctx = canvas.getContext('2d');
-
-            // Pinta a cor base do corpo
             ctx.fillStyle = colorHex;
             ctx.fillRect(0, 0, 128, 128);
 
             const img = new Image();
             img.crossOrigin = "anonymous";
             img.onload = function() {
-                // Recorta e mapeia inteligentemente a parte da camisa da template original do Roblox
-                ctx.drawImage(img, 16, 16, 32, 64, 16, 16, 96, 96);
-                torsoMesh.material.needsUpdate = true;
+                // Desenha a parte central da camisa cobrindo todo o torso perfeitamente
+                ctx.drawImage(img, 16, 16, 32, 32, 0, 0, 128, 128);
+                torsoMat.map = new THREE.CanvasTexture(canvas);
+                torsoMat.needsUpdate = true;
             };
             img.src = shirtURL;
 
-            return new THREE.MeshLambertMaterial({ color: colorHex });
+            const torsoMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+            return torsoMat;
         }
 
         function buildAvatar() {
@@ -190,7 +187,7 @@
             headMesh.position.set(0, 1.45, 0);
             avatarGroup.add(headMesh);
 
-            torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), createFormattedMaterial(avatarColors.torso, equippedShirtURL));
+            torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), createTorsoMaterial(avatarColors.torso, equippedShirtURL));
             torsoMesh.position.set(0, 0.42, 0);
             avatarGroup.add(torsoMesh);
 
@@ -250,7 +247,6 @@
                 buildAvatar();
             }
 
-            // Carrega itens criados para o inventário
             const { data: items } = await supabaseClient.from('items').select('*');
             const invDiv = document.getElementById('shirtInventory');
             if (!items || items.length === 0) {
