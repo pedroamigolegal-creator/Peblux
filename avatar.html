@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Avatar Editor - Peblux</title>
-    
     <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <style>
         body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 40px; }
         .navbar-peblux { background-color: #0074bd; border: none; min-height: 40px; height: 40px; }
@@ -24,7 +21,6 @@
         .sidebar ul li a { display: block; padding: 8px 15px; color: #191919; text-decoration: none; font-size: 15px; }
         .sidebar ul li a:hover, .sidebar ul li a.active { background-color: #f2f2f2; color: #0074bd; font-weight: 600; }
         .sidebar ul li a i { margin-right: 10px; width: 18px; text-align: center; }
-
         .content-area { flex-grow: 1; padding: 25px 40px; max-width: 1050px; }
         .editor-title { font-size: 28px; font-weight: 300; margin-bottom: 20px; color: #191919; }
         .editor-grid { display: flex; gap: 25px; flex-wrap: wrap; }
@@ -35,33 +31,24 @@
         .part-btn { padding: 6px 12px; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; font-weight: 600; font-size: 13px; }
         .part-btn.active { background: #0074bd; color: white; border-color: #0074bd; }
         .color-palette { display: grid; grid-template-columns: repeat(8, 36px); gap: 8px; margin-bottom: 25px; }
-        .color-swatch { width: 36px; height: 36px; border-radius: 3px; cursor: pointer; border: 1px solid rgba(0,0,0,0.2); transition: transform 0.1s; }
+        .color-swatch { width: 36px; height: 36px; border-radius: 3px; cursor: pointer; border: 1px solid rgba(0,0,0,0.2); }
         .color-swatch:hover { transform: scale(1.1); }
         .save-btn { background-color: #00b06f; color: white; border: none; padding: 10px 25px; font-weight: 600; font-size: 15px; border-radius: 3px; cursor: pointer; }
         .save-btn:hover { background-color: #00965d; }
-
-        #loaderOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 9999; text-align: center; padding-top: 200px; }
-        .spinner { border: 6px solid #f3f3f3; border-top: 6px solid #0074bd; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .inventory-list { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+        .inv-item { width: 70px; height: 70px; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; padding: 5px; text-align: center; flex-shrink: 0; }
+        .inv-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .inv-item:hover { border-color: #0074bd; }
     </style>
 </head>
 <body>
-
-    <div id="loaderOverlay">
-        <div class="spinner"></div>
-        <h4 style="font-weight: 600; color: #333;">Loading...</h4>
-    </div>
-
     <nav class="navbar navbar-peblux navbar-fixed-top">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="home.html" class="peblux-nav-logo" onclick="loadPage(event, 'home.html')">P</a>
-            </div>
+            <div class="navbar-header"><a href="home.html" class="peblux-nav-logo">P</a></div>
             <ul class="nav navbar-nav">
-                <li><a href="#" onclick="loadPage(event, 'games.html')">Games</a></li>
-                <li><a href="#" onclick="loadPage(event, 'catalog.html')">Catalog</a></li>
-                <li><a href="#" onclick="loadPage(event, 'develop.html')">Develop</a></li>
-                <li><a href="buildersclub.html" onclick="loadPage(event, 'buildersclub.html')">PEBLUX+</a></li>
+                <li><a href="home.html">Games</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="develop.html">Develop</a></li>
             </ul>
         </div>
     </nav>
@@ -69,13 +56,10 @@
     <div class="main-container">
         <div class="sidebar">
             <ul>
-                <li><a href="home.html" onclick="loadPage(event, 'home.html')"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#" onclick="loadPage(event, 'profile.html')"><i class="fa fa-user"></i> Profile</a></li>
-                <li><a href="#" onclick="loadPage(event, 'messages.html')"><i class="fa fa-envelope-o"></i> Messages</a></li>
-                <li><a href="#" onclick="loadPage(event, 'friends.html')"><i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="avatar.html" class="active" onclick="loadPage(event, 'avatar.html')"><i class="fa fa-male"></i> Avatar</a></li>
-                <li><a href="#" onclick="loadPage(event, 'inventory.html')"><i class="fa fa-briefcase"></i> Inventory</a></li>
-                <li><a href="buildersclub.html" onclick="loadPage(event, 'buildersclub.html')" class="upgrade-btn" style="color:white; display:block; text-align:center; padding:8px 12px; background:#00a2ff; border-radius:3px; margin:15px 12px;">Upgrade Now</a></li>
+                <li><a href="home.html"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="profile.html"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="avatar.html" class="active"><i class="fa fa-male"></i> Avatar</a></li>
+                <li><a href="catalog.html"><i class="fa fa-shopping-cart"></i> Catalog</a></li>
             </ul>
         </div>
 
@@ -88,7 +72,6 @@
                 </div>
                 <div class="customization-panel">
                     <h4 style="margin-top:0; font-weight: 600;">Body Colors</h4>
-                    <p style="color: #666; font-size: 13px;">Selecione uma parte do corpo e clique na cor desejada:</p>
                     <div class="part-selector">
                         <button class="part-btn active" onclick="selectPart('head', this)">Head</button>
                         <button class="part-btn" onclick="selectPart('torso', this)">Torso</button>
@@ -98,8 +81,14 @@
                         <button class="part-btn" onclick="selectPart('rightLeg', this)">Right Leg</button>
                     </div>
                     <div class="color-palette" id="colorPalette"></div>
-                    <button class="save-btn" onclick="saveAvatarColors()">Save Avatar</button>
-                    <button class="btn btn-default" style="margin-left: 10px;" onclick="resetDefaultNoob()">Reset Default</button>
+
+                    <h4 style="font-weight: 600; margin-top: 20px;">Equipped Shirt</h4>
+                    <div class="inventory-list" id="shirtInventory">
+                        <p style="color:#777; font-size:13px;">Carregando camisas...</p>
+                    </div>
+
+                    <br>
+                    <button class="save-btn" onclick="saveAvatar()">Save Avatar</button>
                 </div>
             </div>
         </div>
@@ -110,29 +99,18 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        function loadPage(event, page) {
-            event.preventDefault();
-            document.getElementById('loaderOverlay').style.display = 'block';
-            setTimeout(() => {
-                if (page === 'home.html' || page === 'avatar.html' || page === 'buildersclub.html') {
-                    window.location.href = page;
-                } else {
-                    window.location.href = 'error500.html';
-                }
-            }, 600);
-        }
-
         const brickColors = ['#F5CD30', '#9BA0A5', '#A4BD47', '#0D69AC', '#C4281C', '#FFFFFF', '#1B2A35', '#635F62', '#EAB892', '#CC8E69', '#A05F35', '#694028', '#F8D96D', '#4B974B', '#27462D', '#008F9C', '#527CAE', '#2154B9', '#6B327C', '#AA00AA', '#FF66CC', '#DA8541', '#E29B40', '#D7C59A'];
         let selectedPart = 'head';
         let currentUserId = null;
         let avatarColors = { head: '#F5CD30', torso: '#9BA0A5', leftArm: '#F5CD30', rightArm: '#F5CD30', leftLeg: '#A4BD47', rightLeg: '#A4BD47' };
+        let equippedShirtURL = '';
 
         const paletteDiv = document.getElementById('colorPalette');
         brickColors.forEach(hex => {
             const swatch = document.createElement('div');
             swatch.className = 'color-swatch';
             swatch.style.backgroundColor = hex;
-            swatch.onclick = () => applyColor(hex);
+            swatch.onclick = () => { avatarColors[selectedPart] = hex; updateMeshColors(); };
             paletteDiv.appendChild(swatch);
         });
 
@@ -142,6 +120,7 @@
             btn.classList.add('active');
         }
 
+        // Configuração Three.js
         const container = document.getElementById('avatar3DCanvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, 288 / 340, 0.1, 100);
@@ -160,13 +139,7 @@
         const avatarGroup = new THREE.Group();
         scene.add(avatarGroup);
 
-        const mats = {
-            torso: new THREE.MeshLambertMaterial({ color: avatarColors.torso }),
-            leftArm: new THREE.MeshLambertMaterial({ color: avatarColors.leftArm }),
-            rightArm: new THREE.MeshLambertMaterial({ color: avatarColors.rightArm }),
-            leftLeg: new THREE.MeshLambertMaterial({ color: avatarColors.leftLeg }),
-            rightLeg: new THREE.MeshLambertMaterial({ color: avatarColors.rightLeg })
-        };
+        let torsoMesh, leftArmMesh, rightArmMesh, leftLegMesh, rightLegMesh, headMesh;
 
         function createHeadMaterials(hexColor) {
             const faceCanvas = document.createElement('canvas');
@@ -179,39 +152,71 @@
             ctx.beginPath(); ctx.ellipse(84, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
             ctx.lineWidth = 5; ctx.lineCap = 'round';
             ctx.beginPath(); ctx.arc(64, 66, 20, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
-
             const tex = new THREE.CanvasTexture(faceCanvas);
             const sideMat = new THREE.MeshLambertMaterial({ color: hexColor });
             return [sideMat, sideMat, sideMat, sideMat, new THREE.MeshLambertMaterial({ map: tex }), sideMat];
         }
 
-        const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterials(avatarColors.head));
-        headMesh.position.set(0, 1.45, 0);
-        avatarGroup.add(headMesh);
+        // Função mágica que formata a template plana .png e aplica corretamente no torso e braços sem aparecer a folha inteira
+        function createFormattedMaterial(colorHex, shirtURL) {
+            if (!shirtURL) {
+                return new THREE.MeshLambertMaterial({ color: colorHex });
+            }
 
-        const torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), mats.torso);
-        torsoMesh.position.set(0, 0.42, 0);
-        avatarGroup.add(torsoMesh);
+            const canvas = document.createElement('canvas');
+            canvas.width = 128; canvas.height = 128;
+            const ctx = canvas.getContext('2d');
 
-        const leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), mats.leftArm);
-        leftArmMesh.position.set(-0.83, 0.42, 0);
-        avatarGroup.add(leftArmMesh);
+            // Pinta a cor base do corpo
+            ctx.fillStyle = colorHex;
+            ctx.fillRect(0, 0, 128, 128);
 
-        const rightArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), mats.rightArm);
-        rightArmMesh.position.set(0.83, 0.42, 0);
-        avatarGroup.add(rightArmMesh);
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function() {
+                // Recorta e mapeia inteligentemente a parte da camisa da template original do Roblox
+                ctx.drawImage(img, 16, 16, 32, 64, 16, 16, 96, 96);
+                torsoMesh.material.needsUpdate = true;
+            };
+            img.src = shirtURL;
 
-        const leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), mats.leftLeg);
-        leftLegMesh.position.set(-0.28, -0.7, 0);
-        avatarGroup.add(leftLegMesh);
+            return new THREE.MeshLambertMaterial({ color: colorHex });
+        }
 
-        const rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), mats.rightLeg);
-        rightLegMesh.position.set(0.28, -0.7, 0);
-        avatarGroup.add(rightLegMesh);
+        function buildAvatar() {
+            while(avatarGroup.children.length > 0){ avatarGroup.remove(avatarGroup.children[0]); }
+
+            headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterials(avatarColors.head));
+            headMesh.position.set(0, 1.45, 0);
+            avatarGroup.add(headMesh);
+
+            torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), createFormattedMaterial(avatarColors.torso, equippedShirtURL));
+            torsoMesh.position.set(0, 0.42, 0);
+            avatarGroup.add(torsoMesh);
+
+            leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.leftArm }));
+            leftArmMesh.position.set(-0.83, 0.42, 0);
+            avatarGroup.add(leftArmMesh);
+
+            rightArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.rightArm }));
+            rightArmMesh.position.set(0.83, 0.42, 0);
+            avatarGroup.add(rightArmMesh);
+
+            leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.leftLeg }));
+            leftLegMesh.position.set(-0.28, -0.7, 0);
+            avatarGroup.add(leftLegMesh);
+
+            rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.rightLeg }));
+            rightLegMesh.position.set(0.28, -0.7, 0);
+            avatarGroup.add(rightLegMesh);
+        }
+
+        function updateMeshColors() {
+            buildAvatar();
+        }
 
         let isDragging = false, prevX = 0;
         avatarGroup.rotation.y = -0.35;
-
         container.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; });
         window.addEventListener('mouseup', () => isDragging = false);
         window.addEventListener('mousemove', e => {
@@ -226,26 +231,7 @@
         }
         animate();
 
-        function applyColor(hex) {
-            avatarColors[selectedPart] = hex;
-            update3DMeshColors();
-        }
-
-        function update3DMeshColors() {
-            headMesh.material = createHeadMaterials(avatarColors.head);
-            mats.torso.color.set(avatarColors.torso);
-            mats.leftArm.color.set(avatarColors.leftArm);
-            mats.rightArm.color.set(avatarColors.rightArm);
-            mats.leftLeg.color.set(avatarColors.leftLeg);
-            mats.rightLeg.color.set(avatarColors.rightLeg);
-        }
-
-        function resetDefaultNoob() {
-            avatarColors = { head: '#F5CD30', torso: '#9BA0A5', leftArm: '#F5CD30', rightArm: '#F5CD30', leftLeg: '#A4BD47', rightLeg: '#A4BD47' };
-            update3DMeshColors();
-        }
-
-        async function loadAvatar() {
+        async function loadUserData() {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { window.location.href = "index.html"; return; }
             currentUserId = session.user.id;
@@ -260,26 +246,50 @@
                     leftLeg: profile.left_leg_color || '#A4BD47',
                     rightLeg: profile.right_leg_color || '#A4BD47'
                 };
-                update3DMeshColors();
+                equippedShirtURL = profile.equipped_shirt || '';
+                buildAvatar();
             }
+
+            // Carrega itens criados para o inventário
+            const { data: items } = await supabaseClient.from('items').select('*');
+            const invDiv = document.getElementById('shirtInventory');
+            if (!items || items.length === 0) {
+                invDiv.innerHTML = `<p style="color:#777; font-size:13px;">Nenhuma camisa no catálogo ainda.</p>`;
+                return;
+            }
+
+            invDiv.innerHTML = `
+                <div class="inv-item" onclick="equipShirt('')" title="Sem camisa">
+                    <div style="font-size:10px; line-height:55px;">Nenhuma</div>
+                </div>
+            ` + items.map(item => `
+                <div class="inv-item" onclick="equipShirt('${item.image_url}')" title="${item.name}">
+                    <img src="${item.image_url}" alt="${item.name}">
+                </div>
+            `).join('');
         }
 
-        async function saveAvatarColors() {
-            if (!currentUserId) return;
+        function equipShirt(url) {
+            equippedShirtURL = url;
+            buildAvatar();
+        }
+
+        async function saveAvatar() {
             const { error } = await supabaseClient.from('profiles').update({
                 head_color: avatarColors.head,
                 torso_color: avatarColors.torso,
                 left_arm_color: avatarColors.leftArm,
                 right_arm_color: avatarColors.rightArm,
                 left_leg_color: avatarColors.leftLeg,
-                right_leg_color: avatarColors.rightLeg
+                right_leg_color: avatarColors.rightLeg,
+                equipped_shirt: equippedShirtURL
             }).eq('id', currentUserId);
 
-            if (error) alert("Erro ao salvar avatar: " + error.message);
+            if (error) alert("Erro ao salvar: " + error.message);
             else alert("Avatar salvo com sucesso!");
         }
 
-        loadAvatar();
+        loadUserData();
     </script>
 </body>
 </html>
