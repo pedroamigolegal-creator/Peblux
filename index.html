@@ -1,29 +1,19 @@
 <!DOCTYPE html>
-<!--[if IE 8]><html class="ie8" ng-app="robloxApp"><![endif]-->
-<!--[if gt IE 8]><!-->
 <html>
-<!--<![endif]-->
 <head>
-    <!-- MachineID: WEB132 -->
     <title>Peblux - Official 2016 Revival</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="ROBLOX Corporation" />
-    <meta name="description" content="ROBLOX is powered by a growing community of over 300,000 creators who produce an infinite variety of highly immersive experiences." />
-
+    
     <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
-    <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- Supabase SDK e jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
-    <script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.2.1.min.js'></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <link rel='stylesheet' href='http://static.rbxcdn.com/css/leanbase___93015a16b8a3f8daa68875a4bcf0b0bf_m.css/fetch' />
-    <link rel='stylesheet' href='http://static.rbxcdn.com/css/page___1f257ac6c0e776c173bba7d104266400_m.css/fetch' />
 
     <!-- Script de verificação de sessão (Redireciona se já estiver logado) -->
     <script>
@@ -37,147 +27,121 @@
             }
         });
     </script>
+
+    <style>
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 50px; }
+        
+        /* Navbar Superior Fixa Organizada */
+        .navbar-landing { background-color: rgba(0, 0, 0, 0.45); border-bottom: 1px solid rgba(0,0,0,0.3); min-height: 50px; z-index: 1000; }
+        .navbar-brand img { max-height: 30px; margin-top: -5px; }
+        .navbar-right-form { margin-top: 8px; }
+        .navbar-right-form .form-control { border-radius: 0; height: 34px; font-size: 14px; }
+        #LoginButton { background-color: #0074BD; color: white; font-weight: bold; border: none; border-radius: 0; height: 34px; }
+        #LoginButton:hover { background-color: #005f99; }
+        #HeaderForgotPassword { color: #ccc; font-size: 12px; margin-left: 5px; }
+        #HeaderForgotPassword:hover { color: white; text-decoration: underline; }
+
+        /* Seção da Montanha-Russa */
+        #RollerContainer {
+            background-image: url('http://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            min-height: 580px;
+            padding: 50px 0;
+            position: relative;
+        }
+
+        /* Caixa de Cadastro Estilizada */
+        #SignUpFormContainer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            margin-top: 20px;
+        }
+        .input-field { border-radius: 0 !important; height: 40px !important; }
+        .signup-submit-button { background-color: #00b06f; color: white; font-weight: bold; font-size: 16px; width: 100%; height: 42px; border: none; border-radius: 0; }
+        .signup-submit-button:hover { background-color: #00965d; }
+
+        /* Seção "What is Peblux" */
+        #WhatsRobloxContainer { background: #121212; padding: 40px 0; color: white; }
+        #InnerWhatsRobloxContainer1 {
+            background-image: url('http://images.rbxcdn.com/cca69eca62f23ca413fc920549e936ea.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            padding: 40px;
+            border-radius: 4px;
+        }
+        .text-bg-box { background: rgba(0, 0, 0, 0.8); padding: 25px; border-radius: 4px; }
+        
+        .attribution { position: absolute; bottom: 10px; right: 20px; color: white; background: rgba(0, 0, 0, 0.6); padding: 4px 10px; border-radius: 4px; font-size: 12px; }
+    </style>
 </head>
-<body id="rbx-body"
-      class=""
-      data-performance-relative-value="0.5"
-      data-internal-page-name="RollerCoaster"
-      data-send-event-percentage="0.01">
+<body id="rbx-body">
 
-<style type="text/css">
-    .coverSprite {
-        background-repeat: no-repeat;
-        background-image: url('http://images.rbxcdn.com/20e7d1543d2c5caf201184d86530fc35.png');
-    }
-
-    #RollerContainer {
-        background-image: url('http://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-    .special-dropdown select {
-        border: 0 !important;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background: url('http://images.rbxcdn.com/379f4f1018f31cbb62ef52a22d9f2118.png') no-repeat;
-        background-position: 92% 40%;
-        width: 100px;
-        text-indent: 0.01px;
-        text-overflow: "";
-    }
-    #InnerWhatsRobloxContainer1 {
-        height: 70%;
-        background-image: url('http://images.rbxcdn.com/cca69eca62f23ca413fc920549e936ea.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: 30% center;
-        color: white;
-    }
-    #GameImage1 {
-        background-image: url('http://images.rbxcdn.com/42268b6264d89827401ef912f174f288.jpg');
-        margin-right: 5px;
-    }
-
-    #GameImage2 {
-        background-image: url('http://images.rbxcdn.com/04baeb33ef66ef1395cd5464309fece6.jpg');
-        margin-right: 5px;
-    }
-
-    #GameImage3 {
-        background-image: url('http://images.rbxcdn.com/e8b89d14690203420d64b5b2fda0b461.jpg');
-        margin-right: -10px;
-        width: calc(33.333333% - 10px);
-    }
-</style>
-
+<!-- Navbar Superior -->
 <div class="navbar navbar-landing navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="row">
-            <div class="navbar-header col-md-6">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#LandingNavbar">
-                    Log In
-                </button>
-                <div class="navbar-brand hidden-xs"><img alt="Roblox Logo" class="robloxLogo" src="http://images.rbxcdn.com/e870a0b9bcd987fbe7f730c8002f8faa.png" /></div>
-                <ul id="TopLeftNavLinks" class="nav navbar-nav">
-                    <li id="PlayLink" class="pull-left"><a href="#RollerContainer">Play</a></li>
-                    <li id="AboutLink" class="pull-left"><a href="#WhatsRobloxContainer">About</a></li>
-                    <li id="PlatformLink" class="pull-left"><a href="#RobloxDeviceText">Platforms</a></li>
+            <div class="navbar-header col-md-5">
+                <div class="navbar-brand">
+                    <img alt="Roblox Logo" src="http://images.rbxcdn.com/e870a0b9bcd987fbe7f730c8002f8faa.png" />
+                </div>
+                <ul class="nav navbar-nav" style="margin-left: 10px;">
+                    <li><a href="#RollerContainer" style="color:white; font-weight:600;">Play</a></li>
+                    <li><a href="#WhatsRobloxContainer" style="color:white; font-weight:600;">About</a></li>
                 </ul>
             </div>
             
-            <div class="collapse navbar-collapse col-sm-6" id="LandingNavbar">
-                <form id="LogInForm" class="navbar-form form-inline navbar-right" onsubmit="handleLogin(event)">
-                    <div class="form-group" id="LoginUsernameParent">
-                        <input id="LoginUsername" type="text" placeholder="Username" class="form-control" name="username" required autofocus="autofocus" />
+            <!-- Formulário de Login Alinhado na Direita -->
+            <div class="col-md-7 text-right">
+                <form id="LogInForm" class="navbar-form form-inline navbar-right navbar-right-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <input id="LoginUsername" type="text" placeholder="Username" class="form-control" name="username" required />
                     </div>
-                    <div class="form-group" id="LoginPasswordParent">
+                    <div class="form-group">
                         <input id="LoginPassword" type="password" placeholder="Password" class="form-control" name="password" required />
                     </div>
                     <div class="form-group">
-                        <input type="submit" id="LoginButton" class="form-control btn" value="Log In" name="submitLogin" style="background:#0074BD; color:white; font-weight:bold;" />
+                        <input type="submit" id="LoginButton" class="form-control btn" value="Log In" />
                     </div>
-                    <a id="HeaderForgotPassword" class="navbar-link" href="#">Forgot Username/Password?</a>
+                    <a id="HeaderForgotPassword" class="navbar-link" href="#">Forgot Password?</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid">
-    <!-- Roller Coaster-->
-    <section class="row full-height-section" id="RollerContainer">
-        <div class="col-md-12 inner-full-height-section" id="InnerRollerContainer">
-            <div id="MainCenterContainer" class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div id="MainLogo" class="text-right">
-                        <div id="LogoAndSlogan" class="text-center">
-                            <img id="MainLogoImage" title="ROBLOX" class="center-block img-responsive" src="http://images.rbxcdn.com/39ae3ca577c8488487ef492031b8e264.png" />
-                            <div class="clearfix"></div>
-                            <h1>Powering Imagination<span> &#8482 </span></h1>
-                        </div>
-                    </div>
+<div class="container-fluid" style="padding: 0;">
+    <!-- Seção Principal (Montanha-Russa + Cadastro) -->
+    <section class="row full-height-section" id="RollerContainer" style="margin: 0;">
+        <div class="container">
+            <div class="row" style="align-items: center; display: flex; flex-wrap: wrap;">
+                <!-- Logo Gigante e Slogan -->
+                <div class="col-xs-12 col-md-6 text-center">
+                    <img id="MainLogoImage" title="ROBLOX" class="center-block img-responsive" src="http://images.rbxcdn.com/39ae3ca577c8488487ef492031b8e264.png" style="max-width: 380px; margin: 0 auto 10px auto;" />
+                    <h1 style="color: white; font-style: italic; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin: 0;">Powering Imagination</h1>
                 </div>
 
-                <div class="clearfix visible-sm"></div>
+                <!-- Caixa de Cadastro -->
                 <div class="col-xs-12 col-md-6">
                     <div id="SignUpFormContainer">
-                        <div class="rbx-login-partial-legacy">
-                            <h3 class="text-center signup-header">
-                                Sign up and start having fun!
-                            </h3>
-
-                            <style type="text/css">
-                                .male {
-                                    background-image: url('http://images.rbxcdn.com/856241927a2ac609e3033feada3ef9f9.png');
-                                    background-repeat: no-repeat;
-                                }
-                                .female {
-                                    background-image: url('http://images.rbxcdn.com/a0afd0556163477e1023c5aa55d1b9f6.png');
-                                    background-repeat: no-repeat;
-                                }
-                            </style>
-
-                            <div class="signup-or-log-in">
-                                <div class="signup-container">
-                                    <div class="signup-input-area">
-                                        <form id="actualSignupForm" onsubmit="handleSignup(event)">
-                                            <div class="form-group">
-                                                <input id="signup-username" class="form-control input-field" type="text" placeholder="Username (length 3-20)" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <input id="signup-password" class="form-control input-field" type="password" placeholder="Password (minimum length 6)" required />
-                                            </div>
-                                            <div class="form-group">
-                                                <input id="signup-password-confirm" class="form-control input-field" type="password" placeholder="Confirm Password" required />
-                                            </div>
-                                            <p id="signupError" class="text-danger" style="font-weight:600; font-size:13px;"></p>
-                                            <button id="signup-button" type="submit" class="btn-primary-md signup-submit-button" style="width:100%; height:42px; background:#00b06f; color:white; font-weight:bold; border:none;">Sign Up</button>
-                                        </form>
-                                    </div>
-                                </div>
+                        <h3 class="text-center" style="font-weight: 700; margin-bottom: 20px; color: #333;">Sign up and start having fun!</h3>
+                        <form id="actualSignupForm" onsubmit="handleSignup(event)">
+                            <div class="form-group">
+                                <input id="signup-username" class="form-control input-field" type="text" placeholder="Username (length 3-20)" required />
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <input id="signup-password" class="form-control input-field" type="password" placeholder="Password (minimum length 6)" required />
+                            </div>
+                            <div class="form-group">
+                                <input id="signup-password-confirm" class="form-control input-field" type="password" placeholder="Confirm Password" required />
+                            </div>
+                            <p id="signupError" class="text-danger" style="font-weight:600; font-size:13px; text-align:center;"></p>
+                            <button id="signup-button" type="submit" class="btn signup-submit-button">Sign Up</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -188,25 +152,21 @@
         </div>
     </section>
 
-    <!-- What is Roblox -->
-    <section class="row full-height-section" id="WhatsRobloxContainer">
-        <div class="col-md-12 inner-full-height-section">
+    <!-- What is Peblux -->
+    <section class="row full-height-section" id="WhatsRobloxContainer" style="margin: 0;">
+        <div class="container">
             <div class="row" id="InnerWhatsRobloxContainer1">
-                <div id="WhatIsRobloxTextBg" class="col-sm-5 col-sm-offset-6 col-xs-8 col-xs-offset-2">
-                    <h1 class="text-center">WHAT IS PEBLUX?</h1>
-                    <p class="lead text-justify">
-                        Peblux is the ultimate online gaming platform where virtual explorers create adventures, play games, and role play with friends in an immersive 3D environment.
-                    </p>
+                <div class="col-sm-6 col-sm-offset-6">
+                    <div class="text-bg-box">
+                        <h2 class="text-center" style="font-weight: 700; margin-top: 0;">WHAT IS PEBLUX?</h2>
+                        <p class="lead" style="font-size: 15px; text-align: justify; margin-bottom: 0;">
+                            Peblux is the ultimate online gaming platform where virtual explorers create adventures, play games, and role play with friends in an immersive 3D environment.
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="row" id="InnerWhatsRobloxContainer2">
-                <div id="GameImage1" class="col-sm-4 col-xs-12 game-image"></div>
-                <div id="GameImage2" class="hidden-xs col-sm-4 game-image"></div>
-                <div id="GameImage3" class="col-sm-4 hidden-xs game-image"></div>
             </div>
         </div>
     </section>
-    <div class="clearfix"></div>
 </div>
 
 <!-- Lógica de Autenticação Supabase Integrada -->
@@ -258,10 +218,15 @@
                 subject: 'Welcome to Peblux!',
                 body: 'Welcome to Peblux!! Thanks for playing my revival.'
             }]);
-        }
 
-        alert("Conta criada com sucesso! Faça login.");
-        location.reload();
+            // Faz o login automático e redireciona direto para a home
+            await supabaseClient.auth.signInWithPassword({ 
+                email: fakeEmail, 
+                password: password 
+            });
+
+            window.location.href = "home.html";
+        }
     }
 
     async function handleLogin(event) {
