@@ -11,236 +11,98 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- Supabase & Three.js -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background-color: #e3e3e3;
-            margin: 0;
-            padding-top: 40px;
-        }
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 40px; }
+        .navbar-peblux { background-color: #0074bd; border: none; min-height: 40px; height: 40px; }
+        .peblux-nav-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 20px; font-weight: 900; font-style: italic; color: #da291c; background: #fff; padding: 0px 7px; border: 2px solid #da291c; border-radius: 3px; margin-top: 5px; display: inline-block; text-decoration: none !important; }
+        .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 10px 15px; font-size: 15px; }
+        .navbar-peblux .nav > li > a:hover { background-color: #005f99; }
+        .currency-badge { color: white; font-weight: 600; line-height: 40px; margin-right: 15px; font-size: 14px; }
+        .currency-badge span { margin-left: 3px; margin-right: 10px; }
 
-        /* Navbar Azul Clássica 2016 */
-        .navbar-peblux {
-            background-color: #0074bd;
-            border: none;
-            min-height: 40px;
-            height: 40px;
-        }
-        .peblux-nav-logo {
-            font-family: 'Arial Black', Impact, sans-serif;
-            font-size: 20px;
-            font-weight: 900;
-            font-style: italic;
-            color: #da291c;
-            background: #fff;
-            padding: 0px 7px;
-            border: 2px solid #da291c;
-            border-radius: 3px;
-            margin-top: 5px;
-            display: inline-block;
-            text-decoration: none !important;
-        }
-        .navbar-peblux .nav > li > a {
-            color: white;
-            font-weight: 600;
-            padding: 10px 15px;
-            font-size: 15px;
-        }
-        .navbar-peblux .nav > li > a:hover {
-            background-color: #005f99;
-        }
-        .robux-badge {
-            color: white;
-            font-weight: 600;
-            line-height: 40px;
-            margin-right: 15px;
-            font-size: 14px;
-        }
+        .main-container { display: flex; min-height: calc(100vh - 40px); }
+        .sidebar { width: 175px; background: #fff; border-right: 1px solid #d0d0d0; padding-top: 10px; flex-shrink: 0; }
+        .sidebar-user { padding: 10px 15px; font-weight: 700; font-size: 15px; color: #333; border-bottom: 1px solid #e3e3e3; margin-bottom: 5px; }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar ul li a { display: block; padding: 8px 15px; color: #191919; text-decoration: none; font-size: 15px; }
+        .sidebar ul li a:hover, .sidebar ul li a.active { background-color: #f2f2f2; color: #0074bd; font-weight: 600; }
+        .sidebar ul li a i { margin-right: 10px; width: 18px; text-align: center; color: #555; }
+        .upgrade-btn { background-color: #00a2ff; color: white !important; text-align: center; margin: 15px 12px; border-radius: 3px; padding: 8px !important; font-weight: 600 !important; }
 
-        /* Layout Principal */
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 40px);
-        }
-        
-        /* Sidebar Esquerda 2016 */
-        .sidebar {
-            width: 175px;
-            background: #fff;
-            border-right: 1px solid #d0d0d0;
-            padding-top: 10px;
-            flex-shrink: 0;
-        }
-        .sidebar-user {
-            padding: 10px 15px;
-            font-weight: 700;
-            font-size: 15px;
-            color: #333;
-            border-bottom: 1px solid #e3e3e3;
-            margin-bottom: 5px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar ul li a {
-            display: block;
-            padding: 8px 15px;
-            color: #191919;
-            font-weight: 400;
-            text-decoration: none;
-            font-size: 15px;
-        }
-        .sidebar ul li a:hover, .sidebar ul li a.active {
-            background-color: #f2f2f2;
-            color: #0074bd;
-            font-weight: 600;
-        }
-        .sidebar ul li a i {
-            margin-right: 10px;
-            width: 18px;
-            text-align: center;
-            color: #555;
-        }
-        .upgrade-btn {
-            background-color: #00a2ff;
-            color: white !important;
-            text-align: center;
-            margin: 15px 12px;
-            border-radius: 3px;
-            padding: 8px !important;
-            font-weight: 600 !important;
-        }
+        .content-area { flex-grow: 1; padding: 25px 40px; max-width: 1100px; }
+        .profile-header-box { display: flex; align-items: center; margin-bottom: 30px; }
+        #headshotContainer { width: 115px; height: 115px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d4d4d4 100%); border: 1px solid #ccc; overflow: hidden; margin-right: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .welcome-header { font-size: 32px; font-weight: 300; color: #191919; margin: 0; }
+        .bc-badge { display: inline-block; border: 1px solid #00a2ff; color: #00a2ff; font-size: 11px; font-weight: 700; padding: 1px 5px; border-radius: 2px; margin-top: 5px; }
 
-        /* Área de Conteúdo */
-        .content-area {
-            flex-grow: 1;
-            padding: 25px 40px;
-            max-width: 1100px;
-        }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .section-title { font-size: 20px; font-weight: 400; color: #191919; }
+        .see-all-btn { background-color: #00a2ff; color: white; padding: 4px 12px; border-radius: 3px; font-size: 13px; font-weight: 600; text-decoration: none; }
+        .friends-box { background: #fff; border: 1px solid #d4d4d4; padding: 20px; border-radius: 2px; color: #757575; font-size: 14px; }
 
-        /* Cabeçalho do Perfil com Headshot 3D */
-        .profile-header-box {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        #headshotContainer {
-            width: 115px;
-            height: 115px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ffffff 40%, #d4d4d4 100%);
-            border: 1px solid #ccc;
-            overflow: hidden;
-            margin-right: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            flex-shrink: 0;
-        }
-        .welcome-header {
-            font-size: 32px;
-            font-weight: 300;
-            color: #191919;
-            margin: 0;
-        }
-        .bc-badge {
-            display: inline-block;
-            border: 1px solid #00a2ff;
-            color: #00a2ff;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 1px 5px;
-            border-radius: 2px;
-            margin-top: 5px;
-        }
-
-        /* Seção Friends */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .section-title {
-            font-size: 20px;
-            font-weight: 400;
-            color: #191919;
-        }
-        .see-all-btn {
-            background-color: #00a2ff;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 3px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        .friends-box {
-            background: #fff;
-            border: 1px solid #d4d4d4;
-            padding: 20px;
-            border-radius: 2px;
-            color: #757575;
-            font-size: 14px;
-        }
+        /* Loader de Carregamento 2016 */
+        #loaderOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 9999; text-align: center; padding-top: 200px; }
+        .spinner { border: 6px solid #f3f3f3; border-top: 6px solid #0074bd; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- Navbar Superior -->
+    <!-- Loader -->
+    <div id="loaderOverlay">
+        <div class="spinner"></div>
+        <h4 style="font-weight: 600; color: #333;">Loading...</h4>
+    </div>
+
     <nav class="navbar navbar-peblux navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="home.html" class="peblux-nav-logo">P</a>
+                <a href="home.html" class="peblux-nav-logo" onclick="loadPageWithLoader(event, 'home.html')">P</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">Games</a></li>
-                <li><a href="#">Catalog</a></li>
-                <li><a href="#">Develop</a></li>
-                <li><a href="#">PEBLUX+</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'games.html')">Games</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'catalog.html')">Catalog</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'develop.html')">Develop</a></li>
+                <li><a href="buildersclub.html" onclick="loadPageWithLoader(event, 'buildersclub.html')">PEBLUX+</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><span class="robux-badge"><i class="fa fa-stop-circle-o"></i> <span id="userRobux">100</span></span></li>
-                <li><a href="#" onclick="handleLogout()" title="Log Out"><i class="fa fa-cog"></i> Log Out</a></li>
+                <li>
+                    <span class="currency-badge">
+                        <i class="fa fa-stop-circle" style="color:#00b06f;"></i> <span id="userRobux">100</span> Robux
+                        <i class="fa fa-ticket" style="color:#e2a03f; margin-left: 5px;"></i> <span id="userTix">0</span> Tix
+                    </span>
+                </li>
+                <li><a href="#" onclick="handleLogout()"><i class="fa fa-cog"></i> Log Out</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="main-container">
-        <!-- Sidebar Esquerda -->
         <div class="sidebar">
             <div class="sidebar-user" id="sidebarUsername">Player</div>
             <ul>
                 <li><a href="home.html" class="active"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> Messages</a></li>
-                <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="avatar.html"><i class="fa fa-male"></i> Avatar</a></li>
-                <li><a href="#"><i class="fa fa-briefcase"></i> Inventory</a></li>
-                <li><a href="#"><i class="fa fa-exchange"></i> Trade</a></li>
-                <li><a href="#"><i class="fa fa-globe"></i> Groups</a></li>
-                <li><a href="#"><i class="fa fa-comments-o"></i> Forum</a></li>
-                <li><a href="#"><i class="fa fa-rss"></i> Blog</a></li>
-                <li><a href="#" class="upgrade-btn">Upgrade Now</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'profile.html')"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'messages.html')"><i class="fa fa-envelope-o"></i> Messages</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'friends.html')"><i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="avatar.html" onclick="loadPageWithLoader(event, 'avatar.html')"><i class="fa fa-male"></i> Avatar</a></li>
+                <li><a href="#" onclick="loadPageWithLoader(event, 'inventory.html')"><i class="fa fa-briefcase"></i> Inventory</a></li>
+                <li><a href="buildersclub.html" onclick="loadPageWithLoader(event, 'buildersclub.html')" class="upgrade-btn">Upgrade Now</a></li>
             </ul>
         </div>
 
-        <!-- Conteúdo Principal -->
         <div class="content-area">
             <div class="profile-header-box">
-                <!-- Foto de Perfil 3D (Metade do boneco) -->
                 <div id="headshotContainer"></div>
                 <div>
                     <h1 class="welcome-header" id="welcomeText">Hello, Player!</h1>
-                    <span class="bc-badge">PBC</span>
+                    <span class="bc-badge">Builders Club</span>
                 </div>
             </div>
 
-            <!-- Seção Friends -->
             <div class="section-header">
                 <div class="section-title">Friends (0)</div>
                 <a href="#" class="see-all-btn">See All</a>
@@ -256,12 +118,24 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Renderiza o Headshot 3D (da metade do peito para cima)
+        // Sistema de Loader e Erro 500 para páginas não existentes
+        function loadPageWithLoader(event, page) {
+            event.preventDefault();
+            document.getElementById('loaderOverlay').style.display = 'block';
+            setTimeout(() => {
+                if (page === 'home.html' || page === 'avatar.html' || page === 'buildersclub.html') {
+                    window.location.href = page;
+                } else {
+                    // Simula página inexistente abrindo o erro 500
+                    window.location.href = 'error500.html';
+                }
+            }, 600);
+        }
+
+        // Renderizador 3D Headshot com a cabeça e rosto exatos da imagem
         function render3DHeadshot(colors) {
             const container = document.getElementById('headshotContainer');
             const scene = new THREE.Scene();
-
-            // Câmera focada na metade superior (cabeça e ombros)
             const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
             camera.position.set(1.3, 1.45, 2.3);
             camera.lookAt(0, 1.35, 0);
@@ -270,36 +144,33 @@
             renderer.setSize(115, 115);
             container.appendChild(renderer.domElement);
 
-            // Iluminação clássica
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
-            scene.add(ambientLight);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.75));
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.45);
             dirLight.position.set(3, 5, 4);
             scene.add(dirLight);
 
-            // Textura do rosto clássico :)
+            // Textura do rosto clássico exato da imagem
             const faceCanvas = document.createElement('canvas');
             faceCanvas.width = 128; faceCanvas.height = 128;
             const ctx = faceCanvas.getContext('2d');
             ctx.fillStyle = colors.head;
             ctx.fillRect(0, 0, 128, 128);
             ctx.fillStyle = '#111111';
-            // Olhos ovais
-            ctx.beginPath(); ctx.ellipse(46, 52, 6, 10, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(82, 52, 6, 10, 0, 0, Math.PI * 2); ctx.fill();
+            // Olhos ovais pretos
+            ctx.beginPath(); ctx.ellipse(44, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(84, 50, 5, 9, 0, 0, Math.PI * 2); ctx.fill();
             // Sorriso clássico
-            ctx.lineWidth = 6; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.arc(64, 68, 22, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
+            ctx.lineWidth = 5; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.arc(64, 66, 20, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
 
             const faceTexture = new THREE.CanvasTexture(faceCanvas);
             const headMat = new THREE.MeshLambertMaterial({ color: colors.head });
             const headMaterials = [headMat, headMat, headMat, headMat, new THREE.MeshLambertMaterial({ map: faceTexture }), headMat];
 
-            // Cabeça (Cilindro arredondado estilo Roblox)
-            const headGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.78, 24);
+            // Cabeça arredondada clássica igual à foto
+            const headGeo = new THREE.BoxGeometry(0.72, 0.72, 0.72);
             const head = new THREE.Mesh(headGeo, headMaterials);
             head.position.set(0, 1.55, 0);
-            head.rotation.y = -Math.PI / 2; // Alinha o rosto na frente
             scene.add(head);
 
             // Tronco
@@ -323,20 +194,12 @@
 
         async function loadUserData() {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = "index.html";
-                return;
-            }
+            if (!session) { window.location.href = "index.html"; return; }
 
             const user = session.user;
             let username = user.user_metadata?.username || user.email.split('@')[0];
             
-            // Busca perfil e cores no banco
-            const { data: profile } = await supabaseClient
-                .from('profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
 
             if (profile) {
                 username = profile.username;
