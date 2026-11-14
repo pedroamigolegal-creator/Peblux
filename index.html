@@ -14,6 +14,9 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <!-- SDK do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         body {
             font-family: 'Source Sans Pro', sans-serif;
@@ -29,8 +32,6 @@
             border-bottom: 1px solid #ccc;
             min-height: 50px;
         }
-        
-        /* Logo da Navbar (Estilo Clássico 2016 com a letra P) */
         .peblux-navbar-brand {
             display: inline-block;
             margin-top: 6px;
@@ -50,7 +51,6 @@
             border: 2px solid #da291c;
             border-radius: 4px;
         }
-
         .navbar-nav > li > a {
             color: #111;
             font-weight: 600;
@@ -88,8 +88,6 @@
             padding: 60px 0;
             position: relative;
         }
-
-        /* Logotipo Principal Estilo 2016 (PEBLUX) */
         .peblux-main-logo {
             font-family: 'Arial Black', Impact, sans-serif;
             font-size: 64px;
@@ -108,7 +106,6 @@
             margin: 0 auto 10px auto;
             line-height: 1;
         }
-
         #LogoAndSlogan h1 {
             color: white;
             font-weight: 700;
@@ -188,8 +185,13 @@
         .signup-submit-button:hover {
             background-color: #00965d;
         }
+        .error-msg {
+            color: #d9534f;
+            font-size: 13px;
+            margin-top: 5px;
+        }
 
-        /* Créditos / Atribuição */
+        /* Créditos */
         .attribution {
             position: absolute;
             bottom: 15px;
@@ -231,7 +233,7 @@
         #GameImage2 { background-image: url('http://images.rbxcdn.com/04baeb33ef66ef1395cd5464309fece6.jpg'); }
         #GameImage3 { background-image: url('http://images.rbxcdn.com/e8b89d14690203420d64b5b2fda0b461.jpg'); }
 
-        /* Dispositivos e Lojas */
+        /* Dispositivos */
         #DeviceSection {
             background: #ffffff;
             padding: 50px 0;
@@ -305,17 +307,17 @@
                     </ul>
                 </div>
                 
-                <!-- Formulário de Login -->
+                <!-- Formulário de Login integrado ao Supabase -->
                 <div class="col-sm-6">
-                    <form action="/api/login" method="POST" class="navbar-form navbar-right" role="form">
+                    <form id="loginForm" class="navbar-form navbar-right" onsubmit="handleLogin(event)">
                         <div class="form-group">
-                            <input type="text" placeholder="Username" class="form-control" name="username" required />
+                            <input type="text" id="loginUsername" placeholder="Username" class="form-control" required />
                         </div>
                         <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control" name="password" required />
+                            <input type="password" id="loginPassword" placeholder="Password" class="form-control" required />
                         </div>
                         <div class="form-group">
-                            <input type="submit" id="LoginButton" class="form-control btn" value="Log In" />
+                            <button type="submit" id="LoginButton" class="form-control btn">Log In</button>
                         </div>
                     </form>
                 </div>
@@ -329,31 +331,30 @@
             <div class="row">
                 <div class="col-md-6 text-center">
                     <div id="LogoAndSlogan" style="margin-top: 80px;">
-                        <!-- Logotipo principal estilizado exatamente como o clássico 2016, agora com PEBLUX -->
                         <div class="peblux-main-logo">PEBLUX</div>
                         <h1>Powering Imagination<span> &#8482 </span></h1>
                     </div>
                 </div>
 
-                <!-- Formulário de Cadastro -->
+                <!-- Formulário de Cadastro integrado ao Supabase -->
                 <div class="col-md-6">
                     <div id="SignUpFormContainer">
                         <h3 class="text-center signup-header">Sign up and start having fun!</h3>
-                        <form action="/api/signup" method="POST">
+                        <form id="signupForm" onsubmit="handleSignup(event)">
                             <div class="form-group">
-                                <input name="username" class="form-control input-field" type="text" placeholder="Username (3-20 characters)" required />
+                                <input id="signupUsername" class="form-control input-field" type="text" placeholder="Username (3-20 characters)" required />
                             </div>
                             <div class="form-group">
-                                <input name="password" class="form-control input-field" type="password" placeholder="Password (minimum 8 characters)" required />
+                                <input id="signupPassword" class="form-control input-field" type="password" placeholder="Password (minimum 8 characters)" required />
                             </div>
                             <div class="form-group">
-                                <input name="passwordConfirm" class="form-control input-field" type="password" placeholder="Confirm Password" required />
+                                <input id="signupPasswordConfirm" class="form-control input-field" type="password" placeholder="Confirm Password" required />
                             </div>
                             
                             <div class="form-group">
                                 <label style="font-weight: normal; color: #555;">Birthday</label>
                                 <div class="birthday-container">
-                                    <select name="birthdayMonth" class="form-control" required>
+                                    <select id="birthMonth" class="form-control" required>
                                         <option value="" disabled selected>Month</option>
                                         <option value="Jan">January</option>
                                         <option value="Feb">February</option>
@@ -368,7 +369,7 @@
                                         <option value="Nov">November</option>
                                         <option value="Dec">December</option>
                                     </select>
-                                    <select name="birthdayDay" class="form-control" required>
+                                    <select id="birthDay" class="form-control" required>
                                         <option value="" disabled selected>Day</option>
                                         <option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option>
                                         <option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option>
@@ -379,7 +380,7 @@
                                         <option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
                                         <option value="29">29</option><option value="30">30</option><option value="31">31</option>
                                     </select>
-                                    <select name="birthdayYear" class="form-control" required>
+                                    <select id="birthYear" class="form-control" required>
                                         <option value="" disabled selected>Year</option>
                                         <option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option>
                                         <option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option>
@@ -398,6 +399,7 @@
                                 </label>
                             </div>
 
+                            <div class="error-msg" id="signupError"></div>
                             <button type="submit" class="btn signup-submit-button">Sign Up</button>
                         </form>
                     </div>
@@ -431,7 +433,7 @@
         </div>
     </section>
 
-    <!-- Seção de Dispositivos -->
+    <!-- Dispositivos -->
     <section id="DeviceSection">
         <div class="container">
             <div class="row">
@@ -472,5 +474,65 @@
         </div>
     </footer>
 
+    <!-- Lógica de Conexão com o Supabase -->
+    <script>
+        // Substitua com as credenciais reais do seu projeto Supabase
+        const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI';
+        const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Função de Cadastro
+        async function handleSignup(event) {
+            event.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupPasswordConfirm').value;
+            const errorElement = document.getElementById('signupError');
+
+            if (password !== confirmPassword) {
+                errorElement.innerText = "As senhas não coincidem!";
+                return;
+            }
+
+            const fakeEmail = `${username.toLowerCase()}@peblux.local`;
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: fakeEmail,
+                password: password,
+                options: {
+                    data: { username: username }
+                }
+            });
+
+            if (error) {
+                errorElement.innerText = error.message;
+            } else {
+                alert("Conta criada com sucesso! Faça login para entrar.");
+                location.reload();
+            }
+        }
+
+        // Função de Login
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const fakeEmail = `${username.toLowerCase()}@peblux.local`;
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: fakeEmail,
+                password: password
+            });
+
+            if (error) {
+                alert("Erro ao entrar: Verifique seu usuário e senha.");
+            } else {
+                // Redireciona para a home que criamos
+                window.location.href = "home.html";
+            }
+        }
+    </script>
 </body>
 </html>
