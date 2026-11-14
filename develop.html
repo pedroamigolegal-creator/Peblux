@@ -53,20 +53,21 @@
                 <form id="uploadForm" onsubmit="handleUpload(event)">
                     <div class="form-group">
                         <label>Clothing Name</label>
-                        <input type="text" id="itemName" class="form-control" required placeholder="Ex: Cool Blue Shirt">
+                        <input type="text" id="itemName" class="form-control" required placeholder="Ex: Monkey Shirt">
                     </div>
                     <div class="form-group">
                         <label>Upload Template (.png)</label>
                         <input type="file" id="itemFile" accept="image/png" class="form-control" required onchange="previewTemplate(event)">
                     </div>
                     <div class="form-group text-center">
-                        <canvas id="previewCanvas" width="150" height="150" style="border:1px solid #ccc; background:#f9f9f9; border-radius:4px; display:none;"></canvas>
+                        <!-- Mostra exatamente a template plana enviada -->
+                        <img id="previewImg" src="" alt="Template Preview" style="max-width:200px; max-height:200px; border:1px solid #ccc; background:#f9f9f9; border-radius:4px; display:none; margin: 0 auto;">
                         <p id="analysisText" style="color:#00b06f; font-size:13px; font-weight:600; margin-top:5px;"></p>
                     </div>
                     <div class="form-group">
-                        <label>Price in Robux (Sem vírgula)</label>
+                        <label>Price in Robux</label>
                         <input type="number" id="itemPrice" class="form-control" value="10" min="0" step="1" required>
-                        <small style="color:#666;">Nota: 30% das vendas vão automaticamente para a conta da Plataforma (Peblux).</small>
+                        <small style="color:#666;">Nota: 30% vão para a plataforma Peblux e 70% para o criador.</small>
                     </div>
                     <button type="submit" class="btn btn-green">Upload Asset</button>
                 </form>
@@ -87,7 +88,7 @@
         }
         init();
 
-        let formattedImageURL = '';
+        let templateImageURL = '';
 
         function previewTemplate(event) {
             const file = event.target.files[0];
@@ -95,18 +96,11 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.getElementById('previewCanvas');
-                    canvas.style.display = 'block';
-                    const ctx = canvas.getContext('2d');
-                    ctx.clearRect(0,0,150,150);
-                    ctx.drawImage(img, 0, 0, 150, 150);
-                    
-                    formattedImageURL = e.target.result;
-                    document.getElementById('analysisText').innerText = "✓ Template analisada e formatada com sucesso para o boneco!";
-                }
-                img.src = e.target.result;
+                templateImageURL = e.target.result;
+                const imgElem = document.getElementById('previewImg');
+                imgElem.src = templateImageURL;
+                imgElem.style.display = 'block';
+                document.getElementById('analysisText').innerText = "✓ Template carregada com sucesso!";
             }
             reader.readAsDataURL(file);
         }
@@ -116,8 +110,8 @@
             const name = document.getElementById('itemName').value;
             const price = parseInt(document.getElementById('itemPrice').value);
 
-            if (!formattedImageURL) {
-                alert("Por favor, envie uma imagem válida.");
+            if (!templateImageURL) {
+                alert("Por favor, selecione uma imagem.");
                 return;
             }
 
@@ -129,7 +123,7 @@
                 creator_name: creatorName,
                 name: name,
                 type: 'Shirt',
-                image_url: formattedImageURL,
+                image_url: templateImageURL,
                 price: price,
                 sales: 0
             }]);
@@ -137,7 +131,7 @@
             if (error) {
                 alert("Erro ao fazer upload: " + error.message);
             } else {
-                alert("Roupa criada com sucesso! O criador já a possui automaticamente.");
+                alert("Roupa criada com sucesso!");
                 window.location.href = "catalog.html";
             }
         }
