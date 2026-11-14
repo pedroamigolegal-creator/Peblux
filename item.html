@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Details - Peblux</title>
+    <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 40px; }
+        .navbar-peblux { background-color: #0074bd; border: none; min-height: 40px; height: 40px; }
+        .peblux-nav-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 20px; font-weight: 900; font-style: italic; color: #da291c; background: #fff; padding: 0px 7px; border: 2px solid #da291c; border-radius: 3px; margin-top: 5px; display: inline-block; text-decoration: none !important; }
+        .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 10px 15px; }
+        .content-area { max-width: 900px; margin: 40px auto; background: #fff; border: 1px solid #ccc; padding: 30px; border-radius: 4px; display: flex; gap: 30px; }
+        .item-image-box { width: 300px; height: 300px; background: #f9f9f9; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; }
+        .item-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .btn-green { background-color: #00b06f; color: white; font-weight: bold; border: none; padding: 10px 30px; font-size: 16px; border-radius: 4px; }
+        .btn-green:hover { background-color: #00965d; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-peblux navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="home.html" class="peblux-nav-logo">P</a></div>
+            <ul class="nav navbar-nav"><li><a href="catalog.html">&laquo; Back to Catalog</a></li></ul>
+        </div>
+    </nav>
+
+    <div class="content-area" id="itemDetails">
+        <p style="color:#777;">Loading item...</p>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+
+        async function loadItem() {
+            if (!itemId) { window.location.href = 'catalog.html'; return; }
+
+            const { data: item } = await supabaseClient.from('items').select('*').eq('id', itemId).single();
+            const container = document.getElementById('itemDetails');
+
+            if (!item) {
+                container.innerHTML = `<h3>Item not found.</h3>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="item-image-box">
+                    <img src="${item.image_url}" alt="${item.name}">
+                </div>
+                <div style="flex-grow:1;">
+                    <h2 style="margin-top:0; font-weight:700;">${item.name}</h2>
+                    <p style="color:#666;">Creator: <strong>${item.creator_name}</strong></p>
+                    <p style="color:#666;">Created: <strong>${new Date(item.created_at).toLocaleDateString()}</strong></p>
+                    <p style="color:#666;">Sales: <strong>${item.sales}</strong></p>
+                    <hr>
+                    <h3 style="color:#00b06f; font-weight:bold;">${item.price} Robux</h3>
+                    <br>
+                    <button class="btn btn-green" onclick="buyItem('${item.id}', ${item.price}, '${item.creator_id}')">Buy</button>
+                </div>
+            `;
+        }
+
+        async function buyItem(id, price, creatorId) {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { alert("Você precisa estar logado!"); return; }
+
+            const buyerId = session.user.id;
+            const { data: buyerProfile } = await supabaseClient.from('profiles').select('robux').eq('id', buyerId).single();
+
+            if (buyerProfile.robux < price) {
+                alert("Você não tem Robux suficientes!");
+                return;
+            }
+
+            // Calcula 30% para a plataforma Peblux (sem vírgula / arredondado)
+            const platformFee = Math.round(price * 0.30);
+            const creatorEarnings = price - platformFee;
+
+            // Desconta do comprador
+            await supabaseClient.from('profiles').update({ robux: buyerProfile.robux - price }).eq('id', buyerId);
+
+            // Adiciona para o criador (se não for o próprio comprador)
+            if (creatorId !== buyerId) {
+                const { data: creatorProfile } = await supabaseClient.from('profiles').select('robux').eq('id', creatorId).single();
+                if (creatorProfile) {
+                    await supabaseClient.from('profiles').update({ robux: creatorProfile.robux + creatorEarnings }).eq('id', creatorId);
+                }
+            }
+
+            // Incrementa vendas
+            const { data: currentItem } = await supabaseClient.from('items').select('sales').eq('id', id).single();
+            await supabaseClient.from('items').update({ sales: (currentItem.sales || 0) + 1 }).eq('id', id);
+
+            alert("Compra realizada com sucesso!");
+            location.reload();
+        }
+
+        loadItem();
+    </script>
+</body>
+</html>
