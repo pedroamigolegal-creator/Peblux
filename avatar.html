@@ -110,7 +110,7 @@
             const swatch = document.createElement('div');
             swatch.className = 'color-swatch';
             swatch.style.backgroundColor = hex;
-            swatch.onclick = () => { avatarColors[selectedPart] = hex; updateMeshColors(); };
+            swatch.onclick = () => { avatarColors[selectedPart] = hex; buildAvatar(); };
             paletteDiv.appendChild(swatch);
         });
 
@@ -138,8 +138,6 @@
         const avatarGroup = new THREE.Group();
         scene.add(avatarGroup);
 
-        let torsoMesh, leftArmMesh, rightArmMesh, leftLegMesh, rightLegMesh, headMesh;
-
         function createHeadMaterials(hexColor) {
             const faceCanvas = document.createElement('canvas');
             faceCanvas.width = 128; faceCanvas.height = 128;
@@ -156,60 +154,53 @@
             return [sideMat, sideMat, sideMat, sideMat, new THREE.MeshLambertMaterial({ map: tex }), sideMat];
         }
 
-        // Aplica e estica a textura da camisa perfeitamente no corpo do boneco igual ao modelo do macaco
-        function createTorsoMaterial(colorHex, shirtURL) {
-            if (!shirtURL) return new THREE.MeshLambertMaterial({ color: colorHex });
-
-            const canvas = document.createElement('canvas');
-            canvas.width = 128; canvas.height = 128;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = colorHex;
-            ctx.fillRect(0, 0, 128, 128);
-
-            const img = new Image();
-            img.crossOrigin = "anonymous";
-            img.onload = function() {
-                // Desenha a parte central da camisa cobrindo todo o torso perfeitamente
-                ctx.drawImage(img, 16, 16, 32, 32, 0, 0, 128, 128);
-                torsoMat.map = new THREE.CanvasTexture(canvas);
-                torsoMat.needsUpdate = true;
-            };
-            img.src = shirtURL;
-
-            const torsoMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
-            return torsoMat;
-        }
-
         function buildAvatar() {
             while(avatarGroup.children.length > 0){ avatarGroup.remove(avatarGroup.children[0]); }
 
-            headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterials(avatarColors.head));
+            // Cabeça
+            const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), createHeadMaterials(avatarColors.head));
             headMesh.position.set(0, 1.45, 0);
             avatarGroup.add(headMesh);
 
-            torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), createTorsoMaterial(avatarColors.torso, equippedShirtURL));
+            // Tronco (Se houver camisa, aplica a textura mapeada; senão, usa a cor sólida)
+            let torsoMat = new THREE.MeshLambertMaterial({ color: avatarColors.torso });
+            if (equippedShirtURL) {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 128; canvas.height = 128;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = avatarColors.torso;
+                    ctx.fillRect(0, 0, 128, 128);
+                    ctx.drawImage(img, 16, 16, 32, 32, 0, 0, 128, 128);
+                    torsoMat.map = new THREE.CanvasTexture(canvas);
+                    torsoMat.needsUpdate = true;
+                };
+                img.src = equippedShirtURL;
+            }
+            const torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 0.55), torsoMat);
             torsoMesh.position.set(0, 0.42, 0);
             avatarGroup.add(torsoMesh);
 
-            leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.leftArm }));
-            leftArmMesh.position.set(-0.83, 0.42, 0);
-            avatarGroup.add(leftArmMesh);
+            // Braços e Pernas
+            const armGeo = new THREE.BoxGeometry(0.52, 1.1, 0.55);
+            const leftArm = new THREE.Mesh(armGeo, new THREE.MeshLambertMaterial({ color: avatarColors.leftArm }));
+            leftArm.position.set(-0.83, 0.42, 0);
+            avatarGroup.add(leftArm);
 
-            rightArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.rightArm }));
-            rightArmMesh.position.set(0.83, 0.42, 0);
-            avatarGroup.add(rightArmMesh);
+            const rightArm = new THREE.Mesh(armGeo, new THREE.MeshLambertMaterial({ color: avatarColors.rightArm }));
+            rightArm.position.set(0.83, 0.42, 0);
+            avatarGroup.add(rightArm);
 
-            leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.leftLeg }));
-            leftLegMesh.position.set(-0.28, -0.7, 0);
-            avatarGroup.add(leftLegMesh);
+            const legGeo = new THREE.BoxGeometry(0.53, 1.1, 0.55);
+            const leftLeg = new THREE.Mesh(legGeo, new THREE.MeshLambertMaterial({ color: avatarColors.leftLeg }));
+            leftLeg.position.set(-0.28, -0.7, 0);
+            avatarGroup.add(leftLeg);
 
-            rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.53, 1.1, 0.55), new THREE.MeshLambertMaterial({ color: avatarColors.rightLeg }));
-            rightLegMesh.position.set(0.28, -0.7, 0);
-            avatarGroup.add(rightLegMesh);
-        }
-
-        function updateMeshColors() {
-            buildAvatar();
+            const rightLeg = new THREE.Mesh(legGeo, new THREE.MeshLambertMaterial({ color: avatarColors.rightLeg }));
+            rightLeg.position.set(0.28, -0.7, 0);
+            avatarGroup.add(rightLeg);
         }
 
         let isDragging = false, prevX = 0;
