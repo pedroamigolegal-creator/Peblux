@@ -10,7 +10,7 @@
     <!-- Favicon original -->
     <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
     
-    <!-- Fontes e Bootstrap 3 (Compatível com o layout de 2016) -->
+    <!-- Fontes e Bootstrap 3 -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -29,10 +29,28 @@
             border-bottom: 1px solid #ccc;
             min-height: 50px;
         }
-        .robloxLogo {
-            height: 35px;
-            margin-top: 8px;
+        
+        /* Logo da Navbar (Estilo Clássico 2016 com a letra P) */
+        .peblux-navbar-brand {
+            display: inline-block;
+            margin-top: 6px;
+            text-decoration: none;
         }
+        .peblux-nav-logo {
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            font-style: italic;
+            color: #da291c;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0px #fff, 3px 3px 0px rgba(0,0,0,0.2);
+            background: #fff;
+            padding: 2px 8px;
+            border: 2px solid #da291c;
+            border-radius: 4px;
+        }
+
         .navbar-nav > li > a {
             color: #111;
             font-weight: 600;
@@ -59,11 +77,6 @@
         #LoginButton:hover {
             background-color: #005f99;
         }
-        .navbar-link {
-            font-size: 12px;
-            color: #666;
-            margin-left: 10px;
-        }
 
         /* Seção Principal (Roller Coaster) */
         #RollerContainer {
@@ -75,10 +88,27 @@
             padding: 60px 0;
             position: relative;
         }
-        #MainLogoImage {
-            max-width: 320px;
-            margin: 0 auto;
+
+        /* Logotipo Principal Estilo 2016 (PEBLUX) */
+        .peblux-main-logo {
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 64px;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: -2px;
+            text-shadow: 
+                -3px -3px 0 #da291c,  
+                 3px -3px 0 #da291c,
+                -3px  3px 0 #da291c,
+                 3px  3px 0 #da291c,
+                 5px 5px 10px rgba(0,0,0,0.6);
+            margin: 0 auto 10px auto;
+            line-height: 1;
         }
+
         #LogoAndSlogan h1 {
             color: white;
             font-weight: 700;
@@ -254,9 +284,6 @@
             text-align: center;
             line-height: 1.6;
         }
-        .footer-note a {
-            color: #00b06f;
-        }
     </style>
 </head>
 <body>
@@ -267,7 +294,9 @@
             <div class="row">
                 <div class="navbar-header col-md-6">
                     <div class="navbar-brand">
-                        <img alt="Peblux Logo" class="robloxLogo" src="http://images.rbxcdn.com/e870a0b9bcd987fbe7f730c8002f8faa.png" />
+                        <a href="#" class="peblux-navbar-brand">
+                            <span class="peblux-nav-logo">P</span>
+                        </a>
                     </div>
                     <ul class="nav navbar-nav">
                         <li><a href="#RollerContainer">Play</a></li>
@@ -276,7 +305,7 @@
                     </ul>
                 </div>
                 
-                <!-- Formulário de Login (Aponta para o seu backend /api/login) -->
+                <!-- Formulário de Login -->
                 <div class="col-sm-6">
                     <form action="/api/login" method="POST" class="navbar-form navbar-right" role="form">
                         <div class="form-group">
@@ -294,19 +323,19 @@
         </div>
     </div>
 
-    <!-- Seção Principal com o Fundo da Montanha-Russa -->
+    <!-- Seção Principal -->
     <section id="RollerContainer">
         <div class="container">
             <div class="row">
-                <!-- Logo e Slogan -->
                 <div class="col-md-6 text-center">
                     <div id="LogoAndSlogan" style="margin-top: 80px;">
-                        <img id="MainLogoImage" title="Peblux" class="img-responsive center-block" src="http://images.rbxcdn.com/39ae3ca577c8488487ef492031b8e264.png" />
+                        <!-- Logotipo principal estilizado exatamente como o clássico 2016, agora com PEBLUX -->
+                        <div class="peblux-main-logo">PEBLUX</div>
                         <h1>Powering Imagination<span> &#8482 </span></h1>
                     </div>
                 </div>
 
-                <!-- Formulário de Cadastro (Aponta para o seu backend /api/signup) -->
+                <!-- Formulário de Cadastro -->
                 <div class="col-md-6">
                     <div id="SignUpFormContainer">
                         <h3 class="text-center signup-header">Sign up and start having fun!</h3>
@@ -376,7 +405,6 @@
             </div>
         </div>
         
-        <!-- Créditos mantidos conforme solicitado -->
         <div class="attribution hidden-xs">
             <span class="notranslate">Game: Peblux Point</span><br>
             Developer: <span class="notranslate">StarMarine614</span>
@@ -403,7 +431,7 @@
         </div>
     </section>
 
-    <!-- Seção de Dispositivos e Lojas -->
+    <!-- Seção de Dispositivos -->
     <section id="DeviceSection">
         <div class="container">
             <div class="row">
