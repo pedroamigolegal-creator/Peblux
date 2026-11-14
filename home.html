@@ -138,7 +138,7 @@
             margin-bottom: 30px;
             padding-bottom: 10px;
         }
-        .game-card, .friend-card {
+        .game-card {
             background: white;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -148,7 +148,7 @@
             flex-shrink: 0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .game-card img, .friend-card img {
+        .game-card img {
             width: 100%;
             height: 120px;
             object-fit: cover;
@@ -216,7 +216,7 @@
                 <div style="color: #666; font-size: 14px; padding: 10px;">You don't have any friends online right now.</div>
             </div>
 
-            <!-- Seção de Jogos Recentes / Popular -->
+            <!-- Seção de Jogos -->
             <div class="section-title">Recently Played</div>
             <div class="card-row">
                 <div class="game-card">
@@ -235,11 +235,10 @@
         </div>
     </div>
 
-    <!-- Script de Verificação de Sessão e Carregamento do Usuário -->
+    <!-- Script de Verificação de Sessão -->
     <script>
-        // Use as mesmas chaves do Supabase que colocou no index.html
-        const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI';
-        const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -247,16 +246,12 @@
             const { data: { session }, error } = await supabaseClient.auth.getSession();
             
             if (!session) {
-                // Se não estiver logado, manda de volta para o index.html
                 window.location.href = "index.html";
                 return;
             }
 
-            // Pega o username salvo nos metadados do usuário ou do email
             const user = session.user;
             let username = user.user_metadata?.username || user.email.split('@')[0];
-            
-            // Capitaliza a primeira letra do nome
             username = username.charAt(0).toUpperCase() + username.slice(1);
 
             document.getElementById('welcomeText').innerText = `Hello, ${username}!`;
@@ -267,7 +262,6 @@
             window.location.href = "index.html";
         }
 
-        // Executa a verificação ao carregar a página
         checkUserSession();
     </script>
 </body>
