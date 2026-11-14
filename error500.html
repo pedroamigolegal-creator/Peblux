@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Internal Server Error - Peblux</title>
+    <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <style>
+        body { background-color: #2b2b2b; font-family: 'Source Sans Pro', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .error-card { background: #ffffff; width: 850px; padding: 45px; border-radius: 4px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); position: relative; }
+        h1 { font-size: 36px; font-weight: 700; color: #191919; margin-top: 0; }
+        .error-code { font-size: 16px; color: #555; margin-bottom: 25px; }
+        .error-image { float: right; width: 320px; }
+        .btn-group-custom { margin-top: 30px; }
+        .btn-green { background-color: #00b06f; color: white; font-weight: bold; padding: 10px 25px; border: none; border-radius: 4px; font-size: 16px; text-decoration: none; display: inline-block; margin-right: 10px; }
+        .btn-green:hover { background-color: #00965d; color: white; text-decoration: none; }
+        .btn-white { background-color: #ffffff; color: #333; font-weight: 600; padding: 10px 25px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; text-decoration: none; display: inline-block; }
+        .btn-white:hover { background: #f2f2f2; color: #333; text-decoration: none; }
+        .footer-text { margin-top: 50px; font-size: 13px; color: #777; border-top: 1px solid #ddd; padding-top: 15px; text-align: center; clear: both; }
+        .footer-text a { color: #0074bd; }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <!-- Ilustração clássica idêntica à imagem enviada -->
+        <img src="https://images.rbxcdn.com/7b22a45a353bb895b9c0205847e0965e.svg" alt="Error Worker" class="error-image" onerror="this.style.display='none'">
+        
+        <h1>Internal Server Error</h1>
+        <div class="error-code">500 | An unexpected error occurred</div>
+        
+        <p style="color: #444; font-size: 16px; max-width: 450px;">
+            Oops! Something went wrong on our servers while processing your request. Please try again later or return home.
+        </p>
+
+        <div class="btn-group-custom">
+            <a href="javascript:history.back()" class="btn-green">Back</a>
+            <a href="home.html" class="btn-white">Home</a>
+        </div>
+
+        <div class="footer-text">
+            If you continue to receive this page, please contact customer service at <a href="#">info@peblux.com</a>.
+        </div>
+    </div>
+</body>
+</html>
