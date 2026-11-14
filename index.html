@@ -5,61 +5,305 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Peblux - Official 2016 Revival</title>
+    <meta name="description" content="Peblux is powered by a growing community of creators who produce an infinite variety of highly immersive experiences." />
+    
+    <!-- Favicon original -->
     <link href="http://images.rbxcdn.com/9c0e562131139fc909c6fbb3d691c249.ico.gzip" rel="icon"/>
+    
+    <!-- Fontes e Bootstrap 3 -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- SDK do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
-        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 50px; }
-        .navbar-landing { background-color: #ffffff; border-bottom: 1px solid #ccc; min-height: 50px; }
-        .peblux-navbar-brand { display: inline-block; margin-top: 6px; text-decoration: none; }
-        .peblux-nav-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 24px; font-weight: 900; font-style: italic; color: #da291c; text-transform: uppercase; letter-spacing: -1px; text-shadow: 2px 2px 0px #fff, 3px 3px 0px rgba(0,0,0,0.2); background: #fff; padding: 2px 8px; border: 2px solid #da291c; border-radius: 4px; }
-        .navbar-nav > li > a { color: #111; font-weight: 600; font-size: 15px; padding: 15px 15px; }
-        .navbar-form { margin-top: 8px; }
-        .navbar-form .form-control { border-radius: 0; height: 34px; }
-        #LoginButton { background-color: #0074bd; color: white; border: none; font-weight: bold; }
-        #RollerContainer { background-image: url('http://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg'); background-size: cover; background-position: center; min-height: 600px; padding: 60px 0; position: relative; }
-        .peblux-main-logo { font-family: 'Arial Black', Impact, sans-serif; font-size: 64px; font-weight: 900; font-style: italic; color: #ffffff; text-transform: uppercase; text-align: center; text-shadow: -3px -3px 0 #da291c, 3px -3px 0 #da291c, -3px 3px 0 #da291c, 3px 3px 0 #da291c; margin: 0 auto 10px auto; }
-        #SignUpFormContainer { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 420px; margin: 0 auto; }
-        .input-field { border-radius: 0 !important; height: 42px !important; }
-        .signup-submit-button { background-color: #00b06f; color: white; font-weight: bold; font-size: 18px; width: 100%; height: 45px; border: none; border-radius: 0; margin-top: 10px; }
-        .error-msg { color: #d9534f; font-size: 13px; margin-top: 5px; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #e3e3e3;
+            overflow-x: hidden;
+            margin: 0;
+            padding-top: 50px;
+        }
+
+        /* Navbar Superior */
+        .navbar-landing {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ccc;
+            min-height: 50px;
+        }
+        .peblux-navbar-brand {
+            display: inline-block;
+            margin-top: 6px;
+            text-decoration: none;
+        }
+        .peblux-nav-logo {
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            font-style: italic;
+            color: #da291c;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0px #fff, 3px 3px 0px rgba(0,0,0,0.2);
+            background: #fff;
+            padding: 2px 8px;
+            border: 2px solid #da291c;
+            border-radius: 4px;
+        }
+        .navbar-nav > li > a {
+            color: #111;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 15px 15px;
+        }
+        .navbar-nav > li > a:hover {
+            color: #0080ff;
+            background: transparent;
+        }
+        .navbar-form {
+            margin-top: 8px;
+        }
+        .navbar-form .form-control {
+            border-radius: 0;
+            height: 34px;
+        }
+        #LoginButton {
+            background-color: #0074bd;
+            color: white;
+            border: none;
+            font-weight: bold;
+        }
+        #LoginButton:hover {
+            background-color: #005f99;
+        }
+
+        /* Seção Principal (Roller Coaster) */
+        #RollerContainer {
+            background-image: url('http://images.rbxcdn.com/dcbdfaf1c08058e71f65c09f7b98ff04.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            min-height: 600px;
+            padding: 60px 0;
+            position: relative;
+        }
+        .peblux-main-logo {
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 64px;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: -2px;
+            text-shadow: 
+                -3px -3px 0 #da291c,  
+                 3px -3px 0 #da291c,
+                -3px  3px 0 #da291c,
+                 3px  3px 0 #da291c,
+                 5px 5px 10px rgba(0,0,0,0.6);
+            margin: 0 auto 10px auto;
+            line-height: 1;
+        }
+        #LogoAndSlogan h1 {
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-top: 10px;
+        }
+        #LogoAndSlogan h1 span {
+            font-size: 16px;
+            vertical-align: super;
+        }
+
+        /* Caixa de Cadastro */
+        #SignUpFormContainer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .signup-header {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            border-radius: 0 !important;
+            height: 42px !important;
+            font-size: 15px;
+        }
+        .signup-submit-button {
+            background-color: #00b06f;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            width: 100%;
+            height: 45px;
+            border: none;
+            border-radius: 0;
+            margin-top: 10px;
+        }
+        .signup-submit-button:hover {
+            background-color: #00965d;
+        }
+        .error-msg {
+            color: #d9534f;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* Créditos */
+        .attribution {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        /* Seção What is Peblux (Imagens restauradas) */
+        #WhatsRobloxContainer {
+            background: #f2f2f2;
+            padding: 50px 0;
+        }
+        #InnerWhatsRobloxContainer1 {
+            background-image: url('http://images.rbxcdn.com/cca69eca62f23ca413fc920549e936ea.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+        #WhatIsRobloxTextBg {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 30px;
+            border-radius: 6px;
+        }
+        .game-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            background-color: #ccc;
+        }
+        #GameImage1 { background-image: url('http://images.rbxcdn.com/42268b6264d89827401ef912f174f288.jpg'); }
+        #GameImage2 { background-image: url('http://images.rbxcdn.com/04baeb33ef66ef1395cd5464309fece6.jpg'); }
+        #GameImage3 { background-image: url('http://images.rbxcdn.com/e8b89d14690203420d64b5b2fda0b461.jpg'); }
+
+        /* Dispositivos */
+        #DeviceSection {
+            background: #ffffff;
+            padding: 50px 0;
+            text-align: center;
+        }
+        .ComputerImg {
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        /* Footer */
+        .container-footer {
+            background: #333;
+            color: #aaa;
+            padding: 40px 0;
+            font-size: 13px;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        .footer-note {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Navbar Superior -->
     <div class="navbar navbar-landing navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="row">
                 <div class="navbar-header col-md-6">
-                    <div class="navbar-brand"><a href="#" class="peblux-navbar-brand"><span class="peblux-nav-logo">P</span></a></div>
+                    <div class="navbar-brand">
+                        <a href="#" class="peblux-navbar-brand">
+                            <span class="peblux-nav-logo">P</span>
+                        </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#RollerContainer">Play</a></li>
+                        <li><a href="#WhatsRobloxContainer">About</a></li>
+                        <li><a href="#DeviceSection">Platforms</a></li>
+                    </ul>
                 </div>
+                
+                <!-- Formulário de Login -->
                 <div class="col-sm-6">
                     <form id="loginForm" class="navbar-form navbar-right" onsubmit="handleLogin(event)">
-                        <div class="form-group"><input type="text" id="loginUsername" placeholder="Username" class="form-control" required /></div>
-                        <div class="form-group"><input type="password" id="loginPassword" placeholder="Password" class="form-control" required /></div>
-                        <div class="form-group"><button type="submit" id="LoginButton" class="form-control btn">Log In</button></div>
+                        <div class="form-group">
+                            <input type="text" id="loginUsername" placeholder="Username" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="loginPassword" placeholder="Password" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="LoginButton" class="form-control btn">Log In</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Seção Principal -->
     <section id="RollerContainer">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center">
-                    <div style="margin-top: 80px;">
+                    <div id="LogoAndSlogan" style="margin-top: 80px;">
                         <div class="peblux-main-logo">PEBLUX</div>
-                        <h1 style="color:white; font-weight:700;">Powering Imagination</h1>
+                        <h1>Powering Imagination<span> &#8482 </span></h1>
                     </div>
                 </div>
+
+                <!-- Formulário de Cadastro -->
                 <div class="col-md-6">
                     <div id="SignUpFormContainer">
-                        <h3 class="text-center" style="font-weight:700; margin-bottom:20px;">Sign up and start having fun!</h3>
+                        <h3 class="text-center signup-header">Sign up and start having fun!</h3>
                         <form id="signupForm" onsubmit="handleSignup(event)">
-                            <div class="form-group"><input id="signupUsername" class="form-control input-field" type="text" placeholder="Username" required /></div>
-                            <div class="form-group"><input id="signupPassword" class="form-control input-field" type="password" placeholder="Password" required /></div>
-                            <div class="form-group"><input id="signupPasswordConfirm" class="form-control input-field" type="password" placeholder="Confirm Password" required /></div>
+                            <div class="form-group">
+                                <input id="signupUsername" class="form-control input-field" type="text" placeholder="Username" required />
+                            </div>
+                            <div class="form-group">
+                                <input id="signupPassword" class="form-control input-field" type="password" placeholder="Password" required />
+                            </div>
+                            <div class="form-group">
+                                <input id="signupPasswordConfirm" class="form-control input-field" type="password" placeholder="Confirm Password" required />
+                            </div>
                             <div class="error-msg" id="signupError"></div>
                             <button type="submit" class="btn signup-submit-button">Sign Up</button>
                         </form>
@@ -67,8 +311,67 @@
                 </div>
             </div>
         </div>
+        
+        <div class="attribution hidden-xs">
+            <span class="notranslate">Game: Peblux Point</span><br>
+            Developer: <span class="notranslate">StarMarine614</span>
+        </div>
     </section>
 
+    <!-- O que é o Peblux (Seção com as imagens restauradas) -->
+    <section id="WhatsRobloxContainer">
+        <div class="container">
+            <div class="row" id="InnerWhatsRobloxContainer1">
+                <div class="col-sm-6 col-sm-offset-6" id="WhatIsRobloxTextBg">
+                    <h2 class="text-center">WHAT IS PEBLUX?</h2>
+                    <p class="lead text-justify">
+                        Peblux is the best place to Imagine with Friends™. With the largest user-generated online gaming platform, and over 15 million games created by users, Peblux is the #1 gaming site. Every day, virtual explorers come to Peblux to create adventures, play games, role play, and learn with their friends in a family-friendly, immersive, 3D environment.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="GameImage1" class="col-sm-4 game-image"></div>
+                <div id="GameImage2" class="col-sm-4 game-image"></div>
+                <div id="GameImage3" class="col-sm-4 game-image"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dispositivos -->
+    <section id="DeviceSection">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2>PEBLUX ON YOUR DEVICE</h2>
+                    <p class="lead">
+                        You can access Peblux on PC, Mac, iOS, Android, Amazon Devices, and Xbox One. Peblux adventures are accessible from any device.
+                    </p>
+                    <img class="img-responsive ComputerImg" src="http://images.rbxcdn.com/9edeef823842e76479587a57c05cb5bc.png" alt="Peblux Devices" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="container-footer">
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Jobs</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Parents</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+            <p class="footer-note">
+                Peblux, "Online Building Toy", characters, logos, names, and all related indicia are trademarks of Peblux Corporation, ©2016. 
+                Peblux is not sponsored, authorized or endorsed by any producer of plastic building bricks.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Lógica de Conexão com o Supabase -->
     <script>
         const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
@@ -100,10 +403,8 @@
             }
 
             if (authData.user) {
-                // Cria o perfil
                 await supabaseClient.from('profiles').insert([{ id: authData.user.id, username: username, robux: 100 }]);
 
-                // Envia a mensagem automática de boas-vindas
                 await supabaseClient.from('messages').insert([{
                     user_id: authData.user.id,
                     sender: 'System',
