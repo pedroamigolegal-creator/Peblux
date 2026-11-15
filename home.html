@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
+    <!-- Supabase, Three.js e o GLTFLoader -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <style>
         body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 45px; }
@@ -138,14 +140,10 @@
 
         async function loadUserData() {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { 
-                // Se não houver sessão ativa, redireciona para o login ou usa um fallback amigável
-                console.warn("Nenhuma sessão ativa encontrada.");
-                return; 
-            }
+            if (!session) return;
 
             const user = session.user;
-            const { data: profile, error } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
 
             if (profile && profile.username) {
                 document.getElementById('userRobux').innerText = profile.robux || 150;
@@ -161,35 +159,45 @@
 
         loadUserData();
 
-        // Renderizador 3D otimizado com a cor clássica do Noob e brilho perfeito
+        // Configuração do Three.js com GLTFLoader para o roblox-noob.glb
         const container = document.getElementById('headshotContainer');
         const canvas = document.getElementById('canvas3d');
         
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
         
         renderer.setSize(container.clientWidth, container.clientHeight);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
         scene.add(ambientLight);
         
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
         directionalLight.position.set(5, 10, 7);
         scene.add(directionalLight);
 
-        // Cabeça/Bloco 3D com o tom amarelo clássico do noob do Roblox
-        const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-        const material = new THREE.MeshLambertMaterial({ color: 0xF5CD30 }); 
-        const headMesh = new THREE.Mesh(geometry, material);
-        
-        // Posição lateral exata igual à referência
-        headMesh.rotation.y = Math.PI / 4;
-        headMesh.rotation.x = 0.15;
-        
-        scene.add(headMesh);
+        // Carregador do arquivo .glb
+        const loader = new THREE.GLTFLoader();
+        loader.load('roblox-noob.glb', function(gltf) {
+            const model = gltf.scene;
 
-        camera.position.z = 3.2;
+            // Centraliza o modelo e ajusta o zoom para focar na cabeça/busto de lado
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+
+            model.position.x = -center.x;
+            model.position.y = -center.y - (size.y * 0.28); // Foco no headshot superior
+            model.position.z = -center.z;
+
+            // Rotação lateral clássica do avatar
+            model.rotation.y = 0.5;
+
+            scene.add(model);
+            camera.position.z = size.y * 0.7;
+        }, undefined, function(error) {
+            console.error('Erro ao carregar o arquivo .glb:', error);
+        });
 
         function animate() {
             requestAnimationFrame(animate);
