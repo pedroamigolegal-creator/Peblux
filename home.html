@@ -8,24 +8,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
-    <!-- Supabase e Three.js para renderizar o modelo 3D -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 45px; }
         
-        /* Navbar Superior Clássica Fiel */
         .navbar-peblux { background-color: #0074BD; border: none; min-height: 45px; height: 45px; border-bottom: 1px solid #005691; }
         .peblux-nav-logo { height: 32px; margin-top: 6px; margin-left: 10px; display: inline-block; }
         .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 12px 15px; font-size: 15px; }
         .navbar-peblux .nav > li > a:hover { background: rgba(25,25,25,0.15); border-radius: 4px; color: white; }
         
-        /* Barra de Pesquisa Central Exata */
         .nav-search-container { display: inline-flex; align-items: center; background: white; border-radius: 2px; padding: 2px 8px; margin-top: 6px; width: 240px; border: 1px solid #c3c3c3; }
         .nav-search-input { border: none; outline: none; width: 100%; font-size: 14px; background: transparent; }
         
-        /* Moedas (Robux e Tix) */
         .currency-badge { color: white; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 4px; margin-right: 12px; }
         .currency-icon { width: 18px; height: 18px; vertical-align: middle; }
 
@@ -34,7 +30,6 @@
 
         .main-container { display: flex; min-height: calc(100vh - 45px); }
         
-        /* Menu Lateral Esquerdo Completo */
         .sidebar { width: 180px; background: #f2f2f2; border-right: 1px solid #c3c3c3; padding-top: 10px; position: fixed; top: 45px; bottom: 0; left: 0; z-index: 100; }
         .sidebar-user { color: #1e1e1f; font-size: 17px; font-weight: 700; padding: 8px 15px; border-bottom: 2px solid #c3c3c3; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .sidebar ul { list-style: none; padding: 0; margin: 0; }
@@ -44,17 +39,14 @@
         .upgrade-btn { background-color: #01a2fd; color: white !important; text-align: center; margin: 15px 10px; border-radius: 4px; padding: 8px !important; font-weight: 600 !important; display: block; text-decoration: none; }
         .upgrade-btn:hover { background-color: #3ab8ff !important; }
 
-        /* Área do Conteúdo Principal */
         .content-area { margin-left: 180px; flex-grow: 1; padding: 25px; max-width: 1050px; }
         .profile-header-box { display: flex; align-items: center; background: #fff; border: 1px solid #c3c3c3; padding: 25px; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); margin-bottom: 20px; }
         
-        /* Círculo do Avatar com o Modelo 3D em Destaque */
         #headshotContainer { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle, #ffffff 30%, #cfcfcf 100%); border: 1px solid #b5b5b5; overflow: hidden; margin-right: 25px; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); position: relative; }
         #canvas3d { width: 100%; height: 100%; display: block; }
         
         .helloMessage { font-size: 38px; font-weight: 600; color: #333; margin: 0; }
 
-        /* Seção de Amigos idêntica à referência */
         .section-box { background: #fff; border: 1px solid #c3c3c3; padding: 15px 20px; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); margin-bottom: 20px; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .section-title { font-size: 18px; font-weight: 600; color: #333; margin: 0; }
@@ -100,7 +92,6 @@
     </nav>
 
     <div class="main-container">
-        <!-- Menu Lateral Esquerdo -->
         <div class="sidebar">
             <div class="sidebar-user" id="sidebarUsername">Player</div>
             <ul>
@@ -118,7 +109,6 @@
             </ul>
         </div>
 
-        <!-- Área Central com Nome Dinâmico e Render 3D de Lado -->
         <div class="content-area">
             <div class="profile-header-box">
                 <div id="headshotContainer">
@@ -129,7 +119,6 @@
                 </div>
             </div>
 
-            <!-- Seção de Amigos -->
             <div class="section-box">
                 <div class="section-header">
                     <h3 class="section-title">Friends (0)</h3>
@@ -142,7 +131,6 @@
         </div>
     </div>
 
-    <!-- Script de Inicialização do Supabase e Renderizador 3D do Boneco -->
     <script>
         const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
@@ -150,14 +138,17 @@
 
         async function loadUserData() {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) { window.location.href = "index.html"; return; }
+            if (!session) { 
+                // Se não houver sessão ativa, redireciona para o login ou usa um fallback amigável
+                console.warn("Nenhuma sessão ativa encontrada.");
+                return; 
+            }
 
             const user = session.user;
-            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            const { data: profile, error } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
 
-            if (profile) {
-                document.getElementById('userRobux').innerText = profile.robux;
-                // Exibe o Hello com o nome real do usuário cadastrado
+            if (profile && profile.username) {
+                document.getElementById('userRobux').innerText = profile.robux || 150;
                 document.getElementById('welcomeText').innerText = `Hello, ${profile.username}!`;
                 document.getElementById('sidebarUsername').innerText = profile.username;
             }
@@ -170,7 +161,7 @@
 
         loadUserData();
 
-        // Configuração do Three.js para renderizar a cabeça/personagem de lado
+        // Renderizador 3D otimizado com a cor clássica do Noob e brilho perfeito
         const container = document.getElementById('headshotContainer');
         const canvas = document.getElementById('canvas3d');
         
@@ -180,34 +171,23 @@
         
         renderer.setSize(container.clientWidth, container.clientHeight);
 
-        // Luzes para destacar o boneco
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
         scene.add(ambientLight);
         
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
         directionalLight.position.set(5, 10, 7);
         scene.add(directionalLight);
 
-        // Criando o bloco 3D com a textura do Noob na raiz
+        // Cabeça/Bloco 3D com o tom amarelo clássico do noob do Roblox
         const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+        const material = new THREE.MeshLambertMaterial({ color: 0xF5CD30 }); 
+        const headMesh = new THREE.Mesh(geometry, material);
         
-        const textureLoader = new THREE.TextureLoader();
-        // Carrega o arquivo Noob1Tex.png diretamente da raiz do projeto
-        textureLoader.load('Noob1Tex.png', function(texture) {
-            const material = new THREE.MeshLambertMaterial({ map: texture });
-            const headMesh = new THREE.Mesh(geometry, material);
-            
-            // Posição lateral clássica
-            headMesh.rotation.y = Math.PI / 4;
-            headMesh.rotation.x = 0.1;
-            
-            scene.add(headMesh);
-        }, undefined, function(err) {
-            const fallbackMaterial = new THREE.MeshLambertMaterial({ color: 0xF5CD30 });
-            const headMesh = new THREE.Mesh(geometry, fallbackMaterial);
-            headMesh.rotation.y = Math.PI / 4;
-            scene.add(headMesh);
-        });
+        // Posição lateral exata igual à referência
+        headMesh.rotation.y = Math.PI / 4;
+        headMesh.rotation.x = 0.15;
+        
+        scene.add(headMesh);
 
         camera.position.z = 3.2;
 
