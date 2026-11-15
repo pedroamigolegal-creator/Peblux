@@ -8,19 +8,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
+    <!-- Supabase e Three.js para renderizar o modelo 3D -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 45px; }
         
-        /* Navbar Superior Azul Clássica Fiel */
+        /* Navbar Superior Clássica Fiel */
         .navbar-peblux { background-color: #0074BD; border: none; min-height: 45px; height: 45px; border-bottom: 1px solid #005691; }
         .peblux-nav-logo { height: 32px; margin-top: 6px; margin-left: 10px; display: inline-block; }
         .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 12px 15px; font-size: 15px; }
         .navbar-peblux .nav > li > a:hover { background: rgba(25,25,25,0.15); border-radius: 4px; color: white; }
         
-        /* Barra de Pesquisa Central */
+        /* Barra de Pesquisa Central Exata */
         .nav-search-container { display: inline-flex; align-items: center; background: white; border-radius: 2px; padding: 2px 8px; margin-top: 6px; width: 240px; border: 1px solid #c3c3c3; }
         .nav-search-input { border: none; outline: none; width: 100%; font-size: 14px; background: transparent; }
         
@@ -47,19 +48,18 @@
         .content-area { margin-left: 180px; flex-grow: 1; padding: 25px; max-width: 1050px; }
         .profile-header-box { display: flex; align-items: center; background: #fff; border: 1px solid #c3c3c3; padding: 25px; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); margin-bottom: 20px; }
         
-        /* Círculo do Avatar (Pronto para o modelo 3D) */
-        #headshotContainer { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d4d4d4 100%); border: 1px solid #c3c3c3; overflow: hidden; margin-right: 25px; flex-shrink: 0; box-shadow: 0 -5px 20px rgba(25,25,25,0.15); display: flex; align-items: center; justify-content: center; }
-        .helloMessage { font-size: 36px; font-weight: 600; color: #333; margin: 0; }
+        /* Círculo do Avatar com o Modelo 3D em Destaque */
+        #headshotContainer { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle, #ffffff 30%, #cfcfcf 100%); border: 1px solid #b5b5b5; overflow: hidden; margin-right: 25px; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); position: relative; }
+        #canvas3d { width: 100%; height: 100%; display: block; }
+        
+        .helloMessage { font-size: 38px; font-weight: 600; color: #333; margin: 0; }
 
         /* Seção de Amigos idêntica à referência */
         .section-box { background: #fff; border: 1px solid #c3c3c3; padding: 15px 20px; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); margin-bottom: 20px; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .section-title { font-size: 18px; font-weight: 600; color: #333; margin: 0; }
-        .see-all-btn { background: #0074BD; color: white; border: none; padding: 4px 12px; border-radius: 3px; font-size: 13px; font-weight: 600; }
+        .see-all-btn { background: #0074BD; color: white; border: none; padding: 4px 12px; border-radius: 3px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .friends-row { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 5px; }
-        .friend-item { text-align: center; width: 75px; flex-shrink: 0; }
-        .friend-avatar { width: 65px; height: 65px; border-radius: 50%; background: #e0e0e0; border: 1px solid #ccc; margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #777; }
-        .friend-name { font-size: 12px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
@@ -100,7 +100,7 @@
     </nav>
 
     <div class="main-container">
-        <!-- Menu Lateral Esquerdo Fiel -->
+        <!-- Menu Lateral Esquerdo -->
         <div class="sidebar">
             <div class="sidebar-user" id="sidebarUsername">Player</div>
             <ul>
@@ -118,18 +118,18 @@
             </ul>
         </div>
 
-        <!-- Área Central (Avatar, Hello [Nome] e Amigos - Sem Jogos) -->
+        <!-- Área Central com Nome Dinâmico e Render 3D de Lado -->
         <div class="content-area">
             <div class="profile-header-box">
                 <div id="headshotContainer">
-                    <i class="fa fa-user" style="font-size: 50px; color: #ccc;"></i>
+                    <canvas id="canvas3d"></canvas>
                 </div>
                 <div>
                     <h1 class="helloMessage" id="welcomeText">Hello, Player!</h1>
                 </div>
             </div>
 
-            <!-- Seção de Amigos idêntica à referência -->
+            <!-- Seção de Amigos -->
             <div class="section-box">
                 <div class="section-header">
                     <h3 class="section-title">Friends (0)</h3>
@@ -142,6 +142,7 @@
         </div>
     </div>
 
+    <!-- Script de Inicialização do Supabase e Renderizador 3D do Boneco -->
     <script>
         const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
@@ -156,6 +157,7 @@
 
             if (profile) {
                 document.getElementById('userRobux').innerText = profile.robux;
+                // Exibe o Hello com o nome real do usuário cadastrado
                 document.getElementById('welcomeText').innerText = `Hello, ${profile.username}!`;
                 document.getElementById('sidebarUsername').innerText = profile.username;
             }
@@ -167,6 +169,54 @@
         }
 
         loadUserData();
+
+        // Configuração do Three.js para renderizar a cabeça/personagem de lado
+        const container = document.getElementById('headshotContainer');
+        const canvas = document.getElementById('canvas3d');
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        
+        renderer.setSize(container.clientWidth, container.clientHeight);
+
+        // Luzes para destacar o boneco
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        directionalLight.position.set(5, 10, 7);
+        scene.add(directionalLight);
+
+        // Criando a cabeça/rosto do personagem modelado em blocos (estilo clássico do Roblox) com a posição lateral exata
+        const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+        
+        // Carregando a textura do noob que você enviou
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.load('textures/Noob1Tex.png', function(texture) {
+            const material = new THREE.MeshLambertMaterial({ map: texture });
+            const headMesh = new THREE.Mesh(geometry, material);
+            
+            // Ajustando a rotação para ficar de lado igual à imagem de referência
+            headMesh.rotation.y = Math.PI / 4;
+            headMesh.rotation.x = 0.1;
+            
+            scene.add(headMesh);
+        }, undefined, function(err) {
+            // Fallback caso a textura demore ou dê erro
+            const fallbackMaterial = new THREE.MeshLambertMaterial({ color: 0xF5CD30 });
+            const headMesh = new THREE.Mesh(geometry, fallbackMaterial);
+            headMesh.rotation.y = Math.PI / 4;
+            scene.add(headMesh);
+        });
+
+        camera.position.z = 3.2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
     </script>
 </body>
 </html>
