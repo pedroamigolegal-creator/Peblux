@@ -13,7 +13,6 @@
     <style>
         body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 45px; }
         
-        /* Navbar Superior Clássica */
         .navbar-peblux { background-color: #0074BD; border: none; min-height: 45px; height: 45px; border-bottom: 1px solid #005691; }
         .peblux-nav-logo { height: 32px; margin-top: 6px; margin-left: 10px; display: inline-block; }
         .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 12px 15px; font-size: 15px; }
@@ -30,7 +29,6 @@
 
         .main-container { display: flex; min-height: calc(100vh - 45px); }
         
-        /* Menu Lateral Esquerdo */
         .sidebar { width: 180px; background: #f2f2f2; border-right: 1px solid #c3c3c3; padding-top: 10px; position: fixed; top: 45px; bottom: 0; left: 0; z-index: 100; }
         .sidebar-user { color: #1e1e1f; font-size: 17px; font-weight: 700; padding: 8px 15px; border-bottom: 2px solid #c3c3c3; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .sidebar ul { list-style: none; padding: 0; margin: 0; }
@@ -40,7 +38,6 @@
         .upgrade-btn { background-color: #01a2fd; color: white !important; text-align: center; margin: 15px 10px; border-radius: 4px; padding: 8px !important; font-weight: 600 !important; display: block; text-decoration: none; }
         .upgrade-btn:hover { background-color: #3ab8ff !important; }
 
-        /* Área Principal do Editor de Avatar */
         .content-area { margin-left: 180px; flex-grow: 1; padding: 25px; max-width: 1200px; }
         
         .editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -49,22 +46,19 @@
         .catalog-promo a { background-color: #55bf40; color: white; padding: 6px 14px; border-radius: 4px; text-decoration: none; font-weight: 600; margin-left: 8px; }
         .catalog-promo a:hover { background-color: #4aad37; }
 
-        /* Layout em duas colunas idêntico ao Roblox */
         .editor-wrapper { display: flex; gap: 20px; }
 
-        /* Coluna Esquerda: Preview do Boneco */
         .preview-pane { width: 320px; background: white; border: 1px solid #c3c3c3; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); display: flex; flex-direction: column; }
-        .preview-box { height: 360px; background: radial-gradient(circle, #fcfcfc 30%, #d8d8d8 100%); position: relative; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #c3c3c3; }
+        .preview-box { height: 360px; background: radial-gradient(circle, #fcfcfc 30%, #d8d8d8 100%); position: relative; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #c3c3c3; overflow: hidden; }
         
-        /* Botões R6 / R15 no canto superior */
-        .rig-selector { position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; }
+        .rig-selector { position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; z-index: 10; }
         .rig-btn { border: 1px solid #b5b5b5; background: #e6e6e6; padding: 3px 8px; font-size: 12px; font-weight: bold; border-radius: 3px; cursor: pointer; color: #333; }
         .rig-btn.active { background: #0074BD; color: white; border-color: #005691; }
 
-        /* Selo 3D no canto inferior */
-        .badge-3d { position: absolute; bottom: 12px; right: 12px; background: white; border: 1px solid #b5b5b5; padding: 2px 8px; font-weight: bold; font-size: 12px; border-radius: 3px; color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .badge-3d { position: absolute; bottom: 12px; right: 12px; background: white; border: 1px solid #b5b5b5; padding: 2px 8px; font-weight: bold; font-size: 12px; border-radius: 3px; color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.1); z-index: 10; }
 
-        .avatar-render-img { max-height: 280px; object-fit: contain; }
+        /* TRAVA DE SEGURANÇA PARA A IMAGEM DO AVATAR NÃO ESTOURAR */
+        .avatar-render-img { width: 100%; height: 100%; object-fit: contain; padding: 20px; }
 
         .scaling-section { padding: 15px; }
         .scaling-title { font-weight: 600; font-size: 15px; color: #333; margin-bottom: 10px; display: flex; justify-content: space-between; }
@@ -72,17 +66,14 @@
         .slider-label { font-size: 13px; color: #666; display: flex; justify-content: space-between; margin-bottom: 2px; }
         .slider-input { width: 100%; accent-color: #0074BD; }
 
-        /* Coluna Direita: Abas e Inventário de Itens */
         .inventory-pane { flex-grow: 1; background: white; border: 1px solid #c3c3c3; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); display: flex; flex-direction: column; }
         
-        /* Abas Superiores */
         .nav-tabs-custom { display: flex; border-bottom: 1px solid #c3c3c3; background: #f8f8f8; padding: 0 15px; }
         .nav-tabs-custom button { background: none; border: none; padding: 12px 18px; font-size: 15px; font-weight: 600; color: #555; cursor: pointer; border-bottom: 3px solid transparent; }
         .nav-tabs-custom button.active { color: #0074BD; border-bottom-color: #0074BD; background: white; }
         
         .sub-nav { padding: 10px 20px; font-size: 13px; color: #666; border-bottom: 1px solid #eee; background: #fff; }
 
-        /* Grade de Itens (Estilo Inventário) */
         .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 20px; overflow-y: auto; max-height: 480px; }
         .item-card { background: white; border: 1px solid #c3c3c3; border-radius: 4px; text-align: center; cursor: pointer; position: relative; transition: all 0.1s; }
         .item-card:hover { border-color: #0074BD; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
@@ -131,7 +122,6 @@
     </nav>
 
     <div class="main-container">
-        <!-- Menu Lateral Esquerdo -->
         <div class="sidebar">
             <div class="sidebar-user" id="sidebarUsername">Player</div>
             <ul>
@@ -149,7 +139,6 @@
             </ul>
         </div>
 
-        <!-- Conteúdo do Editor -->
         <div class="content-area">
             <div class="editor-header">
                 <h1 class="editor-title">Avatar Editor</h1>
@@ -159,7 +148,7 @@
             </div>
 
             <div class="editor-wrapper">
-                <!-- Coluna Esquerda: Visualizador Estável -->
+                <!-- Coluna Esquerda: Preview com o boneco contido no tamanho certo -->
                 <div class="preview-pane">
                     <div class="preview-box">
                         <div class="rig-selector">
@@ -167,8 +156,8 @@
                             <button class="rig-btn active" onclick="setRig('R15')">R15</button>
                         </div>
                         <div class="badge-3d">3D</div>
-                        <!-- Renderização limpa e estável do Noob que nunca falha ou fica em branco -->
-                        <img src="40051.png" class="avatar-render-img" alt="Avatar Preview" id="avatarPreviewImg">
+                        <!-- Usando o icone limpo 40052.png ou icone menor para o preview do boneco -->
+                        <img src="40052.png" class="avatar-render-img" alt="Avatar Preview">
                     </div>
                     <div class="scaling-section">
                         <div class="scaling-title">
@@ -186,7 +175,7 @@
                     </div>
                 </div>
 
-                <!-- Coluna Direita: Categorias de Itens -->
+                <!-- Coluna Direita: Inventário de Itens -->
                 <div class="inventory-pane">
                     <div class="nav-tabs-custom">
                         <button class="active" onclick="switchTab('recent')">Recent</button>
@@ -199,15 +188,13 @@
                         Recent > All
                     </div>
                     
-                    <!-- Grade de Itens do Inventário -->
                     <div class="item-grid" id="itemGrid">
-                        <!-- Exemplo de Itens Clássicos da Referência -->
                         <div class="item-card selected" onclick="toggleItem(this)">
-                            <img src="40051.png" class="item-thumb" alt="Noob Shirt">
+                            <img src="40052.png" class="item-thumb" alt="Item">
                             <div class="item-name">ROBLOX "R" Shirt</div>
                         </div>
                         <div class="item-card" onclick="toggleItem(this)">
-                            <img src="40052.png" class="item-thumb" alt="Logo Icon">
+                            <img src="40052.png" class="item-thumb" alt="Item">
                             <div class="item-name">Classic Logo Cap</div>
                         </div>
                     </div>
@@ -253,7 +240,6 @@
         }
 
         function toggleItem(card) {
-            // Simula equipar/desequipar o item com a bordinha verde igual ao Roblox
             card.classList.toggle('selected');
         }
     </script>
