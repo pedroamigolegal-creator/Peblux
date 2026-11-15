@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avatar Editor - Peblux</title>
+    <link href="40052.png" rel="icon" type="image/png" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: #e3e3e3; margin: 0; padding-top: 45px; }
+        
+        /* Navbar Superior Clássica */
+        .navbar-peblux { background-color: #0074BD; border: none; min-height: 45px; height: 45px; border-bottom: 1px solid #005691; }
+        .peblux-nav-logo { height: 32px; margin-top: 6px; margin-left: 10px; display: inline-block; }
+        .navbar-peblux .nav > li > a { color: white; font-weight: 600; padding: 12px 15px; font-size: 15px; }
+        .navbar-peblux .nav > li > a:hover { background: rgba(25,25,25,0.15); border-radius: 4px; color: white; }
+        
+        .nav-search-container { display: inline-flex; align-items: center; background: white; border-radius: 2px; padding: 2px 8px; margin-top: 6px; width: 240px; border: 1px solid #c3c3c3; }
+        .nav-search-input { border: none; outline: none; width: 100%; font-size: 14px; background: transparent; }
+        
+        .currency-badge { color: white; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 4px; margin-right: 12px; }
+        .currency-icon { width: 18px; height: 18px; vertical-align: middle; }
+
+        .gear-btn { background: transparent; border: none; color: white; font-size: 18px; padding: 10px; cursor: pointer; }
+        .gear-btn:hover { background: rgba(25,25,25,0.15); border-radius: 4px; }
+
+        .main-container { display: flex; min-height: calc(100vh - 45px); }
+        
+        /* Menu Lateral Esquerdo */
+        .sidebar { width: 180px; background: #f2f2f2; border-right: 1px solid #c3c3c3; padding-top: 10px; position: fixed; top: 45px; bottom: 0; left: 0; z-index: 100; }
+        .sidebar-user { color: #1e1e1f; font-size: 17px; font-weight: 700; padding: 8px 15px; border-bottom: 2px solid #c3c3c3; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar ul li a { display: block; padding: 8px 15px; color: #333; text-decoration: none; font-size: 15px; }
+        .sidebar ul li a:hover, .sidebar ul li a.active { background-color: rgba(25,25,25,0.08); color: #0074BD; font-weight: 600; border-radius: 4px; }
+        .sidebar ul li a i { margin-right: 10px; width: 18px; text-align: center; color: #555; }
+        .upgrade-btn { background-color: #01a2fd; color: white !important; text-align: center; margin: 15px 10px; border-radius: 4px; padding: 8px !important; font-weight: 600 !important; display: block; text-decoration: none; }
+        .upgrade-btn:hover { background-color: #3ab8ff !important; }
+
+        /* Área Principal do Editor de Avatar */
+        .content-area { margin-left: 180px; flex-grow: 1; padding: 25px; max-width: 1200px; }
+        
+        .editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .editor-title { font-size: 26px; font-weight: 600; color: #333; margin: 0; }
+        .catalog-promo { font-size: 14px; color: #333; }
+        .catalog-promo a { background-color: #55bf40; color: white; padding: 6px 14px; border-radius: 4px; text-decoration: none; font-weight: 600; margin-left: 8px; }
+        .catalog-promo a:hover { background-color: #4aad37; }
+
+        /* Layout em duas colunas idêntico ao Roblox */
+        .editor-wrapper { display: flex; gap: 20px; }
+
+        /* Coluna Esquerda: Preview do Boneco */
+        .preview-pane { width: 320px; background: white; border: 1px solid #c3c3c3; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); display: flex; flex-direction: column; }
+        .preview-box { height: 360px; background: radial-gradient(circle, #fcfcfc 30%, #d8d8d8 100%); position: relative; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #c3c3c3; }
+        
+        /* Botões R6 / R15 no canto superior */
+        .rig-selector { position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; }
+        .rig-btn { border: 1px solid #b5b5b5; background: #e6e6e6; padding: 3px 8px; font-size: 12px; font-weight: bold; border-radius: 3px; cursor: pointer; color: #333; }
+        .rig-btn.active { background: #0074BD; color: white; border-color: #005691; }
+
+        /* Selo 3D no canto inferior */
+        .badge-3d { position: absolute; bottom: 12px; right: 12px; background: white; border: 1px solid #b5b5b5; padding: 2px 8px; font-weight: bold; font-size: 12px; border-radius: 3px; color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+        .avatar-render-img { max-height: 280px; object-fit: contain; }
+
+        .scaling-section { padding: 15px; }
+        .scaling-title { font-weight: 600; font-size: 15px; color: #333; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .slider-group { margin-bottom: 10px; }
+        .slider-label { font-size: 13px; color: #666; display: flex; justify-content: space-between; margin-bottom: 2px; }
+        .slider-input { width: 100%; accent-color: #0074BD; }
+
+        /* Coluna Direita: Abas e Inventário de Itens */
+        .inventory-pane { flex-grow: 1; background: white; border: 1px solid #c3c3c3; border-radius: 4px; box-shadow: 0 1px 4px rgba(25,25,25,0.1); display: flex; flex-direction: column; }
+        
+        /* Abas Superiores */
+        .nav-tabs-custom { display: flex; border-bottom: 1px solid #c3c3c3; background: #f8f8f8; padding: 0 15px; }
+        .nav-tabs-custom button { background: none; border: none; padding: 12px 18px; font-size: 15px; font-weight: 600; color: #555; cursor: pointer; border-bottom: 3px solid transparent; }
+        .nav-tabs-custom button.active { color: #0074BD; border-bottom-color: #0074BD; background: white; }
+        
+        .sub-nav { padding: 10px 20px; font-size: 13px; color: #666; border-bottom: 1px solid #eee; background: #fff; }
+
+        /* Grade de Itens (Estilo Inventário) */
+        .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 20px; overflow-y: auto; max-height: 480px; }
+        .item-card { background: white; border: 1px solid #c3c3c3; border-radius: 4px; text-align: center; cursor: pointer; position: relative; transition: all 0.1s; }
+        .item-card:hover { border-color: #0074BD; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .item-card.selected { border-color: #55bf40; border-width: 2px; }
+        .item-card.selected::after { content: "✓"; position: absolute; top: 4px; right: 6px; background: #55bf40; color: white; font-size: 11px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        .item-thumb { width: 100%; height: 110px; object-fit: contain; padding: 10px; background: #fcfcfc; border-bottom: 1px solid #eee; }
+        .item-name { font-size: 13px; color: #333; padding: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-peblux navbar-fixed-top">
+        <div class="container-fluid" style="padding-left: 5px; padding-right: 10px;">
+            <div class="navbar-header" style="display: flex; align-items: center;">
+                <a href="home.html">
+                    <img src="40052.png" class="peblux-nav-logo" alt="Logo">
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="home.html">Games</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="develop.html">Develop</a></li>
+                <li>
+                    <div class="nav-search-container">
+                        <input type="text" class="nav-search-input" placeholder="Search">
+                        <i class="fa fa-search" style="color: #666; cursor: pointer; padding-right: 4px;"></i>
+                    </div>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="display: flex; align-items: center; margin-right: 0;">
+                <li>
+                    <div class="currency-badge">
+                        <img src="robux.png" class="currency-icon" alt="Robux"> <span id="userRobux">150</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="currency-badge" style="margin-right: 8px;">
+                        <img src="tix.png" class="currency-icon" alt="Tix"> <span id="userTix">0</span>
+                    </div>
+                </li>
+                <li>
+                    <button class="gear-btn" onclick="handleLogout()" title="Log Out"><i class="fa fa-cog"></i></button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Menu Lateral Esquerdo -->
+        <div class="sidebar">
+            <div class="sidebar-user" id="sidebarUsername">Player</div>
+            <ul>
+                <li><a href="home.html"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="profile.html"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="messages.html"><i class="fa fa-envelope-o"></i> Messages</a></li>
+                <li><a href="friends.html"><i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="avatar.html" class="active"><i class="fa fa-male"></i> Avatar</a></li>
+                <li><a href="inventory.html"><i class="fa fa-briefcase"></i> Inventory</a></li>
+                <li><a href="trade.html"><i class="fa fa-exchange"></i> Trade</a></li>
+                <li><a href="groups.html"><i class="fa fa-users"></i> Groups</a></li>
+                <li><a href="blog.html"><i class="fa fa-bullhorn"></i> Blog</a></li>
+                <li><a href="forums.html"><i class="fa fa-comments-o"></i> Forums</a></li>
+                <li><a href="buildersclub.html" class="upgrade-btn">Upgrade Now</a></li>
+            </ul>
+        </div>
+
+        <!-- Conteúdo do Editor -->
+        <div class="content-area">
+            <div class="editor-header">
+                <h1 class="editor-title">Avatar Editor</h1>
+                <div class="catalog-promo">
+                    Explore the catalog to find more clothes! <a href="catalog.html">Get More</a>
+                </div>
+            </div>
+
+            <div class="editor-wrapper">
+                <!-- Coluna Esquerda: Visualizador Estável -->
+                <div class="preview-pane">
+                    <div class="preview-box">
+                        <div class="rig-selector">
+                            <button class="rig-btn" onclick="setRig('R6')">R6</button>
+                            <button class="rig-btn active" onclick="setRig('R15')">R15</button>
+                        </div>
+                        <div class="badge-3d">3D</div>
+                        <!-- Renderização limpa e estável do Noob que nunca falha ou fica em branco -->
+                        <img src="40051.png" class="avatar-render-img" alt="Avatar Preview" id="avatarPreviewImg">
+                    </div>
+                    <div class="scaling-section">
+                        <div class="scaling-title">
+                            <span>Scaling</span>
+                            <i class="fa fa-question-circle" style="color: #888; cursor: pointer;"></i>
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label"><span>Height</span> <span>100%</span></div>
+                            <input type="range" class="slider-input" min="90" max="110" value="100">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label"><span>Width</span> <span>95%</span></div>
+                            <input type="range" class="slider-input" min="90" max="110" value="95">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Categorias de Itens -->
+                <div class="inventory-pane">
+                    <div class="nav-tabs-custom">
+                        <button class="active" onclick="switchTab('recent')">Recent</button>
+                        <button onclick="switchTab('clothing')">Clothing</button>
+                        <button onclick="switchTab('body')">Body</button>
+                        <button onclick="switchTab('animations')">Animations</button>
+                        <button onclick="switchTab('outfits')">Outfits</button>
+                    </div>
+                    <div class="sub-nav" id="subCategoryText">
+                        Recent > All
+                    </div>
+                    
+                    <!-- Grade de Itens do Inventário -->
+                    <div class="item-grid" id="itemGrid">
+                        <!-- Exemplo de Itens Clássicos da Referência -->
+                        <div class="item-card selected" onclick="toggleItem(this)">
+                            <img src="40051.png" class="item-thumb" alt="Noob Shirt">
+                            <div class="item-name">ROBLOX "R" Shirt</div>
+                        </div>
+                        <div class="item-card" onclick="toggleItem(this)">
+                            <img src="40052.png" class="item-thumb" alt="Logo Icon">
+                            <div class="item-name">Classic Logo Cap</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://rdsezvmtrnfgjithodjc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_QKfwvR6GsiiDaTMG-pigGA_Y9QinL7l';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function loadUserData() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) { window.location.href = "index.html"; return; }
+
+            const user = session.user;
+            const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+
+            if (profile) {
+                document.getElementById('userRobux').innerText = profile.robux || 150;
+                document.getElementById('sidebarUsername').innerText = profile.username;
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = "index.html";
+        }
+
+        loadUserData();
+
+        function setRig(type) {
+            document.querySelectorAll('.rig-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tabs-custom button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('subCategoryText').innerText = `${tabName.charAt(0).toUpperCase() + tabName.slice(1)} > All`;
+        }
+
+        function toggleItem(card) {
+            // Simula equipar/desequipar o item com a bordinha verde igual ao Roblox
+            card.classList.toggle('selected');
+        }
+    </script>
+</body>
+</html>
