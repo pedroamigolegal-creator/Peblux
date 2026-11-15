@@ -188,22 +188,21 @@
         directionalLight.position.set(5, 10, 7);
         scene.add(directionalLight);
 
-        // Criando a cabeça/rosto do personagem modelado em blocos (estilo clássico do Roblox) com a posição lateral exata
+        // Criando o bloco 3D com a textura do Noob na raiz
         const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
         
-        // Carregando a textura do noob que você enviou
         const textureLoader = new THREE.TextureLoader();
-        textureLoader.load('textures/Noob1Tex.png', function(texture) {
+        // Carrega o arquivo Noob1Tex.png diretamente da raiz do projeto
+        textureLoader.load('Noob1Tex.png', function(texture) {
             const material = new THREE.MeshLambertMaterial({ map: texture });
             const headMesh = new THREE.Mesh(geometry, material);
             
-            // Ajustando a rotação para ficar de lado igual à imagem de referência
+            // Posição lateral clássica
             headMesh.rotation.y = Math.PI / 4;
             headMesh.rotation.x = 0.1;
             
             scene.add(headMesh);
         }, undefined, function(err) {
-            // Fallback caso a textura demore ou dê erro
             const fallbackMaterial = new THREE.MeshLambertMaterial({ color: 0xF5CD30 });
             const headMesh = new THREE.Mesh(geometry, fallbackMaterial);
             headMesh.rotation.y = Math.PI / 4;
