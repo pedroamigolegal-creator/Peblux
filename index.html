@@ -1,52 +1,170 @@
 <!DOCTYPE html>
-<!--[if IE 8]><html class="ie8" ng-app="robloxApp"><![endif]-->
-<!--[if gt IE 8]><!-->
-<html>
-<!--<![endif]-->
+<html lang="pt-BR">
 <head>
-    <title>Roblox</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true"/>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Roblox Corporation"/>
-    <meta name="description" content="Roblox is a global platform that brings people together through play."/>
-    <meta name="keywords" content="free games, online games, building games, virtual worlds, free mmo, gaming cloud, physics engine"/>
-    <meta name="apple-itunes-app" content="app-id=431946152"/>
-
-    <link href="https://images.rbxcdn.com/23421382939a9f4ae8bbe60dbe2a3e7e.ico.gzip" rel="icon"/>
-
-    <link rel="stylesheet" data-bundlename="StyleGuide" href="https://css.rbxcdn.com/09505554a40f76a420edee7341587691b49c6cfede7ba183b5fc3177a922cd95.css"/>
-    <link rel="stylesheet" data-bundlename="Thumbnails" href="https://css.rbxcdn.com/872e08cfb833578ce262269ca0c40e46d6888d5abb201cf238fe00f9abfba826.css"/>
-    <link rel="stylesheet" data-bundlename="Navigation" href="https://css.rbxcdn.com/49c237ffce3f7e242a26d9e334d30d5f539e4737b6c59576ee2f28ab4697d61a.css"/>
-    <link rel="stylesheet" data-bundlename="Footer" href="https://css.rbxcdn.com/55b250e8473888792f885d898973a13692fb22157baf61aaffa62ce4545f3408.css"/>
-    <link rel="stylesheet" href="https://static.rbxcdn.com/css/page___c9e032a4e921419962d7000da9e16b0b_m.css/fetch"/>
-    <link rel="stylesheet" data-bundlename="Landing" href="https://css.rbxcdn.com/995266d22f21d90bd963e3d1b7e3bff41a4b9fa086f33820d217cad19984e442.css"/>
-    <link rel="stylesheet" data-bundlename="Captcha" href="https://css.rbxcdn.com/367c512a8ae39bba9fd5c421e479f5fc798fe99c410ff0efdc134821ef3a8665.css"/>
-    <link rel="stylesheet" data-bundlename="RobuxIcon" href="https://css.rbxcdn.com/2f599b9e9ca20ee3c155684adbf1cdcb7220bab681b55b4505123a0c34e81969.css"/>
-
-    <script type="text/javascript">
-        var Roblox = Roblox || {};
-        Roblox.SignupMeta = {
-            isSinglePasswordFieldEnabled: true,
-            isNewUserLandingAbTestingEnabled: true,
-            newUserLandingPageAbTestName: "NewUser.LandingPage.HomePage",
-            timeoutOnAbtestingEnrollEndpoint: "30000",
-            isFbSignUpEnabled: false
-        };
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox (2020) - Cadastre-se</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Gotham', 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: space-between;
+        }
+        .signup-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 60px auto;
+            background: #1f1f1f;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+        }
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo-area h1 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+        .logo-area p {
+            color: #b0b0b0;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #d0d0d0;
+            margin-bottom: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #2b2b2b;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 15px;
+        }
+        input:focus, select:focus {
+            border-color: #00b06f;
+            outline: none;
+        }
+        .birthday-row {
+            display: flex;
+            gap: 10px;
+        }
+        .gender-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .gender-btn {
+            flex: 1;
+            padding: 10px;
+            background: #2b2b2b;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+        }
+        .gender-btn:hover {
+            border-color: #666;
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: #00b06f;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: #009c62;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
 </head>
-<body id="rbx-body" class="rbx-body gotham-font" data-performance-relative-value="0.005" data-internal-page-name="Landing">
+<body>
 
-    <div id="landing-page-container" landing-page-container use-experimentation-platform-for-ftux="false" is-ftux-avatar-enabled="false" ftux-avatar-version="0" ftux-context-version="0" is-always-captcha-sign-up-enabled="false" is-captcha-v2-component-for-sign-up-enabled="true">
+    <div class="signup-container">
+        <div class="logo-area">
+            <h1>ROBLOX</h1>
+            <p>Cadastre-se para criar e jogar com milhões de pessoas</p>
+        </div>
+
+        <form action="home.html" method="GET">
+            <div class="form-group">
+                <label>ANIVERSÁRIO</label>
+                <div class="birthday-row">
+                    <select required>
+                        <option value="">Mês</option>
+                        <option>Janeiro</option><option>Fevereiro</option><option>Março</option><option>Abril</option><option>Maio</option><option>Junho</option><option>Julho</option><option>Agosto</option><option>Setembro</option><option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+                    </select>
+                    <select required>
+                        <option value="">Dia</option>
+                        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                    </select>
+                    <select required>
+                        <option value="">Ano</option>
+                        <option>2010</option><option>2008</option><option>2005</option><option>2000</option><option>1995</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>NOME DE USUÁRIO</label>
+                <input type="text" placeholder="Não use seu nome real" required>
+            </div>
+
+            <div class="form-group">
+                <label>SENHA</label>
+                <input type="password" placeholder="No mínimo 8 caracteres" required>
+            </div>
+
+            <div class="form-group">
+                <label>GÊNERO (OPCIONAL)</label>
+                <div class="gender-row">
+                    <button type="button" class="gender-btn">Masculino</button>
+                    <button type="button" class="gender-btn">Feminino</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Cadastre-se</button>
+        </form>
     </div>
 
-    <div class="dark-theme">
-        <footer class="container-footer" id="footer-container" data-is-giftcards-footer-enabled="True"></footer>
-    </div>
+    <footer>
+        &copy; 2020 Roblox Corporation (Revival Project)
+    </footer>
 
-    <!-- Scripts essenciais limpos de redirecionamentos externos indesejados -->
-    <script type="text/javascript" src="https://js.rbxcdn.com/90ad5f1b3d18c39c3f9e0ef6d60ab071.js"></script>
-    <script type="text/javascript" src="https://js.rbxcdn.com/8882aff3df88857d3f40ad34a7551002805708bb49bfd90bfd78a878df7ea77a.js"></script>
-    <script type="text/javascript" src="https://js.rbxcdn.com/db5218c3fbccfaa300942c9c11f581d29079dcf3d27e2b69c410f10ba3aff8d4.js"></script>
 </body>
 </html>
